@@ -1,0 +1,813 @@
+{
+  "profile": {
+    "name": "Sean Stone",
+    "role": "Revenue systems, built not advised",
+    "location": "San Francisco",
+    "email": "sean@cangaroo.ai",
+    "linkedin": "linkedin.com/in/seanstone",
+    "site": "seanstone.com"
+  },
+  "flags": {
+    "engagementOffer": true,
+    "showRates": true,
+    "noindex": false
+  },
+  "rate": {
+    "hourly": 200,
+    "currency": "USD",
+    "ftLow": 120000,
+    "ftHigh": 250000,
+    "overhead": 0.25
+  },
+  "metrics": [
+    {
+      "value": "50+",
+      "label": "B2B companies\nrevenue systems built for"
+    },
+    {
+      "value": "$200M+",
+      "label": "Sales generated\nby those companies"
+    },
+    {
+      "value": "$500M+",
+      "label": "Raised\nby those companies"
+    },
+    {
+      "value": "25 yrs",
+      "label": "Building commercial\nsystems: US · AU · Asia"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "arch",
+      "name": "Revenue architecture",
+      "kicker": "The system of record, made honest",
+      "claim": "CRM structure, lifecycle stages, data model, forecasting discipline. The unglamorous layer everything else depends on — and the one that is almost always wrong.",
+      "evidence": [
+        "alpha",
+        "salehunters",
+        "roadrunner"
+      ]
+    },
+    {
+      "id": "gtme",
+      "name": "GTM engineering",
+      "kicker": "Strategy, shipped as working software",
+      "claim": "Integrations, routing logic, enrichment, attribution, landing-page infrastructure. Not a diagram of a process — the process, running.",
+      "evidence": [
+        "roadrunner",
+        "alpha"
+      ]
+    },
+    {
+      "id": "aibuild",
+      "name": "AI-directed product build",
+      "kicker": "Human in the loop, ground truth at every gate",
+      "claim": "Directing AI engineering agents to produce production, multi-tenant software — with specification, acceptance criteria and verification gates that keep it real.",
+      "evidence": [
+        "kervio",
+        "roadrunner"
+      ]
+    },
+    {
+      "id": "comm",
+      "name": "Commercialisation",
+      "kicker": "Pricing, packaging, market entry",
+      "claim": "Quantitative pricing architecture, ICP definition, onboarding-as-a-service funnels, cost-to-onboard. Turning a product into a revenue-per-customer number.",
+      "evidence": [
+        "kervio",
+        "salehunters"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "roadrunner",
+      "name": "Road Runner",
+      "kicker": "Platform · built and running",
+      "year": "2025–2026",
+      "thesis": "Most websites collect leads. This one queries the business behind it.",
+      "summary": "Road Runner is the connective layer between a company's front door and its systems of record. The website stops being a brochure and becomes an interface to the CRM, the inventory database, and the finance system — in both directions.",
+      "points": [
+        "One inquiry form, many audiences: the form asks who you are and branches — a homeowner asks for samples, a builder wants trade terms, an architect wants specification data.",
+        "Relationship resolution: name the company you're working with and it is matched against the CRM, the record is linked, and the existing commercial relationship — including transaction volume from the finance system — comes with it.",
+        "Live data as an experience: stock, lead times, availability and pricing answered on the page instead of 'someone will get back to you'.",
+        "Landing pages and campaigns in minutes, with UTM tagging carried end to end so engagement lands back on the same record.",
+        "The CRM revamp is a by-product: branching logic forces a real taxonomy of who you sell to, so the CRM ends up shaped like the business rather than like the software's defaults."
+      ],
+      "stack": [
+        "HubSpot",
+        "Pipedrive",
+        "Webhooks / API",
+        "UTM + attribution",
+        "Dynamic landing pages"
+      ],
+      "audiences": [
+        "build",
+        "product",
+        "look"
+      ],
+      "case": {
+        "problem": "A company's systems each know something the customer needs, and none of them can be reached from the only place the customer actually goes. The CRM knows the account, the inventory system knows the stock, the finance system knows the trading history — and the website, the front door, knows none of it. So every enquiry starts from zero, is answered by a human reading three screens, and arrives in the CRM as an orphan lead with no relationship attached.",
+        "built": [
+          "A front door that identifies the visitor and branches — one entry point, a genuinely different engagement per audience.",
+          "Company-name resolution against the CRM, so an enquiry attaches to the account that will fulfil it instead of creating another duplicate.",
+          "A read layer into inventory and finance, so stock, lead times and account-tier pricing can be answered on the page.",
+          "Per-client and per-campaign landing pages with UTM tagging carried end to end, so engagement lands back on the same record.",
+          "Reporting built on the unified record rather than on each silo's own version of the truth."
+        ],
+        "changed": [
+          "Enquiries arrive segmented, attributed and attached to an account — the qualification work happens before a human sees it.",
+          "The CRM ends up restructured as a by-product: branching logic forces a real taxonomy of who the business sells to.",
+          "Campaigns can be launched and measured without a developer in the loop."
+        ]
+      }
+    },
+    {
+      "id": "kervio",
+      "name": "Kervio",
+      "kicker": "Vertical SaaS · production, multi-tenant",
+      "year": "2025–2026",
+      "thesis": "An AI-first quoting-to-manufacturing platform for stone fabrication.",
+      "summary": "Conceived, specified and built with Australian stone fabricators: the quote-to-manufacture workflow of a shop, as software. Product architecture, pricing model and roadmap defined personally; built by directing AI engineering agents under a disciplined human-in-the-loop method.",
+      "points": [
+        "Architecture, pricing model (per-seat / per-quote / per-shop) and roadmap authored, not outsourced.",
+        "Live multi-tenant production system with real fabricators, not a prototype.",
+        "A repeatable method for directing AI to build complex vertical software: specification, acceptance criteria, ground-truth verification gates.",
+        "Geometry and vision components carried through a provisional-patent workstream with counsel."
+      ],
+      "stack": [
+        "Multi-tenant SaaS",
+        "AI engineering agents",
+        "Pricing architecture",
+        "Manufacturing domain"
+      ],
+      "audiences": [
+        "build",
+        "hire",
+        "product",
+        "look"
+      ],
+      "case": {
+        "problem": "Stone fabrication shops quote from spreadsheets and drawings, then re-enter the same job into manufacturing. The quote and the cut are two different documents maintained by two different people, and the margin leaks in the gap between them. Nothing on the market was built for how these shops actually work, because the shops are too small for enterprise software and the workflow is too specific for generic tools.",
+        "built": [
+          "A quoting-to-manufacturing workflow modelled on how fabricators actually run a job, developed with Australian shops rather than for them.",
+          "Product architecture, pricing model (per-seat / per-quote / per-shop) and roadmap authored personally.",
+          "A live multi-tenant production system, built by directing AI engineering agents under specification, acceptance criteria and ground-truth verification gates.",
+          "Geometry and vision components carried through a provisional-patent workstream with counsel."
+        ],
+        "changed": [
+          "The quote becomes the manufacturing instruction — one document, not two.",
+          "Proof that the method scales: complex vertical software, built and commercialised without an engineering team."
+        ]
+      }
+    },
+    {
+      "id": "alpha",
+      "name": "Alpha Surfaces inquiry engine",
+      "kicker": "Deployed · the pattern in miniature",
+      "year": "2025",
+      "thesis": "One form. Four audiences. Four completely different conversations.",
+      "summary": "A single inquiry form on a stone supplier's website that identifies whether the visitor is a homeowner, stonemason, architect or builder, and runs a different engagement for each — including resolving the partner company they name against the CRM.",
+      "points": [
+        "Self-segmenting form: the visitor tells you what they are, and the form reconfigures around them.",
+        "Company-name lookup against the CRM, linking the inquiry to the existing account rather than creating another orphan lead.",
+        "Sample requests, specification packs and trade paths as separate journeys off one entry point.",
+        "The commercial payoff: an inquiry arrives already segmented, already attributed, already attached to the account that will fulfil it."
+      ],
+      "stack": [
+        "CRM sync",
+        "Conditional logic",
+        "Account matching",
+        "Finance-system lookup"
+      ],
+      "audiences": [
+        "build",
+        "product",
+        "look"
+      ],
+      "case": {
+        "problem": "A stone supplier's website had one contact form for four completely different customers. A homeowner wanting a sample, a stonemason checking stock, an architect needing specification data and a builder chasing lead times all arrived as the same undifferentiated enquiry, into the same inbox, to be sorted by hand. The account relationships that already existed in the CRM were invisible at the moment they mattered most.",
+        "built": [
+          "A self-segmenting enquiry path: the visitor declares what they are and the form reconfigures around them.",
+          "Company-name lookup against the CRM at the point of enquiry, linking to the existing account and its trading history.",
+          "Four distinct journeys — sample requests, trade pricing, specification packs, lead-time answers — off a single entry point.",
+          "Routing rules that send each type to the right team with the right priority."
+        ],
+        "changed": [
+          "Enquiries arrive pre-sorted and attached to the right account.",
+          "The specification path makes architect interest visible months before the order it eventually produces."
+        ]
+      }
+    },
+    {
+      "id": "salehunters",
+      "name": "Sales Hunters",
+      "kicker": "Practice · 2018–2025",
+      "year": "2018–2025",
+      "thesis": "Revenue operations and go-to-market for 50+ early-stage B2B technology companies.",
+      "summary": "Seven years building the revenue engine for early-stage B2B tech: CRM architecture, sales process, pipeline and forecasting discipline, and the hiring that has to follow it. Portfolio companies generated $200M+ in sales and raised $500M+.",
+      "points": [
+        "RevOps foundations designed to survive the jump from founder-led selling to a team.",
+        "HubSpot at partner build level, plus Pipedrive, Salesforce and the wider GTM stack.",
+        "Go-to-market design that scales with headcount instead of breaking at the second hire.",
+        "Board- and founder-level commercial judgement across multiple companies and exits."
+      ],
+      "stack": [
+        "HubSpot Partner",
+        "Pipedrive",
+        "Salesforce",
+        "Forecasting",
+        "Sales hiring"
+      ],
+      "audiences": [
+        "build",
+        "hire",
+        "look"
+      ],
+      "case": {
+        "problem": "Early-stage B2B companies sell well by founder instinct and then hit the wall where instinct doesn't transfer to a team. The CRM is a filing cabinet, the forecast is a feeling, and nobody can say which part of the motion actually works.",
+        "built": [
+          "RevOps foundations designed to survive the jump from founder-led selling to a sales team.",
+          "CRM architecture, sales process, pipeline discipline and forecasting that holds up under board questioning.",
+          "Go-to-market design that scales with headcount rather than breaking at the second hire.",
+          "Hiring support, because the system and the people who run it are the same problem."
+        ],
+        "changed": [
+          "50+ portfolio companies; $200M+ in sales and $500M+ raised across them.",
+          "Seven years of pattern recognition about which revenue problems are actually the same problem."
+        ]
+      }
+    }
+  ],
+  "paths": [
+    {
+      "id": "build",
+      "tag": "Most common",
+      "label": "I need revenue systems built",
+      "desc": "Founder or revenue leader. You have a stack that doesn't talk to itself and nobody senior enough to fix it."
+    },
+    {
+      "id": "hire",
+      "tag": "Roles",
+      "label": "I'm hiring for a role",
+      "desc": "You want the career, the credentials and the judgement, in the usual order."
+    },
+    {
+      "id": "product",
+      "tag": "Products",
+      "label": "I'm here about Kervio or Road Runner",
+      "desc": "Buyer, partner or investor. Show me what was actually built and how it works."
+    },
+    {
+      "id": "look",
+      "tag": "No agenda",
+      "label": "Just looking around",
+      "desc": "Fine. Everything is open — start wherever you like."
+    }
+  ],
+  "diagnostic": {
+    "questions": [
+      {
+        "id": "q1",
+        "zone": "unity",
+        "text": "Where does your customer data actually live?",
+        "opts": [
+          {
+            "l": "Spreadsheets and inboxes",
+            "s": 0
+          },
+          {
+            "l": "A CRM, plus spreadsheets",
+            "s": 1
+          },
+          {
+            "l": "One CRM, mostly current",
+            "s": 2
+          },
+          {
+            "l": "CRM synced to finance and ops",
+            "s": 3
+          }
+        ]
+      },
+      {
+        "id": "q2",
+        "zone": "routing",
+        "text": "What happens to an inbound enquiry in the first hour?",
+        "opts": [
+          {
+            "l": "Honestly, it waits",
+            "s": 0
+          },
+          {
+            "l": "Someone sees it and forwards it",
+            "s": 1
+          },
+          {
+            "l": "Auto-assigned round-robin",
+            "s": 2
+          },
+          {
+            "l": "Scored, routed and answered",
+            "s": 3
+          }
+        ]
+      },
+      {
+        "id": "q3",
+        "zone": "frontdoor",
+        "text": "Does your website know anything about who's on it?",
+        "opts": [
+          {
+            "l": "It's a brochure",
+            "s": 0
+          },
+          {
+            "l": "Analytics only",
+            "s": 1
+          },
+          {
+            "l": "Forms write into the CRM",
+            "s": 2
+          },
+          {
+            "l": "Content and paths change by segment",
+            "s": 3
+          }
+        ]
+      },
+      {
+        "id": "q4",
+        "zone": "frontdoor",
+        "text": "Can a visitor get a real answer — stock, lead time, price — without emailing you?",
+        "opts": [
+          {
+            "l": "No, everything goes to a human",
+            "s": 0
+          },
+          {
+            "l": "A static price list or PDF",
+            "s": 1
+          },
+          {
+            "l": "Some live data, one product line",
+            "s": 2
+          },
+          {
+            "l": "Yes, queried live from our systems",
+            "s": 3
+          }
+        ]
+      },
+      {
+        "id": "q5",
+        "zone": "attrib",
+        "text": "Can you say which campaign produced last month's revenue?",
+        "opts": [
+          {
+            "l": "No",
+            "s": 0
+          },
+          {
+            "l": "Last touch, roughly",
+            "s": 1
+          },
+          {
+            "l": "First and last touch",
+            "s": 2
+          },
+          {
+            "l": "Full path, tied to closed revenue",
+            "s": 3
+          }
+        ]
+      },
+      {
+        "id": "q6",
+        "zone": "speed",
+        "text": "How long to put a new landing page live for a campaign?",
+        "opts": [
+          {
+            "l": "Weeks — it needs a developer",
+            "s": 0
+          },
+          {
+            "l": "About a week",
+            "s": 1
+          },
+          {
+            "l": "A day or two",
+            "s": 2
+          },
+          {
+            "l": "Under an hour, by anyone",
+            "s": 3
+          }
+        ]
+      },
+      {
+        "id": "q7",
+        "zone": "owner",
+        "text": "Who owns all of this?",
+        "opts": [
+          {
+            "l": "Nobody, really",
+            "s": 0
+          },
+          {
+            "l": "The founder, between other things",
+            "s": 1
+          },
+          {
+            "l": "One ops person, stretched",
+            "s": 2
+          },
+          {
+            "l": "A dedicated RevOps function",
+            "s": 3
+          }
+        ]
+      }
+    ],
+    "zones": {
+      "unity": {
+        "name": "Data unity",
+        "bad": "Your systems each hold a different version of the same customer. Every report is an argument.",
+        "ok": "Mostly one version of the truth, with known gaps at the edges."
+      },
+      "routing": {
+        "name": "Speed to response",
+        "bad": "Enquiries cool off before anyone touches them. This is the cheapest money on the table.",
+        "ok": "Enquiries reach someone fast; the refinement is scoring and prioritisation."
+      },
+      "frontdoor": {
+        "name": "Front-door intelligence",
+        "bad": "Your website treats a first-time browser and a $200k account exactly the same.",
+        "ok": "The site knows something about who's there — the next step is letting it answer questions."
+      },
+      "attrib": {
+        "name": "Attribution",
+        "bad": "You are spending without knowing what works, which means you're guessing about the next spend.",
+        "ok": "You can trace most revenue to a source; the gap is tying it through to closed value."
+      },
+      "speed": {
+        "name": "Speed to launch",
+        "bad": "Campaign ideas die waiting for a page. Marketing moves at the speed of your dev queue.",
+        "ok": "You can move quickly; the win is templating it so anyone can."
+      },
+      "owner": {
+        "name": "Ownership",
+        "bad": "No one owns the revenue system, so it degrades quietly between fires.",
+        "ok": "There is an owner — the question is whether they have the leverage to build, not just maintain."
+      }
+    },
+    "fixes": {
+      "unity": {
+        "t": "Unify the record",
+        "d": "One canonical customer object, with finance and ops joined to it. Everything else in this list depends on this being done first."
+      },
+      "routing": {
+        "t": "Route on signal, not on rota",
+        "d": "Score inbound on fit and intent, assign it in seconds, and alert on the accounts that matter. Fastest measurable win, usually inside two weeks."
+      },
+      "frontdoor": {
+        "t": "Make the front door intelligent",
+        "d": "A self-segmenting enquiry path that asks who the visitor is, resolves their company against the CRM, and answers live questions from your data."
+      },
+      "attrib": {
+        "t": "Close the attribution loop",
+        "d": "UTM discipline end to end, carried through the CRM to closed revenue, so spend decisions stop being folklore."
+      },
+      "speed": {
+        "t": "Templated pages, minutes not weeks",
+        "d": "A per-campaign, per-client landing page system anyone can run — tagged, tracked and reporting back into the same record."
+      },
+      "owner": {
+        "t": "Put an owner on it",
+        "d": "Not a full-time hire. A senior operator with a defined remit and a build backlog, working a set number of hours a month."
+      }
+    }
+  },
+  "scope": {
+    "outcomes": [
+      {
+        "id": "audit",
+        "h": 12,
+        "l": "RevOps audit and rebuild plan",
+        "d": "Full teardown of CRM, data model, process and reporting, with a sequenced fix list you own."
+      },
+      {
+        "id": "crm",
+        "h": 30,
+        "l": "CRM restructure",
+        "d": "Lifecycle stages, properties, pipelines and automation rebuilt around how you actually sell."
+      },
+      {
+        "id": "routing",
+        "h": 16,
+        "l": "Lead scoring and routing",
+        "d": "Fit and intent scoring, instant assignment, alerting on the accounts worth interrupting someone for."
+      },
+      {
+        "id": "door",
+        "h": 34,
+        "l": "Intelligent enquiry system",
+        "d": "Self-segmenting form, CRM account matching, distinct journeys per audience — the Alpha Surfaces pattern."
+      },
+      {
+        "id": "pages",
+        "h": 20,
+        "l": "Landing page + campaign system",
+        "d": "Templated per-campaign pages with UTM tracking wired back to the CRM record."
+      },
+      {
+        "id": "report",
+        "h": 18,
+        "l": "Reporting your board reads",
+        "d": "Pipeline, forecast and attribution reporting that survives being questioned in a board meeting."
+      },
+      {
+        "id": "pricing",
+        "h": 16,
+        "l": "Pricing and packaging architecture",
+        "d": "Quantitative pricing model, tiers and revenue-per-customer targets."
+      },
+      {
+        "id": "build",
+        "h": 50,
+        "l": "Build a product with AI direction",
+        "d": "Spec, acceptance criteria and directed AI engineering to ship real software — the Kervio method."
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "yr": "2025–2026",
+      "t": "Kervio — creator, product and go-to-market",
+      "d": "AI-first quoting-to-manufacturing platform for stone fabrication. Architecture, pricing and roadmap; built by directing AI engineering agents."
+    },
+    {
+      "yr": "2025",
+      "t": "Cangaroo — Chief Executive Officer",
+      "d": "RevOps and SalesOps practice for HubSpot-based companies. Where the AI-directed build method was hardened."
+    },
+    {
+      "yr": "2018–2025",
+      "t": "Sales Hunters — Founder",
+      "d": "Revenue operations and GTM for 50+ early-stage B2B technology companies. $200M+ in portfolio sales, $500M+ raised."
+    },
+    {
+      "yr": "2023–2025",
+      "t": "Balentic — Advisory Board Member",
+      "d": "Go-to-market and revenue strategy."
+    },
+    {
+      "yr": "2022–2025",
+      "t": "Venture Lane — Mentor",
+      "d": "Coaching early-stage founders on GTM, product and revenue operations."
+    },
+    {
+      "yr": "2014–2017",
+      "t": "Channel Partners Pte Ltd — Chief Marketing Officer",
+      "d": "Demand generation across cloud, analytics, mobile and social CRM; partner programs driving sustained pipeline."
+    },
+    {
+      "yr": "2012–2014",
+      "t": "LikeJobs — Chief Executive Officer",
+      "d": "Social and cloud talent-acquisition platform for the IT, BPO and KPO industries."
+    },
+    {
+      "yr": "2000–2014",
+      "t": "BDMG Pte Ltd — Managing Director",
+      "d": "Digital media group publishing leading content platforms across Singapore, Malaysia and the Philippines. Led through to acquisition."
+    },
+    {
+      "yr": "1997–1999",
+      "t": "Intel Corporation — Program Manager, Asia Pacific",
+      "d": "Built Intel's APAC certification and reseller channel program, including early web-based commerce."
+    },
+    {
+      "yr": "—",
+      "t": "Queensland University of Technology",
+      "d": "Bachelor of Business."
+    }
+  ],
+  "demo": {
+    "note": "Working replica of the Alpha Surfaces enquiry engine. The CRM, stock and trading data behind it are illustrative samples, not a client's real records.",
+    "stock": [
+      {
+        "m": "Calacatta Oro 20mm",
+        "bne": 6,
+        "syd": 2,
+        "eta": "Next container 14 Oct"
+      },
+      {
+        "m": "Nero Marquina 30mm",
+        "bne": 0,
+        "syd": 4,
+        "eta": "Next container 2 Nov"
+      },
+      {
+        "m": "Carrara Bianco 20mm",
+        "bne": 14,
+        "syd": 9,
+        "eta": "In stock, both yards"
+      },
+      {
+        "m": "Taj Mahal Quartzite 30mm",
+        "bne": 3,
+        "syd": 0,
+        "eta": "Next container 21 Oct"
+      }
+    ],
+    "accounts": [
+      {
+        "n": "Harbour Stone Masonry",
+        "tier": "Trade · Tier 2",
+        "ytd": "$184,200",
+        "since": "2019",
+        "rep": "Trade desk — D. Whitlam",
+        "last": "Ordered 12 days ago"
+      },
+      {
+        "n": "Kelvin Grove Builders",
+        "tier": "Trade · Tier 1",
+        "ytd": "$412,800",
+        "since": "2016",
+        "rep": "Key accounts — S. Ng",
+        "last": "Ordered 3 days ago"
+      },
+      {
+        "n": "Ridgeline Architects",
+        "tier": "Specifier",
+        "ytd": "—",
+        "since": "2022",
+        "rep": "Specification team",
+        "last": "Sample box sent 5 weeks ago"
+      },
+      {
+        "n": "Fitzroy Kitchens & Joinery",
+        "tier": "Trade · Tier 3",
+        "ytd": "$61,400",
+        "since": "2023",
+        "rep": "Trade desk — D. Whitlam",
+        "last": "Ordered 6 weeks ago"
+      },
+      {
+        "n": "Sandgate Stone Co",
+        "tier": "Trade · Tier 2",
+        "ytd": "$147,900",
+        "since": "2018",
+        "rep": "Trade desk — D. Whitlam",
+        "last": "Quote open, 9 days"
+      }
+    ],
+    "personas": [
+      {
+        "id": "homeowner",
+        "label": "Homeowner",
+        "desc": "Renovating a kitchen or bathroom",
+        "fields": [
+          {
+            "t": "select",
+            "id": "proj",
+            "q": "What are you planning?",
+            "o": [
+              "Kitchen benchtop",
+              "Bathroom vanity",
+              "Outdoor kitchen or BBQ",
+              "Whole-home renovation"
+            ]
+          },
+          {
+            "t": "chips",
+            "id": "samples",
+            "q": "Which samples would you like sent?",
+            "src": "stock"
+          },
+          {
+            "t": "company",
+            "id": "partner",
+            "q": "Working with a builder or stonemason yet?",
+            "hint": "Start typing — it checks the CRM as you go",
+            "required": false
+          }
+        ],
+        "route": {
+          "team": "Showroom",
+          "priority": "Standard",
+          "sla": "Same day",
+          "action": "Dispatch sample pack; if a fabricator was named, attach this enquiry to their account and tell their rep a homeowner is specifying their work."
+        }
+      },
+      {
+        "id": "stonemason",
+        "label": "Stonemason",
+        "desc": "Fabricating and installing",
+        "fields": [
+          {
+            "t": "company",
+            "id": "partner",
+            "q": "Your business name",
+            "hint": "Resolves against the trade account",
+            "required": true
+          },
+          {
+            "t": "stock",
+            "id": "check",
+            "q": "Checking availability on"
+          },
+          {
+            "t": "select",
+            "id": "vol",
+            "q": "Roughly how many slabs this month?",
+            "o": [
+              "1–5",
+              "6–20",
+              "20+"
+            ]
+          }
+        ],
+        "route": {
+          "team": "Trade desk",
+          "priority": "High",
+          "sla": "Within the hour",
+          "action": "Trade pricing applied automatically from the account tier. Rep notified. Availability answered on the page, so no one has to phone the yard."
+        }
+      },
+      {
+        "id": "architect",
+        "label": "Architect",
+        "desc": "Specifying for a project",
+        "fields": [
+          {
+            "t": "text",
+            "id": "projname",
+            "q": "Project name",
+            "hint": "Creates a project record, not just a contact"
+          },
+          {
+            "t": "chips",
+            "id": "needs",
+            "q": "What do you need?",
+            "o": [
+              "Specification sheets",
+              "Technical / CAD data",
+              "Sample box",
+              "Site consultation"
+            ]
+          },
+          {
+            "t": "company",
+            "id": "partner",
+            "q": "Builder on the project, if appointed",
+            "required": false
+          }
+        ],
+        "route": {
+          "team": "Specification team",
+          "priority": "Medium",
+          "sla": "Next business day",
+          "action": "Spec pack and technical data sent. A project record is opened and linked to the builder's account, so when the order lands months later it is attributed to this specification."
+        }
+      },
+      {
+        "id": "builder",
+        "label": "Builder",
+        "desc": "Running the build",
+        "fields": [
+          {
+            "t": "company",
+            "id": "partner",
+            "q": "Your business name",
+            "hint": "Resolves against the trade account",
+            "required": true
+          },
+          {
+            "t": "select",
+            "id": "stage",
+            "q": "Where is the project up to?",
+            "o": [
+              "Pre-tender",
+              "Tendering",
+              "Under construction",
+              "Fit-out"
+            ]
+          },
+          {
+            "t": "stock",
+            "id": "check",
+            "q": "Checking availability and lead time on"
+          }
+        ],
+        "route": {
+          "team": "Trade desk",
+          "priority": "High",
+          "sla": "Within the hour",
+          "action": "Lead times and trade pricing returned live. Enquiry attached to the account's project pipeline with the stage recorded, so forecasting sees it."
+        }
+      }
+    ]
+  }
+}
