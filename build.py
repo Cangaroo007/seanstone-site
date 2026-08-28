@@ -32,6 +32,48 @@ TOKEN = "__SITE_DATA__"
 ROBOTS = "__ROBOTS__"
 
 
+def esc(s):
+    """Mirror of the esc() in template.html, so pre-rendered markup matches
+    exactly what the JavaScript produces on load."""
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;").replace('"', "&quot;"))
+
+
+def render_case(project, projects):
+    """Server-side twin of openCase() in template.html.
+
+    The case-study body is otherwise injected by JavaScript, which means any
+    crawler or link-preview scraper that does not execute JS sees the homepage
+    content on a /case/<id>/ URL. Pre-rendering it here puts the real copy in
+    the static HTML; the JS re-renders the identical markup on load and takes
+    over the interactions. If you change the markup in openCase(), change it
+    here too.
+    """
+    c = project["case"]
+    others = [p for p in projects if p["id"] != project["id"] and p.get("case")]
+    built = "".join(f"<li>{esc(x)}</li>" for x in c["built"])
+    changed = "".join(f"<li>{esc(x)}</li>" for x in c["changed"])
+    stack = "".join(f'<span class="pill">{esc(s)}</span>' for s in project["stack"])
+    nav = "".join(
+        f'<button class="caselink" type="button" data-case="{o["id"]}">{esc(o["name"])} \u2192</button>'
+        for o in others)
+    return (
+        '<a class="backlink" href="/">\u2190 Back to everything else</a>'
+        f'<div class="case-hero"><div class="label" style="margin-top:var(--s5)">'
+        f'{esc(project["kicker"])} \u00b7 {esc(project["year"])}</div>'
+        f'<h2 class="display">{esc(project["name"])}</h2>'
+        f'<p class="lede">{esc(project["thesis"])}</p></div>'
+        '<div class="case-body">'
+        f'<div class="case-block"><h3>The problem</h3><p>{esc(c["problem"])}</p></div>'
+        f'<div class="case-block"><h3>What was built</h3><ul class="klist">{built}</ul></div>'
+        f'<div class="case-block"><h3>What changed</h3><ul class="klist">{changed}</ul></div>'
+        f'<div class="case-block"><h3>Built with</h3><div class="stack">{stack}</div></div>'
+        '</div>'
+        f'<div class="casenav">{nav}'
+        '<button class="caselink" type="button" id="case-back2">All work</button></div>'
+    )
+
+
 def main() -> int:
     template = (SRC / "template.html").read_text(encoding="utf-8")
     raw = (SRC / "site.json").read_text(encoding="utf-8")
@@ -96,7 +138,21 @@ def main() -> int:
         page = page.replace(
             '<meta property="og:title" content="Sean Stone — I don\'t advise on the revenue system. I build it.">',
             f'<meta property="og:title" content="{p["name"]} — {p["thesis"]}">')
-        page = page.replace("<body>", f"<body>\n<script>window.__OPEN_CASE__={json.dumps(p['id'])};</script>", 1)
+        page = page.replace(
+            '<meta name="description" content="Sean Stone builds revenue systems \u2014 CRM architecture, GTM engineering and AI-directed product builds. Twenty-five years, 50+ B2B companies, production software shipped.">',
+            f'<meta name="description" content="{esc(p["case"]["problem"][:180].rsplit(" ", 1)[0])}\u2026">')
+        page = page.replace(
+            f'<meta property="og:description" content="An instrumented portfolio: a working enquiry engine, a revenue-leak diagnostic, and a scope builder. Every claim is one click from its evidence.">',
+            f'<meta property="og:description" content="{esc(p["thesis"])}">')
+        # Pre-render the case body into the static HTML, and open it without JS.
+        page = page.replace(
+            '<section class="caseview" id="case-sec" aria-live="polite"></section>',
+            f'<section class="caseview" id="case-sec" aria-live="polite">'
+            f'{render_case(p, data["projects"])}</section>', 1)
+        page = page.replace(
+            "<body>",
+            f'<body class="case-open">\n<script>window.__OPEN_CASE__={json.dumps(p["id"])};</script>',
+            1)
         case_dir = OUT / "case" / p["id"]
         case_dir.mkdir(parents=True, exist_ok=True)
         (case_dir / "index.html").write_text(page, encoding="utf-8")

@@ -8,7 +8,7 @@ A personal site that argues by working, not by describing. Four interactive piec
 | **Revenue-leak diagnostic** | Domain judgement, made playable and kept by the visitor |
 | **Enquiry engine** | The Alpha Surfaces pattern, rebuilt live: pick an audience, watch the form branch, resolve a company against a mock CRM, query stock |
 | **Scope builder** | Turns the "outsource me by the hour" offer into a costed artefact they send back |
-| **Live session record** | Engagement scoring, stage and next-best-action computed on real behaviour |
+| **Running verdict** | Stage, score, next action and the alert your sales team would receive — computed from real behaviour, in the language a revenue person uses |
 
 Plus hash-routed case-study pages (`#case/roadrunner`) — shareable URLs, still one file.
 

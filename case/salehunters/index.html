@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sales Hunters — Sean Stone</title>
-<meta name="description" content="Sean Stone builds revenue systems — CRM architecture, GTM engineering and AI-directed product builds. Twenty-five years, 50+ B2B companies, production software shipped.">
+<meta name="description" content="Early-stage B2B companies sell well by founder instinct and then hit the wall where instinct doesn't transfer to a team. The CRM is a filing cabinet, the forecast is a feeling,…">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://seanstone.com/case/salehunters/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://seanstone.com/case/salehunters/">
 <meta property="og:title" content="Sales Hunters — Revenue operations and go-to-market for 50+ early-stage B2B technology companies.">
-<meta property="og:description" content="An instrumented portfolio: a working enquiry engine, a revenue-leak diagnostic, and a scope builder. Every claim is one click from its evidence.">
+<meta property="og:description" content="Revenue operations and go-to-market for 50+ early-stage B2B technology companies.">
 <meta property="og:image" content="https://seanstone.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230E6E63'/%3E%3Cpath d='M6 21 L12 21 L16 11 L20 24 L24 17 L27 17' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -370,15 +370,24 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .rail-head{padding:var(--s4);border-bottom:1px solid var(--rule-soft);display:flex;flex-direction:column;gap:5px}
 .rail-head .label{display:flex;align-items:center;gap:7px;color:var(--signal)}
 .rail-head p{font-size:12px;color:var(--muted);line-height:1.4}
-.tele{padding:var(--s4);display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);border-bottom:1px solid var(--rule-soft)}
-.tele div{display:flex;flex-direction:column;gap:2px}
-.tele b{font-family:var(--mono);font-size:18px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
-.tele span{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.spark{padding:0 var(--s4) var(--s4);border-bottom:1px solid var(--rule-soft)}
-.spark canvas{width:100%;height:44px;display:block}
-.logwrap{flex:1;min-height:0;display:flex;flex-direction:column}
+.verdict{padding:var(--s4);border-bottom:1px solid var(--rule-soft);display:flex;align-items:flex-start;gap:var(--s4);justify-content:space-between}
+.verdict .v-stage{display:flex;flex-direction:column;gap:3px;min-width:0}
+.verdict .v-stage b{font-size:15px;font-weight:600;line-height:1.25}
+.verdict .v-score{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex:none}
+.verdict .v-score b{font-family:var(--display);font-size:32px;line-height:1;font-weight:400}
+.nextact{padding:var(--s4);border-bottom:1px solid var(--rule-soft);display:flex;flex-direction:column;gap:6px}
+.nextact p{font-size:13.5px;line-height:1.45;color:var(--ink-soft)}
+.alertbox{margin:var(--s4);border:1px solid var(--signal);background:var(--signal-soft);border-radius:4px;padding:var(--s3) var(--s4);display:flex;flex-direction:column;gap:6px}
+.alertbox .label{color:var(--signal)}
+.alertbox p{font-size:13px;line-height:1.45}
+.known{padding:var(--s4);border-bottom:1px solid var(--rule-soft);display:flex;flex-direction:column;gap:7px}
+.known .label{margin-bottom:2px}
+.krow{display:grid;grid-template-columns:74px 1fr;gap:10px;font-size:13px;align-items:baseline}
+.krow span{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.krow div{color:var(--ink-soft);min-width:0;overflow-wrap:anywhere}
+.logwrap{flex:1 0 auto;display:flex;flex-direction:column}
 .logwrap .label{padding:var(--s3) var(--s4) var(--s2)}
-.log{flex:1;min-height:0;overflow-y:auto;padding:0 var(--s4) var(--s4);display:flex;flex-direction:column;gap:7px}
+.log{padding:0 var(--s4) var(--s4);display:flex;flex-direction:column;gap:7px}
 .logline{font-family:var(--mono);font-size:11px;line-height:1.4;display:grid;grid-template-columns:52px 1fr;gap:8px;color:var(--ink-soft);animation:slidein .25s ease}
 .logline time{color:var(--muted)}
 .logline b{color:var(--accent);font-weight:600}
@@ -500,7 +509,7 @@ body.case-open main > section:not(.caseview){display:none !important}
 /* ============================================================ PRINT */
 @media print{
   body{background:#fff;color:#000;font-size:11pt}
-  .topbar,.rail,.drawer,.telebtn,.router,#demo-sec,.nba,.spark,.log,.cta .btn,.readcase,.casenav{display:none !important}
+  .topbar,.rail,.drawer,.telebtn,.router,#demo-sec,.nba,.log,.cta .btn,.readcase,.casenav{display:none !important}
   section{page-break-inside:avoid;border-top:1px solid #ccc;padding:18pt 0}
   .shell{display:block;max-width:none;padding:0}
   section[hidden]{display:block !important}
@@ -524,7 +533,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 .copybtn:hover{border-color:var(--accent)}
 </style>
 </head>
-<body>
+<body class="case-open">
 <script>window.__OPEN_CASE__="salehunters";</script>
 
 <script id="site-data" type="application/json">
@@ -1354,7 +1363,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         <span>viewing as</span> <b id="pathchip-label">—</b>
         <button type="button" id="pathreset" title="Clear and choose again" aria-label="Clear selected path">✕</button>
       </div>
-      <button class="telebtn" id="telebtn" type="button"><span class="pulse"></span> Telemetry</button>
+      <button class="telebtn" id="telebtn" type="button"><span class="pulse"></span> What it knows</button>
     </div>
   </div>
 </header>
@@ -1363,12 +1372,12 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 <main>
 
   <!-- ============================== CASE STUDY VIEW ============================== -->
-  <section class="caseview" id="case-sec" aria-live="polite"></section>
+  <section class="caseview" id="case-sec" aria-live="polite"><a class="backlink" href="/">← Back to everything else</a><div class="case-hero"><div class="label" style="margin-top:var(--s5)">Practice · 2018–2025 · 2018–2025</div><h2 class="display">Sales Hunters</h2><p class="lede">Revenue operations and go-to-market for 50+ early-stage B2B technology companies.</p></div><div class="case-body"><div class="case-block"><h3>The problem</h3><p>Early-stage B2B companies sell well by founder instinct and then hit the wall where instinct doesn't transfer to a team. The CRM is a filing cabinet, the forecast is a feeling, and nobody can say which part of the motion actually works.</p></div><div class="case-block"><h3>What was built</h3><ul class="klist"><li>RevOps foundations designed to survive the jump from founder-led selling to a sales team.</li><li>CRM architecture, sales process, pipeline discipline and forecasting that holds up under board questioning.</li><li>Go-to-market design that scales with headcount rather than breaking at the second hire.</li><li>Hiring support, because the system and the people who run it are the same problem.</li></ul></div><div class="case-block"><h3>What changed</h3><ul class="klist"><li>50+ portfolio companies; $200M+ in sales and $500M+ raised across them.</li><li>Seven years of pattern recognition about which revenue problems are actually the same problem.</li></ul></div><div class="case-block"><h3>Built with</h3><div class="stack"><span class="pill">HubSpot Partner</span><span class="pill">Pipedrive</span><span class="pill">Salesforce</span><span class="pill">Forecasting</span><span class="pill">Sales hiring</span></div></div></div><div class="casenav"><button class="caselink" type="button" data-case="roadrunner">Road Runner →</button><button class="caselink" type="button" data-case="kervio">Kervio →</button><button class="caselink" type="button" data-case="alpha">Alpha Surfaces inquiry engine →</button><button class="caselink" type="button" id="case-back2">All work</button></div></section>
 
 
   <!-- ============================== HERO ============================== -->
   <section class="hero" id="top">
-    <span class="stamp"><span class="pulse"></span> This page is instrumented — watch the panel</span>
+    <span class="stamp"><span class="pulse"></span> Watch the panel — it is qualifying you as you read</span>
     <h1 class="display">I don't advise on the<br>revenue system.<br><em>I build it.</em></h1>
     <p class="lede">Twenty-five years of revenue operations and go-to-market, and a method for directing AI to turn that judgement into working software — quickly, and at a fraction of the cost of the team it replaces. Everything below is clickable for a reason: a page that only describes what I do would be a worse version of a résumé.</p>
 
@@ -1527,37 +1536,28 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     </div>
   </section>
 
-  <!-- ============================== DASHBOARD ============================== -->
+  <!-- ============================== WHAT IT MEANS ============================== -->
   <section id="dash-sec" data-audiences="build,product,look">
     <div class="sec-head">
       <div class="label"><span class="tick"></span> Interactive · live</div>
-      <h2 class="display">You're in the system already.</h2>
+      <h2 class="display">You never filled in a form.</h2>
     </div>
-    <p class="prose" style="margin-bottom:var(--s5)">Everything you've done on this page has been scored the way I'd score a visitor on yours. This is your record — real, from this session, computed in your browser. On a client site it would be sitting in their CRM with an alert attached.</p>
+    <p class="prose" style="margin-bottom:var(--s5)">Most of the people who land on your site leave without telling you anything, and you learn nothing from the visit. The panel beside this page has been building a record of you the whole time — segment, stage, intent, and a next action specific enough that someone would actually do it. Below is the message your team would have received.</p>
     <div class="dash">
       <div class="accountcard">
         <div class="ac-head">
-          <b>Session record</b>
-          <div class="score"><b id="d-score">0</b> <span class="label" id="d-grade">cold</span></div>
+          <b>The alert</b>
+          <span class="label" id="alert-when">not triggered yet</span>
         </div>
         <div class="ac-rows">
-          <div class="acrow"><span>Segment</span><div id="d-seg">Unclassified</div></div>
-          <div class="acrow"><span>Source</span><div id="d-src">direct</div></div>
-          <div class="acrow"><span>Time engaged</span><div id="d-time">0s</div></div>
-          <div class="acrow"><span>Sections read</span><div id="d-sections">0</div></div>
-          <div class="acrow"><span>Signals</span><div id="d-signals">—</div></div>
-          <div class="acrow"><span>Stage</span><div id="d-stage">Anonymous visitor</div></div>
-        </div>
-        <div class="nba">
-          <div class="label">Next best action</div>
-          <p id="d-nba">Keep reading. Nothing worth interrupting a human for yet.</p>
+          <p id="alert-full" style="font-size:14.5px;color:var(--ink-soft);line-height:1.5">Nothing has crossed the threshold yet. Run the diagnostic or build a scope and this fills in — the same way it would on your site when a real buyer does something that matters.</p>
         </div>
       </div>
       <div class="card">
-        <div class="label">What this demonstrates</div>
-        <h3>The point isn't the tracking. It's the decision.</h3>
-        <p>Anyone can log page views. The value is in the layer above: a scoring model that reflects how you actually qualify, a stage that means something to your sales team, and a next-best-action specific enough that someone will do it. That's the part I build.</p>
-        <p>Notice the scoring is transparent — you can see which of your actions moved it. Sales teams trust a score they can interrogate and ignore one they can't.</p>
+        <div class="label">Why this is the hard part</div>
+        <h3>Anyone can log page views. The value is the decision.</h3>
+        <p>Tracking is table stakes and nobody buys it. What's actually difficult is the layer above: a score that reflects how <em>you</em> qualify, a stage your sales team recognises, and a next action worded so specifically that a rep does it instead of ignoring it.</p>
+        <p>Notice the score is interrogable — you can see exactly which of your actions moved it. Sales teams act on a score they can argue with, and quietly ignore one they can't.</p>
       </div>
     </div>
   </section>
@@ -1591,21 +1591,39 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 </main>
 
 <!-- ============================== RAIL ============================== -->
-<aside class="rail" aria-label="Live session telemetry">
+<aside class="rail" aria-label="What this page knows about you">
   <div class="rail-in" id="rail-desktop">
     <div class="rail-head">
-      <div class="label"><span class="pulse"></span> Live session</div>
-      <p>Everything on this page is being measured in your browser. Nothing is sent anywhere.</p>
+      <div class="label"><span class="pulse"></span> If this were your site</div>
+      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it.</p>
     </div>
-    <div class="tele">
-      <div><b id="t-score">0</b><span>Engagement</span></div>
-      <div><b id="t-time">0:00</b><span>Time on page</span></div>
-      <div><b id="t-sections">0</b><span>Sections seen</span></div>
-      <div><b id="t-events">0</b><span>Events</span></div>
+
+    <div class="verdict">
+      <div class="v-stage"><span class="label">Stage</span><b id="d-stage">Anonymous visitor</b></div>
+      <div class="v-score"><b id="d-score">0</b><span class="label" id="d-grade">cold</span></div>
     </div>
-    <div class="spark"><canvas id="spark" width="520" height="88" aria-label="Engagement over time"></canvas></div>
+
+    <div class="nextact">
+      <div class="label">Next action for your team</div>
+      <p id="d-nba">Nothing yet. Not worth interrupting a person for.</p>
+    </div>
+
+    <div class="alertbox" id="alertbox" hidden>
+      <div class="label">Alert your team would receive</div>
+      <p id="alert-text"></p>
+    </div>
+
+    <div class="known">
+      <div class="label">Known about you</div>
+      <div class="krow"><span>Segment</span><div id="d-seg">Not declared</div></div>
+      <div class="krow"><span>Came from</span><div id="d-src">direct</div></div>
+      <div class="krow"><span>Time here</span><div id="d-time">0:00</div></div>
+      <div class="krow"><span>Read</span><div id="d-sections">0 sections</div></div>
+      <div class="krow"><span>Signals</span><div id="d-signals">—</div></div>
+    </div>
+
     <div class="logwrap">
-      <div class="label">Event log</div>
+      <div class="label">What it did, as it happened</div>
       <div class="log" id="log"></div>
     </div>
   </div>
@@ -1658,24 +1676,76 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   function grade(n){ return n>=70 ? 'hot' : n>=40 ? 'warm' : n>=15 ? 'cool' : 'cold'; }
   function paint(){
     var secs = Object.keys(S.sections).length;
-    setText('#t-score', S.score); setText('#t-events', S.events); setText('#t-sections', secs);
-    setText('#d-score', S.score); setText('#d-sections', secs);
+    setText('#d-score', S.score);
     setText('#d-grade', grade(S.score));
-    setText('#d-signals', S.signals.length ? S.signals.join(' · ') : '—');
-    setText('#d-seg', S.path ? segName(S.path) : 'Unclassified');
+    setText('#d-sections', secs + (secs===1?' section':' sections'));
+    setText('#d-signals', S.signals.length ? S.signals.join(', ') : 'none yet');
+    setText('#d-seg', S.path ? segName(S.path) : 'Not declared');
     setText('#d-stage', stageName());
     setText('#d-nba', nextAction());
-    var c=$('#d-grade'); if(c){ c.style.color = S.score>=70?'var(--signal)':S.score>=40?'var(--warn)':'var(--muted)'; }
+    var g=$('#d-grade');
+    if(g){ g.style.color = S.score>=70?'var(--signal)':S.score>=40?'var(--warn)':'var(--muted)'; }
+    paintAlert();
   }
+
+  /* The payoff: the message a real system would send a real sales team. */
+  function alertText(){
+    if(S.signals.indexOf('scope built')>=0){
+      var ids = Object.keys(S.scope.picked);
+      var hours = ids.reduce(function(a,k){ return a+S.scope.picked[k]; }, 0);
+      var names = ids.map(function(id){
+        var o = DATA.scope.outcomes.filter(function(x){return x.id===id;})[0];
+        return o ? o.l.toLowerCase() : id;
+      });
+      return 'Qualified enquiry from ' + segShort(S.path||'look') + '. They have costed ' +
+        hours + ' hours of work themselves across ' + ids.length + ' item' + (ids.length>1?'s':'') +
+        ' (' + names.slice(0,3).join('; ') + (names.length>3 ? '; and more' : '') + ').' +
+        (Object.keys(S.diag).length===DATA.diagnostic.questions.length
+          ? ' Their weakest zone is ' + zoneName(weakestZone()).toLowerCase() + '.' : '') +
+        ' They have told you the shape of the budget without being asked. Reply within the hour.';
+    }
+    if(S.signals.indexOf('diagnostic completed')>=0){
+      return 'Warm lead — ' + segShort(S.path||'look') + '. Ran the diagnostic on themselves; ' +
+        'weakest zone is ' + zoneName(weakestZone()).toLowerCase() + '. ' +
+        'Open with that one observation, by name. A generic follow-up here wastes the only thing you know that your competitors do not.';
+    }
+    if(S.signals.indexOf('resolved an account')>=0){
+      return 'Engaged visitor — ' + segShort(S.path||'look') + '. Ran a company through the enquiry engine, ' +
+        'which usually means they are picturing it on their own site. Worth a short note asking which of their systems the website currently cannot reach.';
+    }
+    return null;
+  }
+  function zoneName(z){
+    var meta = DATA.diagnostic.zones[z];
+    return meta ? meta.name : z;
+  }
+  function paintAlert(){
+    var txt = alertText();
+    var box = $('#alertbox'), full = $('#alert-full'), when = $('#alert-when');
+    if(box){
+      box.hidden = !txt;
+      if(txt){ setText('#alert-text', txt); }
+    }
+    if(full && txt){
+      full.textContent = txt;
+      full.style.color = 'var(--ink)';
+      if(when){ when.textContent = 'sent ' + clock().slice(0,5); when.style.color = 'var(--signal)'; }
+    }
+  }
+
   function setText(sel,v){ var e=$(sel); if(e){ e.textContent = v; } }
+  function segShort(p){
+    return ({build:'a founder or revenue leader',hire:'someone hiring for a role',product:'a product buyer or investor',look:'an undeclared visitor'})[p] || 'an undeclared visitor';
+  }
   function segName(p){
     return ({build:'Prospective client — revenue systems',hire:'Hiring / talent',product:'Product buyer or investor',look:'Undeclared browser'})[p] || 'Unclassified';
   }
   function stageName(){
-    if(S.signals.indexOf('scope built')>=0) return 'Qualified — scope defined';
-    if(S.signals.indexOf('diagnostic completed')>=0) return 'Engaged — self-diagnosed';
-    if(S.path) return 'Identified — segment declared';
-    if(S.score>=15) return 'Warming — reading';
+    if(S.signals.indexOf('scope built')>=0) return 'Qualified — has costed the work';
+    if(S.signals.indexOf('diagnostic completed')>=0) return 'Engaged — diagnosed themselves';
+    if(S.signals.indexOf('resolved an account')>=0) return 'Interested — tried the product';
+    if(S.path) return 'Identified — told you what they are';
+    if(S.score>=15) return 'Warming — reading properly';
     return 'Anonymous visitor';
   }
   function nextAction(){
@@ -1685,30 +1755,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     if(S.signals.indexOf('diagnostic completed')>=0) return 'Reply referencing their weakest zone by name, with one specific observation. Do not send a generic follow-up.';
     if(S.path==='hire') return 'Route to the career history and send the full CV. Different conversation, different asset.';
     if(S.path==='product') return 'Offer a working demo of the platform rather than a deck.';
-    if(S.path) return 'Segment known but no depth yet. Let them read; re-evaluate at 40.';
-    return 'Keep reading. Nothing worth interrupting a human for yet.';
-  }
-
-  /* -------------------------------------------------------------- sparkline */
-  var canvas = $('#spark'), ctx = canvas ? canvas.getContext('2d') : null;
-  function drawSpark(){
-    if(!ctx) return;
-    var w=canvas.width, h=canvas.height, pts=S.history;
-    ctx.clearRect(0,0,w,h);
-    var cs=getComputedStyle(document.documentElement);
-    var accent=cs.getPropertyValue('--accent').trim()||'#0E6E63';
-    var rule=cs.getPropertyValue('--rule-soft').trim()||'rgba(0,0,0,.08)';
-    ctx.strokeStyle=rule; ctx.lineWidth=1;
-    for(var g=1;g<3;g++){ ctx.beginPath(); ctx.moveTo(0,h*g/3); ctx.lineTo(w,h*g/3); ctx.stroke(); }
-    if(pts.length<2) return;
-    var max=100, step=w/Math.max(1,(pts.length-1));
-    ctx.beginPath();
-    pts.forEach(function(v,i){ var x=i*step, y=h-(v/max)*(h-8)-4; i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
-    ctx.strokeStyle=accent; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.stroke();
-    ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath();
-    ctx.globalAlpha=.10; ctx.fillStyle=accent; ctx.fill(); ctx.globalAlpha=1;
-    var lx=(pts.length-1)*step, ly=h-(pts[pts.length-1]/max)*(h-8)-4;
-    ctx.beginPath(); ctx.arc(lx,ly,3,0,Math.PI*2); ctx.fillStyle=accent; ctx.fill();
+    if(S.path) return 'They have told you what they are but done nothing else yet. Let them read. Check back when the score passes 40.';
+    return 'Nothing yet. Not worth interrupting a person for.';
   }
 
   /* ------------------------------------------------------------- rendering */
@@ -1735,10 +1783,10 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     var p = DATA.paths.filter(function(x){return x.id===id;})[0];
     $('#pathchip-label').textContent = p.label;
     applyRoute(id);
-    signal('segment declared');
-    logEvent('visitor.segment = <b>'+esc(id)+'</b>', 10, 'sig');
-    logEvent('content routed — '+visibleCount()+' sections shown', 0);
-    logEvent('crm.record.create → contact, tagged <b>'+esc(id)+'</b>', 0);
+    signal('told you what they are');
+    logEvent('You said you are <b>'+esc(p.label.toLowerCase())+'</b>', 10, 'sig');
+    logEvent('Re-ordered the page — '+visibleCount()+' sections kept, the rest hidden', 0);
+    logEvent('Created a contact in the CRM, tagged <b>'+esc(id)+'</b>', 0);
     tuneCta(id);
   }
 
@@ -1792,8 +1840,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
           p.style.opacity = (!cap || caps.indexOf(cap)>=0) ? '1' : '.35';
         });
         if(cap){
-          signal('explored capabilities');
-          logEvent('filter.capability = <b>'+esc(cap)+'</b>', 4);
+          signal('explored the work');
+          logEvent('You looked into <b>'+esc(cap)+'</b>', 4);
         }
       });
     });
@@ -1834,7 +1882,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     renderFields();
     renderRecord();
     signal('used the enquiry engine');
-    logEvent('form.branch → <b>'+esc(id)+'</b> · '+D.persona.fields.length+' fields swapped', 8, 'sig');
+    logEvent('Form rebuilt for a <b>'+esc(D.persona.label.toLowerCase())+'</b> — '+D.persona.fields.length+' different questions', 8, 'sig');
   }
 
   function renderFields(){
@@ -1864,7 +1912,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     $$('#demo-fields select[data-f]').forEach(function(s){
       s.addEventListener('change', function(){
         D.vals[s.dataset.f] = s.value;
-        logEvent('field.'+esc(s.dataset.f)+' = <b>'+esc(s.value||'—')+'</b>', 3);
+        logEvent('Noted: <b>'+esc(s.value||'—')+'</b>', 3);
         renderRecord();
       });
     });
@@ -1878,7 +1926,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         var key = c.dataset.f;
         D.vals[key] = D.vals[key] || [];
         if(on){ D.vals[key] = D.vals[key].filter(function(v){return v!==c.dataset.v;}); }
-        else { D.vals[key].push(c.dataset.v); logEvent('request.add <b>'+esc(c.dataset.v)+'</b>', 3); }
+        else { D.vals[key].push(c.dataset.v); logEvent('Added <b>'+esc(c.dataset.v)+'</b> to the request', 3); }
         renderRecord();
       });
     });
@@ -1904,11 +1952,11 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       b.addEventListener('click', function(){
         if(b.dataset.new){
           D.account = {n:q, tier:'Unknown — new account', ytd:'—', since:'—', rep:'Unassigned', last:'No history'};
-          logEvent('crm.lookup <b>no match</b> → new account queued', 6);
+          logEvent('<b>No match</b> in the CRM — queued as a new account, which is itself worth knowing', 6);
         } else {
           D.account = DATA.demo.accounts.filter(function(a){return a.n===b.dataset.acc;})[0];
-          logEvent('crm.match → <b>'+esc(D.account.n)+'</b> · '+esc(D.account.tier), 10, 'sig');
-          logEvent('finance.lookup → YTD '+esc(D.account.ytd), 0);
+          logEvent('Matched <b>'+esc(D.account.n)+'</b> in the CRM — '+esc(D.account.tier), 10, 'sig');
+          logEvent('Pulled their trading history from finance — '+esc(D.account.ytd)+' this year', 0);
         }
         $('#demo-fields input[data-lookup]').value = D.account.n;
         box.innerHTML = '';
@@ -1937,8 +1985,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     D.stock = s;
     var cell = function(n,y){ return '<span>'+y+' <b class="'+(n>0?'ok':'no')+'">'+(n>0?n+' slabs':'none')+'</b></span>'; };
     el.innerHTML = '<div class="stockout"><div class="yards">'+cell(s.bne,'Brisbane')+cell(s.syd,'Sydney')+'</div><div style="color:var(--muted)">'+esc(s.eta)+'</div></div>';
-    logEvent('inventory.query <b>'+esc(m)+'</b> → answered on page', 8, 'sig');
-    signal('queried live stock');
+    logEvent('Answered a stock question on <b>'+esc(m)+'</b> from live inventory', 8, 'sig');
+    signal('checked live stock');
     renderRecord();
   }
 
@@ -1994,7 +2042,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       b.addEventListener('click', function(){ openCase(b.dataset.case); });
     });
     signal('read a case study');
-    logEvent('case.open <b>'+esc(id)+'</b> — deep interest', 12, 'sig');
+    logEvent('Opened the <b>'+esc(p.name)+'</b> case study — that is real interest', 12, 'sig');
   }
 
   function closeCase(){
@@ -2020,7 +2068,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         S.diag[b.dataset.q] = { s:+b.dataset.s, zone:b.dataset.zone };
         var n = Object.keys(S.diag).length;
         $('#diag-progress').textContent = n+' of '+DATA.diagnostic.questions.length+' answered';
-        if(first){ logEvent('diagnostic.answer '+esc(b.dataset.q)+' → zone <b>'+esc(b.dataset.zone)+'</b>', 3); }
+        if(first){ logEvent('Diagnostic answer — tells you about <b>'+esc(b.dataset.zone)+'</b>', 3); }
         if(n===DATA.diagnostic.questions.length){ showDiagResult(); }
       });
     });
@@ -2061,8 +2109,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     var box = $('#diag-result');
     box.innerHTML = html; box.hidden = false;
     signal('diagnostic completed');
-    logEvent('diagnostic.complete → weakest zone <b>'+esc(rows[0].z)+'</b>', 16, 'sig');
-    logEvent('crm.alert → high-intent, route to owner', 0, 'sig');
+    logEvent('Finished the diagnostic — weakest area is <b>'+esc(zoneName(rows[0].z).toLowerCase())+'</b>', 16, 'sig');
+    logEvent('Flagged as high intent and routed to the account owner', 0, 'sig');
   }
 
   /* ----------------------------------------------------------- scope build */
@@ -2081,7 +2129,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         var on = b.getAttribute('aria-pressed')==='true';
         b.setAttribute('aria-pressed', String(!on));
         if(on){ delete S.scope.picked[b.dataset.id]; }
-        else { S.scope.picked[b.dataset.id] = +b.dataset.h; logEvent('scope.add <b>'+esc(b.dataset.id)+'</b> +'+b.dataset.h+'h', 5); }
+        else { S.scope.picked[b.dataset.id] = +b.dataset.h; logEvent('Added '+b.dataset.h+' hours of work to their own scope', 5); }
         updateScope();
       });
     });
@@ -2158,7 +2206,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, done); }
     else { var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
     signal('scope built');
-    logEvent('scope.export → '+ids.length+' outcomes, '+hours+'h', 14, 'sig');
+    logEvent('Took the scope away — '+ids.length+' items, '+hours+' hours', 14, 'sig');
   }
 
   function renderTimeline(){
@@ -2177,7 +2225,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
           if(!S.sections[id]){
             S.sections[id] = true;
             var h = e.target.querySelector('h2, h1');
-            logEvent('view.section <b>'+esc(id.replace('-sec',''))+'</b>', 3);
+            logEvent('Read the <b>'+esc(id.replace('-sec',''))+'</b> section', 3);
           }
         }
       });
@@ -2190,9 +2238,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     setText('#t-time', fmtTime(el));
     setText('#d-time', fmtTime(el));
     if(el > 25000 && S.signals.indexOf('sustained attention')<0){ signal('sustained attention'); S.score=Math.min(100,S.score+5); }
-    S.history.push(S.score);
-    if(S.history.length>110){ S.history.shift(); }
-    drawSpark(); paint();
+    paint();
   }
 
   /* --------------------------------------------------------- mobile drawer */
@@ -2209,7 +2255,6 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         placeholder.parentNode.removeChild(placeholder);
         drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true');
       }
-      drawSpark();
     });
   }
 
@@ -2250,18 +2295,17 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       S.path=null; document.body.classList.remove('has-path');
       $$('#paths .path').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
       $$('section[data-audiences]').forEach(function(s){ s.hidden=false; });
-      logEvent('visitor.segment cleared — all content restored', 0);
+      logEvent('You cleared that — showing everything again', 0);
       paint();
     });
 
-    logEvent('session.start — anonymous visitor', 2);
-    if(src){ logEvent('source captured: <b>'+esc(String(src).replace(/^https?:\/\//,'').split('/')[0])+'</b>', 0); }
-    logEvent('awaiting classification…', 0);
+    logEvent('Someone arrived. Nothing known about them yet.', 2);
+    if(src){ logEvent('They came from <b>'+esc(String(src).replace(/^https?:\/\//,'').split('/')[0])+'</b>', 0); }
+    logEvent('Waiting to find out who they are…', 0);
 
     watchSections();
     setInterval(tick, 1000);
     tick();
-    window.addEventListener('resize', drawSpark);
   }
   if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
 })();

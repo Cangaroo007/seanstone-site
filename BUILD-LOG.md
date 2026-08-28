@@ -1,5 +1,52 @@
 # Build log
 
+## 28 Aug 2026 — v0.6 — the live panel, rebuilt as a verdict
+
+Sean's note, and he was right: the telemetry panel was dynamic but didn't prove anything a
+revenue person cares about. Event counters and a sparkline say "I can track things", which
+is table stakes and impresses nobody. Rebuilt to answer the question a revenue buyer is
+actually asking — *so what would you do about this visitor?*
+
+- **Stage and next action promoted to the top**, in plain English: "Qualified — has costed
+  the work", "Send the scope they built, priced, within the hour."
+- **The alert card is the payoff.** Once someone completes the diagnostic, resolves an
+  account in the enquiry engine, or builds a scope, the panel shows the actual message
+  their sales team would receive — naming the weakest zone, the hours costed, the items
+  chosen. That is the moment the argument lands.
+- **Event log rewritten in plain English.** Was `crm.record.create → contact, tagged build`;
+  now "Created a contact in the CRM, tagged build" and "Pulled their trading history from
+  finance — $184,200 this year". Same events, readable by the buyer.
+- **Sparkline and raw event counter deleted.** Decoration that made the panel look like
+  analytics, which was the problem.
+- **The duplicate account card removed** from the dashboard section — the rail already
+  shows it. That section now leads with the alert message and the argument: *anyone can log
+  page views; the value is the decision.* Retitled "You never filled in a form", which is
+  the pain a revenue leader recognises.
+- Rail scrolls internally now that it holds more, so the log stays reachable.
+
+## 28 Aug 2026 — v0.5 — case studies pre-rendered
+
+The case-study body was injected by JavaScript, so `/case/<id>/` served the homepage copy to
+anything that doesn't execute JS — LinkedIn's card scraper, most SEO tools, any preview
+unfurler. `build.py` now pre-renders each case's problem / built / changed into the static
+HTML (`render_case()`, a server-side twin of `openCase()` in the template), ships the page
+with `<body class="case-open">` so it displays without JS at all, and lets the JavaScript
+re-render the identical markup and take over the interactions on load.
+
+Also in this pass:
+
+- **Per-page meta and OG descriptions** on each case page — previously all four inherited
+  the homepage's description, which is worth nothing in a search result. The description is
+  now the case's own opening line, and `og:description` is the project's thesis.
+- **The back link is a real `<a href="/">`** in the static HTML, so it works with JS off.
+- Verified both ways: JavaScript on (one visible section, listeners attached, no console
+  errors) and JavaScript off (full case copy rendered, working back link).
+
+*Note for future edits: `render_case()` in `build.py` and `openCase()` in `template.html`
+produce the same markup and must be changed together.*
+
+Files changed: `build.py`, `case/*/index.html` (all four). `index.html` is byte-identical.
+
 ## 28 Aug 2026 — v0.4 (current) — deployment ready
 
 - **Restructured for GitHub Pages.** Deployables moved from `dist/` to the repo root, so
@@ -17,10 +64,17 @@
 **Launch decision (28 Aug):** fully live and indexed, public repo. `engagementOffer: true`,
 `showRates: true`, `noindex: false`. The flags remain if that needs to change.
 
-**Deployment status (28 Aug):** `github.com/Cangaroo007/seanstone-site` is live at
-seanstone.com with the certificate issued and HTTPS enforced — but serving a three-file
-placeholder (`CNAME`, `README.md`, an older `index.html`). The v0.4 files have not been
-pushed yet. Step 2 of `GO-LIVE.md` is the only thing outstanding.
+**LIVE — 28 Aug 2026.** Pushed to `github.com/Cangaroo007/seanstone-site` (commit
+`3832584`, "Instrumented site v0.4") and serving at https://seanstone.com over HTTPS.
+Verified from outside: homepage, `/case/kervio/`, `/case/roadrunner/`, `/robots.txt` and
+`/sitemap.xml` all return correctly, with the right per-page titles.
+
+Two follow-ups noted at go-live:
+
+1. **`.nojekyll` was never added.** GitHub is running Jekyll over the repo. Nothing breaks —
+   no underscore-prefixed files exist — but add it when convenient, since a future file
+   named `_something` would silently vanish.
+2. ~~Case-study body copy is injected by JavaScript.~~ **Fixed in v0.5, below.**
 
 ## 28 Aug 2026 — v0.3
 
