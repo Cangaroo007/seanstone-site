@@ -361,7 +361,10 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 /* ============================================================ RAIL / TELEMETRY */
 .rail{display:none}
 @media(min-width:1080px){
-  .rail{display:block;position:sticky;top:70px;align-self:start;height:calc(100vh - 90px);padding:var(--s6) 0}
+  /* Docked panel: sticks a fixed 64px below the viewport top, which is exactly
+     the hero's own top padding — so it aligns with the first screen at rest and
+     holds a deliberate, constant gutter under the sticky header thereafter. */
+  .rail{display:block;position:sticky;top:0;align-self:start;height:100vh;padding:var(--s8) 0 var(--s4)}
 }
 .rail-in{
   border:1px solid var(--rule);border-radius:5px;background:var(--surface);
@@ -378,6 +381,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .nextact{padding:var(--s4);border-bottom:1px solid var(--rule-soft);display:flex;flex-direction:column;gap:6px}
 .nextact p{font-size:13.5px;line-height:1.45;color:var(--ink-soft)}
 .alertbox{margin:var(--s4);border:1px solid var(--signal);background:var(--signal-soft);border-radius:4px;padding:var(--s3) var(--s4);display:flex;flex-direction:column;gap:6px}
+.alertbox[hidden]{display:none}
 .alertbox .label{color:var(--signal)}
 .alertbox p{font-size:13px;line-height:1.45}
 .known{padding:var(--s4);border-bottom:1px solid var(--rule-soft);display:flex;flex-direction:column;gap:7px}
@@ -1594,7 +1598,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   <div class="rail-in" id="rail-desktop">
     <div class="rail-head">
       <div class="label"><span class="pulse"></span> If this were your site</div>
-      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it.</p>
+      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it. Nothing leaves your browser — a small note is kept there so the page recognises you next time.</p>
     </div>
 
     <div class="verdict">
@@ -1616,6 +1620,10 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="label">Known about you</div>
       <div class="krow"><span>Segment</span><div id="d-seg">Not declared</div></div>
       <div class="krow"><span>Came from</span><div id="d-src">direct</div></div>
+      <div class="krow"><span>Local time</span><div id="d-local">—</div></div>
+      <div class="krow"><span>Device</span><div id="d-device">—</div></div>
+      <div class="krow"><span>Visits</span><div id="d-visits">first</div></div>
+      <div class="krow"><span>Attention</span><div id="d-attn">just arrived</div></div>
       <div class="krow"><span>Time here</span><div id="d-time">0:00</div></div>
       <div class="krow"><span>Read</span><div id="d-sections">0 sections</div></div>
       <div class="krow"><span>Signals</span><div id="d-signals">—</div></div>
@@ -1646,7 +1654,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   /* ---------------------------------------------------------------- state */
   var S = {
     path:null, score:0, events:0, sections:{}, signals:[],
-    start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20}
+    start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20},
+    env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
   };
 
   /* ------------------------------------------------------------ event log */
@@ -1665,7 +1674,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     while(logEl.children.length > 60){ logEl.removeChild(logEl.lastChild); }
     paint();
   }
-  function signal(name){ if(S.signals.indexOf(name)<0){ S.signals.push(name); } }
+  function signal(name){ if(S.signals.indexOf(name)<0){ S.signals.push(name); paint(); } }
 
   /* ---------------------------------------------------------------- paint */
   function fmtTime(ms){
@@ -1685,6 +1694,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     var g=$('#d-grade');
     if(g){ g.style.color = S.score>=70?'var(--signal)':S.score>=40?'var(--warn)':'var(--muted)'; }
     paintAlert();
+    paintEnv();
   }
 
   /* The payoff: the message a real system would send a real sales team. */
@@ -1743,11 +1753,17 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     if(S.signals.indexOf('scope built')>=0) return 'Qualified — has costed the work';
     if(S.signals.indexOf('diagnostic completed')>=0) return 'Engaged — diagnosed themselves';
     if(S.signals.indexOf('resolved an account')>=0) return 'Interested — tried the product';
+    if(S.signals.indexOf('copied your contact details')>=0) return 'Hand-raiser — took your details';
     if(S.path) return 'Identified — told you what they are';
+    if(S.mem.n > 1) return 'Returning visitor — came back';
     if(S.score>=15) return 'Warming — reading properly';
     return 'Anonymous visitor';
   }
   function nextAction(){
+    if(S.signals.indexOf('copied your contact details')>=0)
+      return 'They copied your contact details. Nothing on this page is a stronger buying signal — if you have any way of knowing who they are, use it today.';
+    if(S.mem.n > 2 && S.signals.indexOf('scope built')<0)
+      return 'Third visit and still no enquiry. They are interested and stuck. Give them a reason to move — a specific observation, not a nudge.';
     if(S.signals.indexOf('resolved an account')>=0 && S.signals.indexOf('scope built')<0)
       return 'They ran a company through the enquiry engine — they are picturing it on their own site. Ask which of their systems currently cannot be reached from their front door.';
     if(S.signals.indexOf('scope built')>=0) return 'Send the scope they built, priced, within the hour. They have already told you the budget shape and the outcomes they want.';
@@ -2214,6 +2230,108 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     }).join('');
   }
 
+  /* ---------------------------------------------- what the browser gives away */
+  function env(){
+    var ua = navigator.userAgent || '', tz = '';
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e){}
+    var os = /iPhone|iPad|iPod/.test(ua) ? 'iPhone' :
+             /Android/.test(ua)          ? 'Android' :
+             /Mac/.test(ua)              ? 'Mac' :
+             /Windows/.test(ua)          ? 'Windows' :
+             /Linux/.test(ua)            ? 'Linux' : 'a computer';
+    var br = /Edg\//.test(ua)     ? 'Edge' :
+             /OPR\//.test(ua)     ? 'Opera' :
+             /Firefox\//.test(ua) ? 'Firefox' :
+             /Chrome\//.test(ua)  ? 'Chrome' :
+             /Safari\//.test(ua)  ? 'Safari' : '';
+    var conn = '';
+    try { conn = (navigator.connection && navigator.connection.effectiveType) || ''; } catch(e){}
+    return { tz:tz, os:os, br:br, conn:conn, w:(screen&&screen.width)||0, lang:navigator.language||'' };
+  }
+  function localTime(tz){
+    try {
+      return new Date().toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit', timeZone: tz || undefined});
+    } catch(e){ return new Date().toLocaleTimeString(); }
+  }
+  function localHour(tz){
+    try {
+      return +new Intl.DateTimeFormat('en-GB', {hour:'numeric', hour12:false, timeZone: tz || undefined}).format(new Date());
+    } catch(e){ return new Date().getHours(); }
+  }
+  /* A note kept in the visitor's own browser — never sent anywhere. */
+  function memory(){
+    var m = { n:1, first:Date.now() };
+    try {
+      var raw = localStorage.getItem('ss.visits');
+      if(raw){
+        var prev = JSON.parse(raw);
+        m.n = (prev.n || 1) + 1;
+        m.first = prev.first || Date.now();
+      }
+      localStorage.setItem('ss.visits', JSON.stringify(m));
+    } catch(e){ /* private window, or storage blocked — carry on as a first visit */ }
+    return m;
+  }
+  function ordinal(n){
+    return n + (['th','st','nd','rd'][(n%100-20)%10] || ['th','st','nd','rd'][n%100] || 'th');
+  }
+  function daysAgo(ms){
+    var d = Math.floor((Date.now()-ms)/86400000);
+    return d <= 0 ? 'earlier today' : d === 1 ? 'yesterday' : d + ' days ago';
+  }
+
+  function paintEnv(){
+    var e = S.env, m = S.mem;
+    setText('#d-local', e.tz ? localTime(e.tz) + ' · ' + e.tz.split('/').pop().replace(/_/g,' ') : localTime(''));
+    setText('#d-device', [e.os, e.br].filter(Boolean).join(' · ') + (e.conn ? ' · ' + e.conn : ''));
+    setText('#d-visits', m.n === 1 ? 'first visit' : ordinal(m.n) + ' visit · first ' + daysAgo(m.first));
+    var bits = [];
+    bits.push(S.depth + '% read');
+    if(S.away === 1){ bits.push('left once'); }
+    else if(S.away > 1){ bits.push('left ' + S.away + ' times'); }
+    if(S.copied){ bits.push('copied your details'); }
+    setText('#d-attn', bits.join(' · '));
+  }
+
+  function watchAttention(){
+    var tick = function(){
+      var h = document.documentElement;
+      var pct = Math.min(100, Math.round(((window.scrollY + window.innerHeight) / Math.max(1, h.scrollHeight)) * 100));
+      if(pct > S.depth){
+        S.depth = pct;
+        if(pct >= 75 && !S.deepRead){ S.deepRead = true; signal('read most of the page'); logEvent('Read three quarters of the page — that is not a bounce', 6); }
+      }
+    };
+    window.addEventListener('scroll', tick, {passive:true});
+    tick();
+
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){ S.leftAt = Date.now(); }
+      else if(S.leftAt){
+        S.away++;
+        logEvent('Came back after ' + Math.max(1, Math.round((Date.now()-S.leftAt)/1000)) + 's away', 4);
+        if(S.away >= 2){ signal('keeps coming back'); }
+      }
+    });
+
+    document.addEventListener('copy', function(){
+      var sel = '';
+      try { sel = String(window.getSelection()); } catch(e){}
+      if(/@|\bhttp/.test(sel)){
+        S.copied = true;
+        signal('copied your contact details');
+        logEvent('<b>Copied your contact details.</b> On a real site this is the strongest signal on the page', 18, 'sig');
+      } else if(sel.length > 20){
+        logEvent('Copied a passage — they are quoting you to someone', 6);
+      }
+    });
+
+    window.addEventListener('beforeprint', function(){
+      signal('printed the page');
+      logEvent('Printed or saved the page as PDF — usually means they are showing someone else', 10, 'sig');
+    });
+  }
+
   /* --------------------------------------------------------- observers etc */
   function watchSections(){
     if(!('IntersectionObserver' in window)) return;
@@ -2298,11 +2416,29 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       paint();
     });
 
-    logEvent('Someone arrived. Nothing known about them yet.', 2);
+    S.env = env();
+    S.mem = memory();
+
+    if(S.mem.n > 1){
+      signal('returning visitor');
+      logEvent('<b>Recognised you</b> — ' + ordinal(S.mem.n) + ' visit, first was ' + daysAgo(S.mem.first), 12, 'sig');
+    } else {
+      logEvent('Someone arrived. Nothing known about them yet.', 2);
+    }
+    if(S.env.tz){
+      logEvent('They are in <b>' + esc(S.env.tz.replace(/_/g,' ')) + '</b> — it is ' + esc(localTime(S.env.tz)) + ' there', 3);
+      var h = localHour(S.env.tz);
+      if(h < 7 || h >= 19){
+        signal('reading outside work hours');
+        logEvent('Reading outside working hours. Personal interest, not a work errand.', 5);
+      }
+    }
+    logEvent('On ' + esc([S.env.os, S.env.br].filter(Boolean).join(', ')) + (S.env.conn ? ', ' + esc(S.env.conn) + ' connection' : ''), 0);
     if(src){ logEvent('They came from <b>'+esc(String(src).replace(/^https?:\/\//,'').split('/')[0])+'</b>', 0); }
     logEvent('Waiting to find out who they are…', 0);
 
     watchSections();
+    watchAttention();
     setInterval(tick, 1000);
     tick();
   }

@@ -1,6 +1,52 @@
 # Build log
 
+## 29 Aug 2026 — v0.8 — Tier 0 visitor intelligence
+
+Everything the browser gives away, read client-side. No backend, no cost, no third party,
+and the panel's "nothing leaves your browser" claim stays true.
+
+- **Local time and timezone** — "10:05 am · Brisbane". Reading outside working hours is
+  itself scored as a signal: personal interest, not a work errand.
+- **Return-visitor memory** via localStorage — "3rd visit · first 4 days ago", with its own
+  stage ("Returning visitor — came back") and a next action for the third visit with no
+  enquiry. Wrapped in try/catch so a private window degrades to a first visit.
+- **Device, browser and connection** — "Mac · Chrome · 4g".
+- **Attention** — scroll depth, leaving and coming back (with the time away), and a signal at
+  75% read ("that is not a bounce").
+- **Copy detection** — copying anything containing an @ or a URL fires the strongest signal
+  on the page and moves the stage to "Hand-raiser — took your details". Copying a passage
+  logs separately: they are quoting you to someone.
+- **Print detection** — printing or saving to PDF usually means showing someone else.
+
+The rail's blurb now discloses the localStorage note, because the honesty of that panel is
+the argument.
+
+Tier 1 (company identification via a Cloudflare Worker) is specified but not built:
+`TIER1-INTELLIGENCE.md`.
+
+## 28 Aug 2026 — v0.7 — panel alignment and two bugs
+
+- **The rail was floating at an arbitrary height.** It is sticky, so it can never line up
+  with the scrolling column beside it — but it was offset 32px below its sticky point, which
+  made the top edge land at a random place mid-section and read as a misalignment. It now
+  docks at a constant 64px from the viewport top, which is exactly the hero's own top
+  padding: aligned with the first screen at rest, and a deliberate constant gutter under the
+  header thereafter.
+- **Empty alert box showed on load.** `.alertbox{display:flex}` overrode the browser's
+  `[hidden]{display:none}` (equal specificity, author sheet wins), so the box rendered with
+  a heading and no content. Added `.alertbox[hidden]{display:none}`.
+- **Alert appeared up to a second late.** `signal()` now repaints immediately rather than
+  waiting for the next one-second tick.
+
 ## 28 Aug 2026 — v0.6 — the live panel, rebuilt as a verdict
+
+**DEPLOYED — commit `7d910ee`, verified live.** Both fixes confirmed from outside:
+the homepage serves the verdict panel, and `/case/kervio/` serves pre-rendered case copy
+in the static HTML. `.nojekyll` is in the repo. Nothing outstanding on the deployment.
+
+Sean has a working clone at `~/Downloads/ss-deploy/repo`, so future updates are:
+`git pull`, drop in new files, `git add -A && git commit -m "..." && git push`.
+
 
 Sean's note, and he was right: the telemetry panel was dynamic but didn't prove anything a
 revenue person cares about. Event counters and a sparkline say "I can track things", which
