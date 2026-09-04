@@ -114,6 +114,15 @@ def render_privacy(data, html):
         "Composed entirely in your browser as you use the page. Nothing is transmitted at this "
         "stage \u2014 it becomes an enquiry only if you open the panel and press send, and you "
         "can read and edit every word first."))
+    if data.get("ask", {}).get("endpoint"):
+        rows.append((
+            "Asking the page a question",
+            "The question you type, and nothing else \u2014 no identifier, no location, no session "
+            "history travels with it.",
+            "Sent to a Cloudflare Worker on this domain, which passes the question and Sean's "
+            "own knowledge base to Anthropic's Claude API to compose an answer. Anthropic does "
+            "not train on it. Nothing is stored here, and the written answers are served "
+            "without leaving your browser at all."))
     if data.get("enquiry", {}).get("endpoint"):
         rows.append((
             "Sending an enquiry",

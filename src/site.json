@@ -945,7 +945,7 @@
   "ask": {
     "label": "Ask it something",
     "head": "The questions you would ask on a call.",
-    "lead": "I have written honest answers to the ones I actually get. Type your own — if I have not answered it, that is worth knowing too, and it becomes the first line of your email.",
+    "lead": "The common ones have answers Sean wrote himself. Ask something else and the page will assemble one from everything he has written about his work — and tell you which kind of answer you are reading.",
     "placeholder": "What would you actually do in the first month?",
     "suggest": [
       "How do you engage with companies?",
@@ -1114,8 +1114,14 @@
         "a": "San Francisco, having built commercial systems across the US, Australia and Asia. Most of the work is remote and asynchronous by design — the artefacts are the software and the analysis, not the meetings — but I will come and sit with a sales team for the diagnostic week if it is the difference between guessing and knowing."
       }
     ],
-    "miss": "I have not written an answer to that one, which is a decent sign it is worth asking properly.",
-    "cta": "Send it to me instead"
+    "miss": "I have not written an answer to that one and could not assemble a reliable one either, which is a decent sign it is worth asking properly.",
+    "cta": "Send it to me instead",
+    "endpoint": "https://id.seanstone.com/ask",
+    "writtenLabel": "Written by Sean",
+    "aiLabel": "Assembled, not written",
+    "thinking": "Reading everything Sean has written about this…",
+    "aiNote": "Assembled by Claude from Sean's knowledge base — the same source as the written answers above, but this sentence-by-sentence version is machine-composed and he has not read it. Treat the written answers as authoritative and check anything that matters.",
+    "aiFollow": "Not quite your situation? Send it to Sean"
   },
   "tiers": {
     "label": "Where this sits",

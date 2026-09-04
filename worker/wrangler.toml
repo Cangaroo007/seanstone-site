@@ -24,3 +24,16 @@ account_id = "16fbf46ad93708dc1953b6a283488d6d"
 [[send_email]]
 name = "EMAIL"
 destination_address = "sean@cangaroo.ai"
+
+# kb.md is imported as a text module by index.js, so the knowledge base stays a
+# plain markdown file that Sean can read and edit rather than a generated blob.
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
+# The Anthropic key lives as a secret, never in this file:
+#   wrangler secret put ANTHROPIC_KEY
+# Optional model override (default claude-sonnet-5; haiku is cheaper):
+#   [vars]
+#   ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"

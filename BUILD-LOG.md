@@ -1,5 +1,65 @@
 # Build log
 
+## 4 Sep 2026 — v1.7: the page answers questions nobody wrote answers to
+
+Sean: *"I want to build Anthropic into this so people can query and they'll get a concise
+answer… a knowledge base that is an aggregation of all the work I have done, so it would start
+to come back with an answer I would come up with. Is this too ambitious?"*
+
+No. The architecture was already there — an ask box, a Worker, and as of v1.6 a POST endpoint.
+The interesting decisions were all about restraint.
+
+**Hybrid, not replacement.** The eleven written answers stay as the fast path: instant, free,
+and exactly Sean's words, which matters most for the questions that decide a deal. Claude picks
+up precisely where the dead end was. Before today an unmatched question got *"I have not written
+an answer to that one."* Now it gets a real answer assembled from the knowledge base, with the
+enquiry button still underneath. Nothing was lost and the worst moment on the page became one of
+the better ones.
+
+**The page says which kind of answer you are reading.** Every answer carries a badge —
+`WRITTEN BY SEAN` in accent, or `ASSEMBLED, NOT WRITTEN` in grey — and the assembled ones carry
+a footnote: *"the same source as the written answers above, but this sentence-by-sentence
+version is machine-composed and he has not read it. Treat the written answers as authoritative."*
+A page whose entire argument is candour about what it is doing does not get to blur the line
+between a paragraph its owner wrote and one a model composed in his voice thirty seconds ago.
+
+**The knowledge base is a markdown file, not a blob.** `worker/kb.md`, imported as a text module
+via a wrangler `Text` rule, so Sean reads and edits prose rather than a generated JS string.
+About 2,400 words: the claim, commercial terms, the three tiers, priced outcomes, all four
+projects with their verified numbers, the capability map, the method, career history, the six
+diagnostic zones, and his answers to the usual objections.
+
+Its last section is a boundary list, and it is the most important part of the file: answer only
+from this file; never invent a client, a metric or a date; the named entities in it are the
+complete list; refuse anything about immigration, tax, health, family or finances; refuse
+general-purpose assistant work; write in his register, British spelling, no "Great question",
+two or three paragraphs at most.
+
+**A public endpoint holding someone's API key is a spending risk, not a feature.** Controls:
+8 questions per IP per 15 minutes, a 400-character cap on the question, a 400-token ceiling on
+the answer, a 4 KB request cap, temperature 0.3, and prompt injection handled explicitly in the
+system prompt rather than hoped away. The knowledge base sits in a cached system block, so after
+the first call the input costs a tenth of list price — real cost is fractions of a cent per
+question. The remaining exposure is volume, which the rate limit bounds.
+
+**Every failure path lands somewhere useful.** No key configured returns `not_configured` and
+the page falls back to the written answers plus the enquiry panel — which is exactly where it
+was yesterday, so the feature can be switched off by deleting a secret. Upstream error, timeout
+at 20 seconds, malformed response: same fallback, and the visitor gets a mail draft with their
+own question already in it.
+
+**Privacy page** gains a row: the question and nothing else is sent — no identifier, no
+location, no session history — to the Worker, which passes it and the knowledge base to
+Anthropic. Written answers never leave the browser at all.
+
+**Also found today, before any of this:** `seanstone.com` carries Google Workspace MX records,
+so the free Cloudflare Email Routing path for v1.6's enquiry endpoint would have evicted Sean's
+own mail. Caught by checking DNS after the send failed with `E_SENDER_DOMAIN_NOT_CONFIGURED`,
+which is one step later than it should have been checked. Two alternatives put to him: Workers
+Paid with sending onboarded on a `cf-bounce` subdomain (root MX untouched), or Resend's free
+tier on a `send.` subdomain. Unresolved at time of writing; `/enquiry` returns a clean error and
+the compose panel falls back to copy-and-mailto, so nothing on the page is broken while it is.
+
 ## 4 Sep 2026 — v1.6: the dead link, and a real endpoint
 
 Sean clicked his own site's contact button and nothing happened. Then: *"So how do I get
