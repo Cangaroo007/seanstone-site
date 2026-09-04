@@ -53,7 +53,10 @@ const seen = new Map();
 const ASK_RATE = { max: 8, windowMs: 15 * 60 * 1000 };
 const asked = new Map();
 const MAX_Q = 400;
-const MAX_ANSWER_TOKENS = 400;
+// Left at the model default rather than pinned: newer models reject an explicit
+// temperature when extended thinking is on, and the length is governed by the
+// system prompt ("two or three short paragraphs") rather than by this ceiling.
+const MAX_ANSWER_TOKENS = 1024;
 const DEFAULT_MODEL = 'claude-sonnet-5';   // swap to claude-haiku-4-5-20251001 to cut cost
 
 const ASK_RULES = [
@@ -239,7 +242,6 @@ async function ask(request, env, headers) {
       body: JSON.stringify({
         model: env.ANTHROPIC_MODEL || DEFAULT_MODEL,
         max_tokens: MAX_ANSWER_TOKENS,
-        temperature: 0.3,
         system: [
           { type: 'text', text: ASK_RULES },
           // The knowledge base is identical on every request, so it is cached at
@@ -251,7 +253,14 @@ async function ask(request, env, headers) {
       }),
     });
     if (!r.ok) {
-      return new Response(JSON.stringify({ ok: false, error: 'upstream_' + r.status }), { status: 502, headers });
+      // Anthropic's own error text, truncated. It contains no secrets and it is the
+      // difference between fixing this in one round and guessing at it in three.
+      let detail = '';
+      try { detail = (await r.text()).slice(0, 300); } catch (e) {}
+      return new Response(
+        JSON.stringify({ ok: false, error: 'upstream_' + r.status, detail: detail }),
+        { status: 502, headers }
+      );
     }
     const out = await r.json();
     const answer = (out.content || [])
