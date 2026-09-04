@@ -105,7 +105,7 @@ def main() -> int:
     tags = []
     if a.get("cloudflareToken"):
         tags.append(
-            '<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+            '<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" '
             f'data-cf-beacon=\'{{"token": "{a["cloudflareToken"]}"}}\'></script>')
     if a.get("ga4"):
         gid = a["ga4"]
