@@ -1,6 +1,79 @@
 # Build log
 
+## 29 Aug 2026 — v1.0 — analytics tags and the identity Worker
+
+**Analytics are now build-time injected from `src/site.json`**, so IDs are data, not code.
+An empty value means the tag simply is not emitted.
+
+```json
+"analytics": { "cloudflareToken": "", "ga4": "", "contentsquare": "597912112e565" }
+```
+
+ContentSquare is live (Sean's existing tag). Cloudflare Web Analytics and GA4 need their IDs
+pasting in. `build.py` now prints which tags are on and whether the identity endpoint is set.
+
+**The panel's disclosure was rewritten**, because "nothing leaves your browser" stops being
+true the moment a tag loads:
+
+> This panel runs in your browser; a small note is kept there so the page recognises you next
+> time. The site also runs ordinary analytics — which is rather the point: you can measure
+> everything and still know nothing about who is on your site.
+
+Better than the original: it names the problem the site exists to solve.
+
+**The identity Worker is written and tested** (`worker/`), but not deployed — it needs
+`wrangler deploy`. Account level only: city, region, country and network/ASN from
+`request.cf` (free, no vendor), plus optional company resolution via an IPinfo token.
+
+Client side, with `identity.endpoint` set:
+
+- **Local time becomes a real place** — "10:17 AM · San Francisco, US" replaces "Pacific
+  time", and the zone-proxy explanation hides itself once a real city is known.
+- **Network row** — "Salesforce.com Inc".
+- **Company row with logo** via `logo.clearbit.com/<domain>`, free and keyless, with an
+  `onerror` that removes the image rather than showing a broken one.
+- **A company match rewrites the next action**: "Someone from Salesforce is on the page. You
+  know the account before they have said a word."
+
+Tested end to end against a mock endpoint: city, network, company and logo all render, the
+next action changes, no console errors. With the endpoint empty the site is browser-only and
+degrades silently — a dead or removed Worker cannot break the page, and the lookup has a
+4-second timeout for the same reason.
+
+## 29 Aug 2026 — v0.9 — prioritisation, work accordion, honest geography
+
+Three things Sean called out, all fair.
+
+**1 · Selecting a capability greyed things out instead of doing something.** It now
+*re-ranks*. Capabilities are multi-select — pick what you actually need — and both the
+evidence list and the work list reorder with a FLIP animation so you watch the page
+rearrange itself. A bar states what happened: "Reordered around AI-directed product build.
+2 of 4 projects evidence that — they are now first, and the top one is open." Unmatched
+items are muted rather than buried, and still readable. The rail logs "You said you need
+ai-directed product build — page re-ranked around it." This is the clearest demonstration
+of dynamic content prioritisation on the site, and it is the Road Runner claim applied to
+Sean's own page.
+
+**2 · The work section was disjointed and linked to nothing.** It is now an accordion —
+collapsed by default with name, kicker, thesis and *clickable capability chips* in each
+header. The chips are the missing link: clicking one from a project re-ranks the whole page
+around that capability, so the two sections are one mechanism instead of two lists. First
+project opens by default; "Open all" toggles the lot.
+
+**3 · "Los Angeles" when he is in San Francisco.** Not a bug — IANA zone names are region
+proxies, and everyone from Vancouver to Tijuana is `America/Los_Angeles`. Naming the proxy
+city is simply wrong, so the panel now names the region ("Pacific time") and explains the
+gap underneath: *a browser gives a time zone, not a city; naming your actual city needs a
+server-side lookup.* That is honest, it teaches the visitor something about their own data,
+and it makes the case for Phase 2 far better than a marketing line would.
+
+Also: no analytics of any kind are installed — see `ROADMAP.md`, Phase 1.
+
 ## 29 Aug 2026 — v0.8 — Tier 0 visitor intelligence
+
+**DEPLOYED — commit `df15659`, verified live.** Local time, visits, attention and the
+verdict header all confirmed serving from seanstone.com. Includes the v0.7 alignment and
+alert fixes.
 
 Everything the browser gives away, read client-side. No backend, no cost, no third party,
 and the panel's "nothing leaves your browser" claim stays true.

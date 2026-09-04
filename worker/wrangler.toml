@@ -1,0 +1,10 @@
+name = "seanstone-id"
+main = "index.js"
+compatibility_date = "2026-08-01"
+
+# Serve it from a subdomain of the site so there is no third-party cookie story
+# and no CORS surprises. Add the DNS record as a proxied (orange cloud) CNAME
+# or A record for id.seanstone.com first — see README.md in this folder.
+routes = [
+  { pattern = "id.seanstone.com", custom_domain = true }
+]

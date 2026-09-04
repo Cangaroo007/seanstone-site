@@ -6,6 +6,7 @@
 <title>Alpha Surfaces inquiry engine — Sean Stone</title>
 <meta name="description" content="A stone supplier's website had one contact form for four completely different customers. A homeowner wanting a sample, a stonemason checking stock, an architect needing…">
 <meta name="robots" content="index, follow">
+<script src="https://t.contentsquare.net/uxa/597912112e565.js" defer></script>
 <link rel="canonical" href="https://seanstone.com/case/alpha/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://seanstone.com/case/alpha/">
@@ -389,6 +390,10 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .krow{display:grid;grid-template-columns:74px 1fr;gap:10px;font-size:13px;align-items:baseline}
 .krow span{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .krow div{color:var(--ink-soft);min-width:0;overflow-wrap:anywhere}
+.krow[hidden]{display:none}
+.coy{display:flex;align-items:center;gap:8px}
+.coy img{width:20px;height:20px;border-radius:3px;background:#fff;object-fit:contain;flex:none}
+.coy b{font-weight:600;color:var(--ink)}
 .logwrap{flex:1 0 auto;display:flex;flex-direction:column}
 .logwrap .label{padding:var(--s3) var(--s4) var(--s2)}
 .log{padding:0 var(--s4) var(--s4);display:flex;flex-direction:column;gap:7px}
@@ -439,6 +444,57 @@ details.more summary::-webkit-details-marker{display:none}
 details.more summary::after{content:"+";font-family:var(--mono);color:var(--muted)}
 details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
+
+
+/* ============================================================ PRIORITISATION */
+.prioritybar{
+  display:none;align-items:center;gap:var(--s3);flex-wrap:wrap;
+  border:1px solid var(--accent);background:var(--accent-soft);border-radius:4px;
+  padding:var(--s3) var(--s4);margin-bottom:var(--s4);animation:slidein .3s ease;
+}
+.prioritybar.on{display:flex}
+.prioritybar p{font-size:14px;flex:1;min-width:220px}
+.prioritybar b{font-weight:600}
+.prioritybar button{
+  background:none;border:1px solid var(--rule);border-radius:3px;padding:5px 11px;
+  font-size:12.5px;cursor:pointer;white-space:nowrap;
+}
+.prioritybar button:hover{border-color:var(--ink)}
+.rankflag{
+  font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 8px;
+}
+.ev.muted{opacity:.5}
+.ev.muted:hover{opacity:.85}
+
+/* ============================================================ WORK ACCORDION */
+.proj-toggle{
+  width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:var(--s5);
+  display:flex;flex-wrap:wrap;gap:var(--s4);align-items:flex-start;justify-content:space-between;
+  border-bottom:1px solid transparent;transition:background .15s ease;
+}
+.proj-toggle:hover{background:var(--surface-2)}
+.proj[data-open="true"] .proj-toggle{border-bottom-color:var(--rule-soft)}
+.proj-toggle h3{font-family:var(--display);font-size:30px;font-weight:400}
+.proj-toggle .label{margin-top:4px}
+.proj-left{min-width:0;flex:1 1 320px}
+.proj-right{display:flex;align-items:center;gap:var(--s4);flex:0 1 auto}
+.proj-thesis{font-size:14px;color:var(--muted);max-width:34ch;text-align:right}
+.chev{
+  flex:none;width:26px;height:26px;border:1px solid var(--rule);border-radius:50%;
+  display:grid;place-items:center;font-family:var(--mono);font-size:14px;color:var(--muted);
+  transition:transform .25s ease,border-color .15s ease;
+}
+.proj[data-open="true"] .chev{transform:rotate(45deg);border-color:var(--accent);color:var(--accent)}
+.proj[data-open="false"] .proj-body{display:none}
+.capchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--s3)}
+.capchip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:3px 9px;cursor:pointer;
+  border:1px solid var(--rule);border-radius:999px;color:var(--muted);background:var(--surface-2);
+}
+.capchip:hover{border-color:var(--accent);color:var(--accent)}
+.capchip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+@media(max-width:700px){.proj-thesis{text-align:left}}
 
 /* ============================================================ DEMO */
 .demo{border:1px solid var(--rule);border-radius:5px;background:var(--surface);overflow:hidden}
@@ -1352,6 +1408,14 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         }
       }
     ]
+  },
+  "identity": {
+    "endpoint": ""
+  },
+  "analytics": {
+    "cloudflareToken": "",
+    "ga4": "",
+    "contentsquare": "597912112e565"
   }
 }
 </script>
@@ -1408,7 +1472,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="label"><span class="tick"></span> Capability graph</div>
       <h2 class="display">Four capabilities, and what proves each one.</h2>
     </div>
-    <p class="prose" style="margin-bottom:var(--s5)">Every claim on this page is attached to something that exists. Select a capability to see only the work that evidences it.</p>
+    <p class="prose" style="margin-bottom:var(--s5)">Every claim on this page is attached to something that exists. <b>Tell it what you actually need</b> — pick one or more, and the page reorders itself around your answer. That reordering is the same mechanism I build into client sites; here it is running on me.</p>
+    <div class="prioritybar" id="cap-bar"><p id="cap-bar-text"></p><button type="button" id="cap-clear">Clear</button></div>
     <div class="capgrid">
       <div class="caplist" id="caplist"></div>
       <div class="evidence" id="evidence"></div>
@@ -1421,6 +1486,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="label"><span class="tick"></span> Selected work</div>
       <h2 class="display">Things that are running right now.</h2>
     </div>
+    <div class="prioritybar" id="work-bar"><p id="work-bar-text"></p><button type="button" id="work-expand">Open all</button></div>
     <div class="work" id="work"></div>
   </section>
 
@@ -1599,7 +1665,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   <div class="rail-in" id="rail-desktop">
     <div class="rail-head">
       <div class="label"><span class="pulse"></span> If this were your site</div>
-      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it. Nothing leaves your browser — a small note is kept there so the page recognises you next time.</p>
+      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it.</p><p id="rail-disclosure">This panel runs in your browser; a small note is kept there so the page recognises you next time. The site also runs ordinary analytics — which is rather the point: you can measure everything and still know nothing about who is on your site.</p>
     </div>
 
     <div class="verdict">
@@ -1622,12 +1688,15 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="krow"><span>Segment</span><div id="d-seg">Not declared</div></div>
       <div class="krow"><span>Came from</span><div id="d-src">direct</div></div>
       <div class="krow"><span>Local time</span><div id="d-local">—</div></div>
+      <div class="krow" id="row-network" hidden><span>Network</span><div id="d-network">—</div></div>
+      <div class="krow" id="row-company" hidden><span>Company</span><div id="d-company"></div></div>
       <div class="krow"><span>Device</span><div id="d-device">—</div></div>
       <div class="krow"><span>Visits</span><div id="d-visits">first</div></div>
       <div class="krow"><span>Attention</span><div id="d-attn">just arrived</div></div>
       <div class="krow"><span>Time here</span><div id="d-time">0:00</div></div>
       <div class="krow"><span>Read</span><div id="d-sections">0 sections</div></div>
       <div class="krow"><span>Signals</span><div id="d-signals">—</div></div>
+      <p class="note" id="tz-note" hidden></p>
     </div>
 
     <div class="logwrap">
@@ -1656,7 +1725,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   var S = {
     path:null, score:0, events:0, sections:{}, signals:[],
     start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20},
-    env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
+    caps:[], geo:null, company:null, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
   };
 
   /* ------------------------------------------------------------ event log */
@@ -1761,6 +1830,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     return 'Anonymous visitor';
   }
   function nextAction(){
+    if(S.company && S.signals.indexOf('scope built')<0)
+      return 'Someone from ' + S.company + ' is on the page. You know the account before they have said a word — check whether anyone there is already in your CRM before you reply.';
     if(S.signals.indexOf('copied your contact details')>=0)
       return 'They copied your contact details. Nothing on this page is a stronger buying signal — if you have any way of knowing who they are, use it today.';
     if(S.mem.n > 2 && S.signals.indexOf('scope built')<0)
@@ -1832,6 +1903,39 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     }
   }
 
+  /* ------------------------------------------- prioritisation (caps + work) */
+  var REDUCED = false;
+  try { REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+
+  /* FLIP: measure, reorder, animate the difference. Makes the re-ranking legible
+     instead of instantaneous — the visitor has to see the page rearrange itself. */
+  function flip(container, mutate){
+    var kids = Array.prototype.slice.call(container.children);
+    if(REDUCED){ mutate(); return; }
+    var before = kids.map(function(k){ return k.getBoundingClientRect().top; });
+    mutate();
+    kids.forEach(function(k, i){
+      var dy = before[i] - k.getBoundingClientRect().top;
+      if(!dy) return;
+      k.style.transition = 'none';
+      k.style.transform = 'translateY(' + dy + 'px)';
+      requestAnimationFrame(function(){
+        k.style.transition = 'transform .45s cubic-bezier(.2,.7,.3,1)';
+        k.style.transform = '';
+      });
+    });
+  }
+
+  function capName(id){
+    var c = DATA.capabilities.filter(function(x){ return x.id===id; })[0];
+    return c ? c.name : id;
+  }
+  function projMatches(p){
+    if(!S.caps.length) return true;
+    var caps = DATA.capabilities.filter(function(c){ return c.evidence.indexOf(p.id)>=0; }).map(function(c){ return c.id; });
+    return S.caps.some(function(c){ return caps.indexOf(c)>=0; });
+  }
+
   function renderCaps(){
     $('#caplist').innerHTML = DATA.capabilities.map(function(c){
       return '<button class="capnode" type="button" data-cap="'+c.id+'" aria-pressed="false">'+
@@ -1845,36 +1949,135 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         }).join('')+'</div></div>';
     }).join('');
     $$('.capnode').forEach(function(b){
-      b.addEventListener('click', function(){
-        var on = b.getAttribute('aria-pressed')==='true';
-        $$('.capnode').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
-        b.setAttribute('aria-pressed', String(!on));
-        var cap = on ? null : b.dataset.cap;
-        $$('.ev').forEach(function(e){ e.classList.toggle('dim', !!cap && e.dataset.cap!==cap); });
-        $$('.proj').forEach(function(p){
-          var caps = (p.dataset.caps||'').split(',');
-          p.style.opacity = (!cap || caps.indexOf(cap)>=0) ? '1' : '.35';
-        });
-        if(cap){
-          signal('explored the work');
-          logEvent('You looked into <b>'+esc(cap)+'</b>', 4);
-        }
-      });
+      b.addEventListener('click', function(){ toggleCap(b.dataset.cap); });
+    });
+    $('#cap-clear').addEventListener('click', function(){ S.caps = []; applyPriority(true); });
+    $('#work-expand').addEventListener('click', function(){
+      var openAll = $$('.proj[data-open="false"]').length > 0;
+      $$('.proj').forEach(function(p){ setOpen(p, openAll); });
+      $('#work-expand').textContent = openAll ? 'Collapse all' : 'Open all';
     });
   }
 
+  function toggleCap(id){
+    var i = S.caps.indexOf(id);
+    if(i >= 0){ S.caps.splice(i, 1); } else { S.caps.push(id); }
+    applyPriority();
+    if(S.caps.length){
+      signal('told you what they need');
+      logEvent('You said you need <b>'+esc(capName(id).toLowerCase())+'</b> — page re-ranked around it', 8, 'sig');
+    } else {
+      logEvent('Cleared your requirements — original order restored', 0);
+    }
+  }
+
+  /* One mechanism drives both sections: the capability picks re-rank the evidence
+     list AND the work list, and open the matching projects. */
+  function applyPriority(silent){
+    var picked = S.caps;
+    $$('.capnode').forEach(function(b){ b.setAttribute('aria-pressed', String(picked.indexOf(b.dataset.cap)>=0)); });
+    $$('.capchip').forEach(function(c){ c.classList.toggle('on', picked.indexOf(c.dataset.cap)>=0); });
+
+    // --- evidence list: matched first, unmatched muted but still readable
+    var evWrap = $('#evidence');
+    if(evWrap){
+      flip(evWrap, function(){
+        var evs = $$('.ev', evWrap);
+        evs.sort(function(a, b){
+          var am = picked.indexOf(a.dataset.cap)>=0 ? 0 : 1;
+          var bm = picked.indexOf(b.dataset.cap)>=0 ? 0 : 1;
+          return am - bm;
+        });
+        evs.forEach(function(e){
+          var on = picked.length && picked.indexOf(e.dataset.cap)>=0;
+          e.classList.toggle('muted', picked.length > 0 && !on);
+          var flag = e.querySelector('.rankflag');
+          if(on && !flag){
+            var f = document.createElement('span');
+            f.className = 'rankflag'; f.textContent = 'what you asked for';
+            e.querySelector('.meta').insertBefore(f, e.querySelector('.meta').firstChild);
+          } else if(!on && flag){ flag.parentNode.removeChild(flag); }
+          evWrap.appendChild(e);
+        });
+      });
+    }
+
+    // --- work list: matched projects rise and open, the rest sink and collapse
+    var workWrap = $('#work');
+    if(workWrap){
+      flip(workWrap, function(){
+        var projs = $$('.proj', workWrap);
+        projs.sort(function(a, b){
+          var am = projMatches(byId(a.dataset.id)) ? 0 : 1;
+          var bm = projMatches(byId(b.dataset.id)) ? 0 : 1;
+          return am - bm;
+        });
+        projs.forEach(function(p, i){
+          var match = projMatches(byId(p.dataset.id));
+          if(picked.length){ setOpen(p, match && i === 0); }
+          workWrap.appendChild(p);
+        });
+      });
+    }
+
+    // --- the banners
+    var names = picked.map(capName);
+    var n = DATA.projects.filter(projMatches).length;
+    var text = picked.length
+      ? 'Reordered around <b>' + names.map(esc).join('</b> and <b>') + '</b>. ' +
+        n + ' of ' + DATA.projects.length + ' projects evidence ' + (picked.length>1 ? 'those' : 'that') +
+        ' — they are now first, and the top one is open.'
+      : '';
+    ['#cap-bar', '#work-bar'].forEach(function(sel){
+      var bar = $(sel); if(!bar) return;
+      bar.classList.toggle('on', picked.length > 0);
+      var p = bar.querySelector('p'); if(p){ p.innerHTML = text; }
+    });
+    if(!silent){ paint(); }
+  }
+
+  function byId(id){ return DATA.projects.filter(function(p){ return p.id===id; })[0]; }
+
+  function setOpen(proj, open){
+    proj.setAttribute('data-open', String(!!open));
+    var btn = proj.querySelector('.proj-toggle');
+    if(btn){ btn.setAttribute('aria-expanded', String(!!open)); }
+  }
+
   function renderWork(){
-    $('#work').innerHTML = DATA.projects.map(function(p){
-      var caps = DATA.capabilities.filter(function(c){return c.evidence.indexOf(p.id)>=0;}).map(function(c){return c.id;});
-      return '<article class="proj" data-caps="'+caps.join(',')+'" data-id="'+p.id+'">'+
-        '<div class="proj-head"><div><h3 class="display">'+esc(p.name)+'</h3>'+
-          '<div class="label">'+esc(p.kicker)+' · '+esc(p.year)+'</div></div>'+
-          '<div class="label">'+esc(p.thesis)+'</div></div>'+
+    $('#work').innerHTML = DATA.projects.map(function(p, idx){
+      var caps = DATA.capabilities.filter(function(c){return c.evidence.indexOf(p.id)>=0;});
+      return '<article class="proj" data-open="'+(idx===0)+'" data-caps="'+caps.map(function(c){return c.id;}).join(',')+'" data-id="'+p.id+'">'+
+        '<button class="proj-toggle" type="button" aria-expanded="'+(idx===0)+'">'+
+          '<span class="proj-left"><h3 class="display">'+esc(p.name)+'</h3>'+
+            '<span class="label" style="display:block">'+esc(p.kicker)+' · '+esc(p.year)+'</span>'+
+            '<span class="capchips">'+caps.map(function(c){
+              return '<span class="capchip" data-cap="'+c.id+'">'+esc(c.name)+'</span>';
+            }).join('')+'</span></span>'+
+          '<span class="proj-right"><span class="proj-thesis">'+esc(p.thesis)+'</span>'+
+            '<span class="chev" aria-hidden="true">+</span></span>'+
+        '</button>'+
         '<div class="proj-body"><div><h4>What it is</h4><p>'+esc(p.summary)+'</p>'+
           '<div class="stack">'+p.stack.map(function(s){return '<span class="pill">'+esc(s)+'</span>';}).join('')+'</div>'+
           (p['case'] ? '<button class="btn ghost small readcase" type="button" data-case="'+p.id+'">Read the case study →</button>' : '')+'</div>'+
         '<div><h4>How it works</h4><ul class="klist">'+p.points.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div></article>';
     }).join('');
+
+    $$('.proj-toggle').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        if(e.target.classList.contains('capchip')){ return; }   // chip handles itself
+        var proj = btn.closest('.proj');
+        var open = proj.getAttribute('data-open') === 'true';
+        setOpen(proj, !open);
+        if(!open){
+          signal('opened a project');
+          logEvent('Opened <b>'+esc(byId(proj.dataset.id).name)+'</b>', 5);
+        }
+      });
+    });
+    $$('.capchip').forEach(function(c){
+      c.addEventListener('click', function(e){ e.stopPropagation(); toggleCap(c.dataset.cap); });
+    });
   }
 
   /* ----------------------------------------------------- road runner demo */
@@ -2249,6 +2452,27 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     try { conn = (navigator.connection && navigator.connection.effectiveType) || ''; } catch(e){}
     return { tz:tz, os:os, br:br, conn:conn, w:(screen&&screen.width)||0, lang:navigator.language||'' };
   }
+  /* IANA zone names are region proxies, not addresses: everyone on US Pacific time
+     is "America/Los_Angeles" whether they are in San Francisco, Seattle or Vancouver.
+     Naming the proxy city is wrong, so name the region and say why. */
+  var ZONE_PROXY = {
+    'America/Los_Angeles':'Pacific time','America/Vancouver':'Pacific time','America/Tijuana':'Pacific time',
+    'America/Denver':'Mountain time','America/Edmonton':'Mountain time','America/Phoenix':'Arizona',
+    'America/Chicago':'Central time','America/Winnipeg':'Central time',
+    'America/New_York':'Eastern time','America/Toronto':'Eastern time','America/Detroit':'Eastern time',
+    'Europe/London':'the UK','Europe/Dublin':'Ireland',
+    'Europe/Paris':'Central Europe','Europe/Berlin':'Central Europe','Europe/Madrid':'Central Europe',
+    'Europe/Rome':'Central Europe','Europe/Amsterdam':'Central Europe','Europe/Stockholm':'Central Europe',
+    'Australia/Sydney':'Sydney or Melbourne','Australia/Melbourne':'Melbourne or Sydney',
+    'Asia/Kolkata':'India','Asia/Calcutta':'India','Pacific/Auckland':'New Zealand'
+  };
+  function zoneLabel(tz){
+    if(!tz){ return ''; }
+    if(ZONE_PROXY[tz]){ return ZONE_PROXY[tz]; }
+    return tz.split('/').pop().replace(/_/g, ' ');
+  }
+  function isProxyZone(tz){ return !!ZONE_PROXY[tz]; }
+
   function localTime(tz){
     try {
       return new Date().toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit', timeZone: tz || undefined});
@@ -2283,7 +2507,17 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 
   function paintEnv(){
     var e = S.env, m = S.mem;
-    setText('#d-local', e.tz ? localTime(e.tz) + ' · ' + e.tz.split('/').pop().replace(/_/g,' ') : localTime(''));
+    // A real city from the Worker beats the browser's zone-proxy every time.
+    var city = S.geo && S.geo.city ? S.geo.city + (S.geo.country ? ', ' + S.geo.country : '') : '';
+    setText('#d-local', e.tz ? localTime(e.tz) + ' · ' + (city || zoneLabel(e.tz)) : localTime(''));
+    var note = $('#tz-note');
+    if(note){
+      var explain = isProxyZone(e.tz) && !city;
+      note.textContent = explain
+        ? 'Your browser gives a time zone, not a city — everyone on this zone reads the same, wherever they are. Naming your actual city needs a server-side lookup.'
+        : '';
+      note.hidden = !explain;
+    }
     setText('#d-device', [e.os, e.br].filter(Boolean).join(' · ') + (e.conn ? ' · ' + e.conn : ''));
     setText('#d-visits', m.n === 1 ? 'first visit' : ordinal(m.n) + ' visit · first ' + daysAgo(m.first));
     var bits = [];
@@ -2331,6 +2565,48 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       signal('printed the page');
       logEvent('Printed or saved the page as PDF — usually means they are showing someone else', 10, 'sig');
     });
+  }
+
+  /* ---------------------------------------------------- server-side identity */
+  /* Optional. With DATA.identity.endpoint empty the site is browser-only and the
+     panel says so. With it set, one call names the city, the network and — where
+     it resolves — the company. Account level only, never a person. */
+  function identify(){
+    var ep = (DATA.identity && DATA.identity.endpoint) || '';
+    if(!ep){ return; }
+    var done = false;
+    var giveUp = setTimeout(function(){ done = true; }, 4000);
+    fetch(ep, {mode:'cors', credentials:'omit'})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        clearTimeout(giveUp);
+        if(done || !d){ return; }
+        S.geo = d;
+        if(d.city){
+          var note = $('#tz-note'); if(note){ note.hidden = true; }
+          setText('#d-local', localTime(S.env.tz) + ' · ' + d.city + (d.country ? ', ' + d.country : ''));
+          logEvent('Looked up where they actually are — <b>' + esc(d.city) + '</b>', 4);
+        }
+        if(d.network){
+          var row = $('#row-network'); if(row){ row.hidden = false; }
+          setText('#d-network', d.network);
+          logEvent('They are on the <b>' + esc(d.network) + '</b> network', 3);
+        }
+        if(d.company && d.company.name){
+          var crow = $('#row-company'); if(crow){ crow.hidden = false; }
+          var el = $('#d-company');
+          if(el){
+            el.innerHTML = '<span class="coy">' +
+              (d.company.domain ? '<img alt="" src="https://logo.clearbit.com/' + esc(d.company.domain) + '" onerror="this.remove()">' : '') +
+              '<b>' + esc(d.company.name) + '</b></span>';
+          }
+          S.company = d.company.name;
+          signal('identified by company');
+          logEvent('<b>Matched the company: ' + esc(d.company.name) + '.</b> No form, no cookie, no name — just the network they are on', 14, 'sig');
+        }
+        paint();
+      })
+      .catch(function(){ /* Worker down or blocked — the browser-only panel is still correct */ });
   }
 
   /* --------------------------------------------------------- observers etc */
@@ -2427,7 +2703,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       logEvent('Someone arrived. Nothing known about them yet.', 2);
     }
     if(S.env.tz){
-      logEvent('They are in <b>' + esc(S.env.tz.replace(/_/g,' ')) + '</b> — it is ' + esc(localTime(S.env.tz)) + ' there', 3);
+      logEvent('They are on <b>' + esc(zoneLabel(S.env.tz)) + '</b> — it is ' + esc(localTime(S.env.tz)) + ' there', 3);
       var h = localHour(S.env.tz);
       if(h < 7 || h >= 19){
         signal('reading outside work hours');
@@ -2440,6 +2716,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 
     watchSections();
     watchAttention();
+    identify();
     setInterval(tick, 1000);
     tick();
   }

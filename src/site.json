@@ -809,5 +809,13 @@
         }
       }
     ]
+  },
+  "identity": {
+    "endpoint": ""
+  },
+  "analytics": {
+    "cloudflareToken": "",
+    "ga4": "",
+    "contentsquare": "597912112e565"
   }
 }

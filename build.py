@@ -30,6 +30,7 @@ OUT = ROOT           # deployable files sit at the repo root, so GitHub Pages
 BUILD = ROOT / ".build"  # serves from "/" with no build step of its own
 TOKEN = "__SITE_DATA__"
 ROBOTS = "__ROBOTS__"
+ANALYTICS = "__ANALYTICS__"
 
 
 def esc(s):
@@ -98,6 +99,25 @@ def main() -> int:
     robots = ('<meta name="robots" content="noindex, nofollow">' if noindex
               else '<meta name="robots" content="index, follow">')
     html = html.replace(ROBOTS, robots)
+
+    # Analytics tags, injected only when an ID is present in site.json.
+    a = data.get("analytics", {})
+    tags = []
+    if a.get("cloudflareToken"):
+        tags.append(
+            '<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+            f'data-cf-beacon=\'{{"token": "{a["cloudflareToken"]}"}}\'></script>')
+    if a.get("ga4"):
+        gid = a["ga4"]
+        tags.append(
+            f'<script async src="https://www.googletagmanager.com/gtag/js?id={gid}"></script>\n'
+            "<script>window.dataLayer=window.dataLayer||[];"
+            "function gtag(){dataLayer.push(arguments);}gtag('js',new Date());"
+            f"gtag('config','{gid}');</script>")
+    if a.get("contentsquare"):
+        tags.append(
+            f'<script src="https://t.contentsquare.net/uxa/{a["contentsquare"]}.js" defer></script>')
+    html = html.replace(ANALYTICS, "\n".join(tags))
 
     (OUT / "index.html").write_text(html, encoding="utf-8")
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
@@ -176,6 +196,9 @@ def main() -> int:
     print(f"  flags:   engagementOffer={flags.get('engagementOffer')}, showRates={flags.get('showRates')}")
     print(f"  rate:    ${data.get('rate', {}).get('hourly')}/hr")
     print(f"  robots:  {'noindex' if noindex else 'index'}")
+    on = [k for k, v in data.get("analytics", {}).items() if v]
+    print(f"  tags:    {', '.join(on) if on else 'none — see ROADMAP.md Phase 1'}")
+    print(f"  identity:{' ' + data.get('identity', {}).get('endpoint', '') if data.get('identity', {}).get('endpoint') else ' browser-only (no Worker endpoint set)'}")
     print(f"  pages:   / plus {sum(1 for p in data.get('projects', []) if p.get('case'))} case pages")
     return 0
 
