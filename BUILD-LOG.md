@@ -1,5 +1,107 @@
 # Build log
 
+## 4 Sep 2026 — v1.5: three ways in, and an honest ceiling
+
+Sean: *"We need to move an enquiry form near the top... I don't want a typical form, what can we
+do that is more dynamic and engaging."* And separately: *"emphasise that what the website is
+doing is our base level engagement package... I don't want people thinking this type of
+tracking is all we do."*
+
+Both notes point at the same weakness. The page was very good at being impressive and
+comparatively bad at converting or at telling anyone what it was a sample of.
+
+**The trap.** A Name / Email / Message box near the top would contradict the argument the page
+spends 4,000 words making. *"Most websites collect leads. This one queries your business"* —
+followed by a contact form — is a page arguing against itself. So none of the three hooks is a
+form. Each delivers something before it asks for anything, and each composes an enquiry that
+arrives already carrying what the page worked out on its own.
+
+### 1. The sentence that fills itself in — under the hero
+
+Two inline dropdowns in the display face:
+
+> I want to fix **the enquiries we never call back** and I'd know it worked if **every enquiry
+> got an answer inside the hour**.
+
+Beneath it, a monospace strip headed **"Already known, without asking"** — company, city, local
+time, weather there, visit number, device, referrer, declared segment — followed by *"I worked
+all of that out before you typed anything. That is the entire pitch."*
+
+That strip is the enquiry hook and the product demo in the same six inches of page. The
+sentence is the opening two minutes of a discovery call, and the page has already done its half.
+
+The tokens are **inline `<span role="button">`, not `<button>`**: a real button is an inline
+block, so when the phrase wrapped the dashed underline ruled the entire line instead of
+following the words. With `display:inline` and `box-decoration-break:clone` the rule breaks
+correctly. Keyboard handlers restore Enter and Space.
+
+### 2. One question that answers first — above the diagnostic
+
+*"What is the number you want moved?"* Six chips. Picking one returns, immediately and without
+an email: what the problem usually turns out to be, an hours range, and what I would need to
+start. Framed as **"Before the seven questions, one"** so it reads as a deliberate on-ramp to
+the diagnostic rather than a duplicate of it. Every answer ends with two doors — send it now,
+or answer the seven.
+
+### 3. Ask it something — before the CTA
+
+Ten written answers, matched client-side on keyword overlap with a threshold. Cost, agencies,
+speed, what happens if it fails, who writes the code, company size, changing CRM, and *"what
+are you not good at"*, which is the one that earns the rest.
+
+**A miss is the best outcome in the whole feature.** No answer in the bank means the page says
+so — *"I have not written an answer to that one, which is a decent sign it is worth asking
+properly"* — and hands them a mail draft with their own question already in it. Meanwhile the
+log fires **"Asked something with no written answer — that is the one to reply to"** at weight
+20. An unanswerable question is the highest-quality signal on the site and now the strongest
+capture path.
+
+### One composer behind all three
+
+`contextBlock()` appends to every enquiry: company, city, local time, weather, visit history,
+device, referrer, declared segment, time on page, scroll depth, score, the diagnostic's weakest
+zone, the scope and its hours, and every question they typed. It signs off *"Sean — none of the
+above was typed in. Reply to whatever is wrong about it."*
+
+**Delivery is pre-composed `mailto:`, with copy-to-clipboard beside it.** Sean did not pick a
+delivery option, so this is the assumption: it ships today, needs no key, stores nothing, and
+keeps the privacy page true. The upgrade — POST to the existing Worker with mailto as a silent
+fallback — is about an hour plus a free Resend key, and belongs with Sprint 4's CRM wiring
+anyway. It would recover the people whose mail client swallows a mailto, which is not a small
+number on mobile.
+
+Note the honest consequence of mailto: **there is no email field**, because their mail client
+supplies the address. A field that collects something the transport already knows is theatre.
+
+### The tiers — the ceiling, said out loud
+
+New section directly after the live dashboard, at exactly the moment a reader is thinking
+*"nice tracking widget"*:
+
+- **01 The instrumented front door** — *"You are inside this one."* Marked as the base
+  engagement, 20–40 hours.
+- **02 Into Road Runner** — the same event stream pointed at the platform instead of a panel.
+  The connective layer between the front door and the systems that hold the business; answers
+  the visitor from live data, writes the record, routes the account, tells the owner what to
+  say. *"The difference between a page that watches and a system that acts."* Where most of the
+  value is.
+- **03 Built to your requirement** — configured quoting, brokered pricing, capacity, portals.
+  Kervio is one of these, end to end.
+
+Closing line: *"The tracking on this page is the demonstration, not the offer. Nobody has ever
+bought analytics from me; they buy the layer above it."* A matching two-sentence version sits in
+the rail itself, linking down to the section, because the rail is where the misreading happens.
+
+### Also
+
+- `.gitignore` for `worker/.wrangler/` — the v1.4 commit picked up wrangler's local account
+  cache. Nothing secret (the account ID is already public in `wrangler.toml`) but it is not
+  repo content.
+- Privacy page gains a row for the enquiry hooks: composed in the browser, no endpoint,
+  nothing posted.
+- Verified in Playwright, both themes: token wrap, popover dismissal, mailto subject and body,
+  the number answers, a keyword hit and a deliberate miss, and the tier ladder.
+
 ## 4 Sep 2026 — v1.4: the page writes them a note, and looks up their weather
 
 Sprint 3, items 1 and 2. Neither needed a Worker change.

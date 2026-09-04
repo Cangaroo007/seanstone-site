@@ -1,0 +1,6 @@
+# wrangler's local auth/account cache — not secret, but not repo content either
+worker/.wrangler/
+.wrangler/
+node_modules/
+.DS_Store
+.build/

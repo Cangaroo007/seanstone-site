@@ -864,5 +864,270 @@
     "updated": "4 September 2026",
     "contact": "sean@cangaroo.ai",
     "note": "Consent is gated for Europe/UK only. Australia and the US require notice, not opt-in — see BUILD-LOG."
+  },
+  "hook": {
+    "label": "The short version",
+    "lead": "Two dropdowns and one field. It is the opening two minutes of a discovery call, and the page has already done its half.",
+    "problems": [
+      "the enquiries we never call back",
+      "a pipeline that looks full and closes nothing",
+      "reps spending half the week on admin",
+      "leads that land somewhere nobody owns",
+      "quoting that takes days instead of minutes",
+      "a CRM nobody trusts and nobody updates",
+      "marketing and sales arguing about lead quality",
+      "not knowing which channel actually pays"
+    ],
+    "outcomes": [
+      "every enquiry got an answer inside the hour",
+      "the forecast was believable",
+      "a rep could quote on the call",
+      "we could see which channel actually pays",
+      "the CRM matched reality without anyone tidying it",
+      "we closed the same revenue with fewer people",
+      "a new rep was productive in a week, not a quarter",
+      "I stopped being the bottleneck"
+    ],
+    "known": "I worked all of that out before you typed anything. That is the entire pitch.",
+    "cta": "Send this to Sean",
+    "foot": "Opens your mail client with the whole thing written. Nothing is stored here and nothing is sent until you press send."
+  },
+  "numbers": {
+    "label": "Before the seven questions, one",
+    "head": "What is the number you want moved?",
+    "lead": "Pick one and I will tell you what it usually turns out to be, roughly what it costs to fix, and what I would need from you to start. No email required to read the answer.",
+    "items": [
+      {
+        "id": "reply",
+        "l": "Reply time",
+        "read": "Almost never a speed problem. It is a routing problem — the enquiry lands somewhere nobody owns, and the clock starts before anyone has been told. The fix is ownership at the moment of arrival: every inbound routed to a named person inside a minute, with an escalation if they do not touch it.",
+        "hours": "20–30 hours",
+        "need": "Read access to the CRM and one week of raw enquiries, unfiltered."
+      },
+      {
+        "id": "pipeline",
+        "l": "Pipeline volume",
+        "read": "Before adding sources, I would find out what the current ones are actually worth. Most companies I see are paying for three channels and closing from one, and cannot prove which. More volume on top of that just makes the misallocation more expensive.",
+        "hours": "25–40 hours",
+        "need": "Twelve months of closed-won and closed-lost with the source attached, however messy."
+      },
+      {
+        "id": "conversion",
+        "l": "Conversion rate",
+        "read": "A single conversion rate is usually hiding two populations moving in opposite directions. Split it by source and segment first and the number often stops being a problem and starts being a decision about which segment to stop serving.",
+        "hours": "20–35 hours",
+        "need": "Opportunity history with stage timestamps. Stage names can be a mess; I will map them."
+      },
+      {
+        "id": "cpl",
+        "l": "Cost per lead",
+        "read": "Nearly always the wrong number to optimise. Cheap leads that never close are more expensive than dear ones that do. I would rebuild this as cost per closed-won by channel, which usually reorders the whole spend and occasionally kills someone's favourite campaign.",
+        "hours": "15–25 hours",
+        "need": "Ad spend by channel and the CRM's source field, even if it is 40% blank."
+      },
+      {
+        "id": "capacity",
+        "l": "Rep capacity",
+        "read": "The honest question is how many hours a week your reps spend on things that are not selling. In the teams I have measured it is between eleven and nineteen. Most of it is data entry, quoting and chasing information that already exists somewhere in the business.",
+        "hours": "30–50 hours",
+        "need": "An hour with two reps, screen shared, doing their actual admin. Not a survey."
+      },
+      {
+        "id": "quote",
+        "l": "Quote turnaround",
+        "read": "This is the one I have built twice. If the price depends on configuration, someone senior is being asked to do arithmetic, and the delay is entirely the queue in front of them. Push the rules into software and quoting stops being a role.",
+        "hours": "40–80 hours",
+        "need": "Twenty recent quotes and thirty minutes with whoever currently prices the hard ones."
+      }
+    ],
+    "after": "That is the written answer. The useful one needs about ten minutes and two questions about your business."
+  },
+  "ask": {
+    "label": "Ask it something",
+    "head": "The questions you would ask on a call.",
+    "lead": "I have written honest answers to the ones I actually get. Type your own — if I have not answered it, that is worth knowing too, and it becomes the first line of your email.",
+    "placeholder": "What would you actually do in the first month?",
+    "suggest": [
+      "What does this cost?",
+      "Why not an agency?",
+      "How fast can you start?",
+      "What if it doesn't work?",
+      "What would you do in the first month?"
+    ],
+    "bank": [
+      {
+        "q": "What would you do in the first month?",
+        "keys": [
+          "first month",
+          "month one",
+          "start",
+          "begin",
+          "first 30",
+          "onboarding",
+          "week one"
+        ],
+        "a": "Week one is read-only: your CRM, your enquiry log, a week of calls, and an hour each with two reps doing their actual admin. Week two you get the map and the three things I would fix, sequenced, with hours against each. Nothing gets built until you have seen both and disagreed with at least one of them."
+      },
+      {
+        "q": "What does this cost?",
+        "keys": [
+          "cost",
+          "price",
+          "rate",
+          "how much",
+          "budget",
+          "expensive",
+          "fee",
+          "charge"
+        ],
+        "a": "$200 an hour, bought in monthly blocks. Twenty hours a month is the common shape — that is $4,000 and it is roughly a third of what the equivalent full-time hire costs once you load it. There is no retainer that buys you nothing, no minimum term, and the scope builder further down this page will price your actual list without you speaking to me."
+      },
+      {
+        "q": "Why not an agency?",
+        "keys": [
+          "agency",
+          "consultant",
+          "consultancy",
+          "firm",
+          "vendor",
+          "instead of",
+          "versus",
+          "vs"
+        ],
+        "a": "Agencies are structurally good at campaigns and structurally bad at systems, because a system needs someone who will still be there in month nine. Most of what gets sold as revenue operations is a deck and a Notion board. I hand over working software in your stack, with the source, and the whole point is that you stop needing me."
+      },
+      {
+        "q": "How fast can you start?",
+        "keys": [
+          "fast",
+          "quick",
+          "when",
+          "start",
+          "available",
+          "availability",
+          "capacity",
+          "lead time",
+          "soon"
+        ],
+        "a": "Usually within a fortnight, sometimes the same week if the first block is diagnostic rather than build. I hold two engagements at a time; a third is where the quality goes. If I cannot start when you need me I will say so rather than book you in and stretch it."
+      },
+      {
+        "q": "What if it doesn't work?",
+        "keys": [
+          "doesn't work",
+          "fail",
+          "risk",
+          "guarantee",
+          "refund",
+          "wrong",
+          "not work",
+          "didn't work"
+        ],
+        "a": "The first block is deliberately small and ends in something live, so you find out in weeks rather than quarters. If the diagnosis is wrong you have spent twenty hours and you own the analysis anyway. I would rather lose the engagement in week two than defend it in month six."
+      },
+      {
+        "q": "Do you write the code yourself?",
+        "keys": [
+          "code",
+          "build",
+          "develop",
+          "yourself",
+          "who builds",
+          "engineer",
+          "technical",
+          "stack"
+        ],
+        "a": "Yes, directed through AI — which is the reason the economics work at all. Twenty-five years of knowing what the system should do, and a method for turning that judgement into working software in days. Kervio and Road Runner were both built this way, by me, and both are running in production. The work section on this page is the evidence."
+      },
+      {
+        "q": "What size company do you work with?",
+        "keys": [
+          "size",
+          "how big",
+          "small",
+          "enterprise",
+          "smb",
+          "startup",
+          "headcount",
+          "revenue",
+          "fit"
+        ],
+        "a": "Companies with real revenue and no revenue operations function — usually somewhere between $2M and $50M, ten to a hundred and fifty people. Below that there is not enough process to be worth systematising. Above it you should be hiring the function, and I am happy to tell you that on the call."
+      },
+      {
+        "q": "Do I have to change CRM?",
+        "keys": [
+          "crm",
+          "hubspot",
+          "salesforce",
+          "pipedrive",
+          "migrate",
+          "change system",
+          "replace",
+          "tool",
+          "platform"
+        ],
+        "a": "Almost never, and I will push back hard if someone suggests it. A migration is nine months of pain that solves a problem you usually do not have. Nearly every CRM I have seen is fine; what is broken is what does and does not reach it."
+      },
+      {
+        "q": "What are you not good at?",
+        "keys": [
+          "not good",
+          "weakness",
+          "bad at",
+          "can't",
+          "cannot",
+          "limitations",
+          "won't"
+        ],
+        "a": "Brand, creative and paid media buying — I can tell you whether a channel pays, not how to make the ad better. Anything that needs a large team held together over years; I am the wrong shape for that and it is why I work in blocks. And I am slow to be diplomatic about a number that is being reported in a way I think is misleading."
+      },
+      {
+        "q": "Where are you based?",
+        "keys": [
+          "where",
+          "based",
+          "located",
+          "location",
+          "timezone",
+          "remote",
+          "onsite",
+          "travel",
+          "visa"
+        ],
+        "a": "San Francisco, having built commercial systems across the US, Australia and Asia. Most of the work is remote and asynchronous by design — the artefacts are the software and the analysis, not the meetings — but I will come and sit with a sales team for the diagnostic week if it is the difference between guessing and knowing."
+      }
+    ],
+    "miss": "I have not written an answer to that one, which is a decent sign it is worth asking properly.",
+    "cta": "Send it to me instead"
+  },
+  "tiers": {
+    "label": "Where this sits",
+    "head": "What you are looking at is the entry level.",
+    "lead": "This page is the smallest useful version of the thing: one front door, instrumented, deciding in the browser. It is the base engagement, it goes live in weeks, and it is deliberately the cheapest thing on this list. It is not the product. It is the first tier of one.",
+    "items": [
+      {
+        "n": "01",
+        "t": "The instrumented front door",
+        "w": "What is running on this page",
+        "d": "Identity resolution at the account level, behavioural scoring you can interrogate, a stage and a next action, and an event stream shaped as CRM events from the first line. Live in two to three weeks on your existing stack, with the source handed over.",
+        "note": "The base engagement. Roughly 20–40 hours."
+      },
+      {
+        "n": "02",
+        "t": "Into Road Runner",
+        "w": "Where the stream becomes decisions",
+        "d": "The same events, pointed at the platform instead of at a panel. Road Runner is the connective layer between the front door and the systems that actually hold your business — CRM, ERP, stock, pricing, delivery. It answers the visitor's question from your live data, writes the record, routes the account to a named owner and tells them what to say. That is the difference between a page that watches and a system that acts.",
+        "note": "Where most of the value is. 60–120 hours."
+      },
+      {
+        "n": "03",
+        "t": "Built to your requirement",
+        "w": "When the shape is yours, not mine",
+        "d": "Configured quoting, brokered pricing, capacity and scheduling, dealer and franchise portals, whatever the business actually runs on. Kervio is one of these built end to end for stone fabrication. This is where the engagement stops looking like marketing technology and starts looking like the operating system of the company.",
+        "note": "Scoped from the diagnostic, not from a price list."
+      }
+    ],
+    "foot": "The tracking on this page is the demonstration, not the offer. Nobody has ever bought analytics from me; they buy the layer above it, and this is the cheapest honest way to show you what that layer does."
   }
 }

@@ -446,6 +446,115 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ============================================================== THE TIERS */
+.tiers{display:grid;gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--surface)}
+.tier{display:grid;gap:var(--s4);padding:var(--s6);border-top:1px solid var(--rule-soft);position:relative}
+.tier:first-child{border-top:0}
+.tier.now{background:var(--surface-2);border-left:3px solid var(--signal)}
+.tier.next{border-left:3px solid var(--accent)}
+.tier.far{border-left:3px solid var(--rule)}
+@media(min-width:820px){.tier{grid-template-columns:76px 1fr 220px;align-items:start;gap:var(--s6)}}
+.tier .n{font-family:var(--mono);font-size:26px;line-height:1;color:var(--muted)}
+.tier.now .n{color:var(--signal)}
+.tier.next .n{color:var(--accent)}
+.tier h3{font-family:var(--display);font-size:clamp(21px,2.5vw,28px);line-height:1.2;margin-bottom:var(--s2)}
+.tier .w{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:var(--s3);display:block}
+.tier p{font-size:15.5px;line-height:1.65;color:var(--ink-soft);max-width:62ch}
+.tier .side{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--muted);
+  border-top:1px solid var(--rule-soft);padding-top:var(--s3)}
+@media(min-width:820px){.tier .side{border-top:0;border-left:1px solid var(--rule-soft);
+  padding:0 0 0 var(--s5);margin-top:6px}}
+.tier .youarehere{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:#fff;background:var(--signal);border-radius:3px;padding:3px 7px;margin-bottom:var(--s3)}
+
+/* ============================================================ THE HOOK */
+.hook{border:1px solid var(--rule);border-top:3px solid var(--signal);border-radius:6px;
+  background:var(--surface);padding:var(--s6) var(--s6) var(--s5)}
+.hook-line{font-family:var(--display);font-size:clamp(23px,3vw,36px);line-height:1.34;
+  color:var(--ink);margin:var(--s4) 0 var(--s5);max-width:24ch;letter-spacing:-.01em}
+@media(min-width:700px){.hook-line{max-width:44ch}}
+.tok{
+  /* An inline span, not a button, so the dashed rule breaks with the words
+     instead of ruling the whole line when the phrase wraps. */
+  display:inline;font:inherit;color:var(--accent);cursor:pointer;
+  border-bottom:2px dashed var(--accent);
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  transition:background .15s ease;
+}
+.tok:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.tok:hover,.tok[aria-expanded="true"]{background:rgba(14,110,99,.09)}
+.tok.empty{color:var(--muted);border-bottom-color:var(--muted);font-style:italic}
+.tok::after{content:"";display:inline-block;width:0;height:0;margin:0 0 4px 8px;
+  border:4px solid transparent;border-top-color:currentColor;vertical-align:middle}
+.tokwrap{position:relative;display:inline}
+.tokpop{
+  position:absolute;z-index:60;top:calc(100% + 8px);left:0;min-width:min(88vw,420px);
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:6px;
+  box-shadow:0 18px 46px rgba(0,0,0,.20);padding:var(--s2);
+  max-height:min(52vh,340px);overflow-y:auto;animation:slidein .16s ease;
+}
+.tokpop button{
+  display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+  font-family:var(--body);font-size:15px;line-height:1.4;color:var(--ink-soft);
+  padding:9px 11px;border-radius:4px;
+}
+.tokpop button:hover,.tokpop button:focus-visible{background:var(--surface);color:var(--ink);outline:none}
+.hook-known{border-top:1px solid var(--rule-soft);padding-top:var(--s4);margin-bottom:var(--s5)}
+.hook-known .label{margin-bottom:var(--s3)}
+.knowns{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:var(--s3)}
+.known{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;
+  padding:5px 9px;color:var(--ink-soft);animation:slidein .3s ease;
+}
+.known b{color:var(--accent);font-weight:500}
+.hook-send{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+.hook-send .btn[aria-disabled="true"]{opacity:.35;pointer-events:none}
+
+/* ====================================================== ONE NUMBER */
+.numgrid{display:grid;gap:var(--s3);grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:var(--s5)}
+.num{
+  cursor:pointer;text-align:left;background:var(--surface);border:1px solid var(--rule);
+  border-radius:5px;padding:var(--s4) var(--s4);font-family:var(--mono);font-size:12.5px;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);transition:all .14s ease;
+}
+.num:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-1px)}
+.num[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.numout[hidden]{display:none}
+.numout{
+  border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:5px;
+  background:var(--surface);padding:var(--s6);animation:slidein .35s ease;
+}
+.numout h3{font-family:var(--display);font-size:clamp(20px,2.4vw,27px);line-height:1.2;margin-bottom:var(--s3)}
+.numout p{font-size:16px;line-height:1.65;max-width:64ch;color:var(--ink-soft)}
+.numfacts{display:flex;flex-wrap:wrap;gap:var(--s5);margin:var(--s5) 0;
+  border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);padding:var(--s4) 0}
+.numfact span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.numfact b{font-size:15px;font-weight:600;color:var(--ink);line-height:1.45;display:block;max-width:44ch}
+.numrow{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+
+/* ========================================================== ASK IT */
+.askbar{display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s3)}
+.askbar input{
+  flex:1 1 300px;font-family:var(--body);font-size:16px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--rule);border-radius:5px;padding:14px var(--s4);
+}
+.askbar input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,110,99,.14)}
+.asksug{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:var(--s5)}
+.asksug button{
+  cursor:pointer;background:none;border:1px solid var(--rule);border-radius:999px;
+  padding:6px 13px;font-size:13px;color:var(--muted);transition:all .12s ease;
+}
+.asksug button:hover{border-color:var(--accent);color:var(--accent)}
+.askout[hidden]{display:none}
+.askout{border:1px solid var(--rule);border-left:3px solid var(--signal);border-radius:5px;
+  background:var(--surface);padding:var(--s6);animation:slidein .35s ease}
+.askout .askq{font-family:var(--display);font-size:clamp(19px,2.3vw,26px);line-height:1.25;margin-bottom:var(--s4)}
+.askout p{font-size:16px;line-height:1.65;max-width:64ch;color:var(--ink-soft)}
+.askout .numrow{margin-top:var(--s5)}
+
 /* ============================================================ THE NOTE */
 #note-sec[hidden]{display:none !important}
 .note-card{
@@ -673,6 +782,30 @@ __SITE_DATA__
     <div class="metrics" id="metrics"></div>
   </section>
 
+  <!-- ============================== THE HOOK ============================== -->
+  <section id="hook-sec">
+    <div class="hook">
+      <div class="label"><span class="tick"></span> <span id="hook-label"></span></div>
+      <p class="hook-line" id="hook-line">
+        I want to fix <span class="tokwrap"><span class="tok empty" role="button" tabindex="0" id="tok-problem"
+          aria-haspopup="listbox" aria-expanded="false">something in the funnel</span></span>
+        and I&#8217;d know it worked if <span class="tokwrap"><span class="tok empty" role="button" tabindex="0" id="tok-outcome"
+          aria-haspopup="listbox" aria-expanded="false">one number moved</span></span>.
+      </p>
+      <div class="hook-known" id="hook-known" hidden>
+        <div class="label">Already known, without asking</div>
+        <div class="knowns" id="knowns"></div>
+        <p class="note" id="hook-known-note"></p>
+      </div>
+      <div class="hook-send">
+        <a class="btn" id="hook-btn" href="#" aria-disabled="true"></a>
+        <button class="btn ghost" type="button" id="hook-copy">Copy it instead</button>
+        <span class="note" id="hook-copied" hidden>Copied.</span>
+      </div>
+      <p class="hint" id="hook-foot" style="margin-top:var(--s4)"></p>
+    </div>
+  </section>
+
   <!-- ============================== ROUTER ============================== -->
   <section id="router-sec">
     <div class="sec-head">
@@ -740,6 +873,17 @@ __SITE_DATA__
   </section>
 
   <!-- ============================== DIAGNOSTIC ============================== -->
+  <!-- ============================== ONE NUMBER ============================== -->
+  <section id="number-sec" data-audiences="build,product,look">
+    <div class="sec-head">
+      <div class="label"><span class="tick"></span> <span id="num-label"></span></div>
+      <h2 class="display" id="num-head"></h2>
+    </div>
+    <p class="prose" id="num-lead" style="margin-bottom:var(--s5)"></p>
+    <div class="numgrid" id="numgrid"></div>
+    <div class="numout" id="numout" hidden></div>
+  </section>
+
   <section id="diag-sec" data-audiences="build,product,look">
     <div class="sec-head">
       <div class="label"><span class="tick"></span> Interactive · diagnostic</div>
@@ -853,6 +997,17 @@ __SITE_DATA__
     </div>
   </section>
 
+  <!-- ============================== THE TIERS ============================== -->
+  <section id="tier-sec" data-audiences="build,product,look">
+    <div class="sec-head">
+      <div class="label"><span class="tick"></span> <span id="tier-label"></span></div>
+      <h2 class="display" id="tier-head"></h2>
+    </div>
+    <p class="prose" id="tier-lead" style="margin-bottom:var(--s5)"></p>
+    <div class="tiers" id="tiers"></div>
+    <p class="note" id="tier-foot" style="margin-top:var(--s4);max-width:70ch"></p>
+  </section>
+
   <!-- ============================== THE NOTE ============================== -->
   <section id="note-sec" hidden>
     <div class="sec-head">
@@ -876,6 +1031,21 @@ __SITE_DATA__
     </details>
   </section>
 
+  <!-- ============================== ASK IT ============================== -->
+  <section id="ask-sec">
+    <div class="sec-head">
+      <div class="label"><span class="tick"></span> <span id="ask-label"></span></div>
+      <h2 class="display" id="ask-head"></h2>
+    </div>
+    <p class="prose" id="ask-lead" style="margin-bottom:var(--s5)"></p>
+    <form class="askbar" id="askform" autocomplete="off">
+      <input type="text" id="askinput" aria-label="Ask a question">
+      <button class="btn" type="submit">Ask &rarr;</button>
+    </form>
+    <div class="asksug" id="asksug"></div>
+    <div class="askout" id="askout" hidden></div>
+  </section>
+
   <!-- ============================== CTA ============================== -->
   <section id="cta-sec">
     <div class="cta">
@@ -896,7 +1066,7 @@ __SITE_DATA__
   <div class="rail-in" id="rail-desktop">
     <div class="rail-head">
       <div class="label"><span class="pulse"></span> If this were your site</div>
-      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it.</p><p id="rail-disclosure">This panel runs in your browser; a small note is kept there so the page recognises you next time. The site also runs ordinary analytics — which is rather the point: you can measure everything and still know nothing about who is on your site.</p>
+      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it.</p><p id="rail-disclosure">This panel runs in your browser; a small note is kept there so the page recognises you next time. The site also runs ordinary analytics — which is rather the point: you can measure everything and still know nothing about who is on your site.</p><p id="rail-tier">This panel is the <b>entry-level engagement</b>, and it is the smallest part of the work. Wired into Road Runner the same stream stops being a display and starts writing records, routing accounts and answering buyers from your live systems. <a href="#tier-sec">The three tiers &darr;</a></p>
     </div>
 
     <div class="verdict">
@@ -966,7 +1136,8 @@ __SITE_DATA__
   var S = {
     path:null, score:0, events:0, sections:{}, signals:[],
     start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20},
-    caps:[], analyticsLoaded:false, geo:null, company:null, weather:null, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
+    caps:[], analyticsLoaded:false, geo:null, company:null, weather:null,
+    hook:{problem:null,outcome:null}, number:null, asked:[], src:'', env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
   };
 
   /* ------------------------------------------------------------ event log */
@@ -1006,6 +1177,7 @@ __SITE_DATA__
     if(g){ g.style.color = S.score>=70?'var(--signal)':S.score>=40?'var(--warn)':'var(--muted)'; }
     paintAlert();
     paintEnv();
+    renderKnown();
     noteMaybe();
   }
 
@@ -1956,6 +2128,276 @@ __SITE_DATA__
   }
 
 
+
+  /* ------------------------------------------------------------ the tiers */
+  /* The instrumentation on this page is the demonstration, not the offer. If a
+     reader leaves thinking "nice tracking widget" the page has undersold by two
+     tiers, so it says so in the middle of the strongest trick. */
+  function renderTiers(){
+    var T = DATA.tiers; if(!T || !$('#tiers')){ return; }
+    setText('#tier-label', T.label); setText('#tier-head', T.head);
+    setText('#tier-lead', T.lead); setText('#tier-foot', T.foot);
+    var cls = ['now','next','far'];
+    $('#tiers').innerHTML = T.items.map(function(it,i){
+      return '<div class="tier ' + cls[i] + '">' +
+        '<div class="n">' + esc(it.n) + '</div>' +
+        '<div>' + (i===0 ? '<span class="youarehere">You are inside this one</span>' : '') +
+          '<span class="w">' + esc(it.w) + '</span>' +
+          '<h3>' + esc(it.t) + '</h3><p>' + esc(it.d) + '</p></div>' +
+        '<div class="side">' + esc(it.note) + '</div></div>';
+    }).join('');
+  }
+
+  /* =========================================================== ENQUIRY HOOKS
+     Three ways in, staged down the page, all feeding one composer. The point of
+     each is that value is delivered before anything is asked for, and that every
+     enquiry arrives with the page's own intelligence already attached to it. */
+
+  /* What the page can state about this visitor without having asked. Shared by
+     the hook strip and by every enquiry it composes. */
+  function knownFacts(){
+    var e = S.env, g = S.geo || {}, out = [];
+    if(S.company){ out.push({k:'company', v:S.company}); }
+    if(g.city){ out.push({k:'city', v:g.city + (g.country ? ', ' + g.country : '')}); }
+    else if(e.tz){ out.push({k:'region', v:zoneLabel(e.tz)}); }
+    if(e.tz){ out.push({k:'local time', v:localTime(e.tz)}); }
+    if(S.weather){ out.push({k:'weather there', v:S.weather.temp + S.weather.sym + ', ' + S.weather.word}); }
+    if(g.network && !S.company){ out.push({k:'network', v:g.network}); }
+    out.push({k:'visit', v: S.mem.n === 1 ? 'first' : ordinal(S.mem.n) + ', first ' + daysAgo(S.mem.first)});
+    out.push({k:'device', v:[e.os, e.br].filter(Boolean).join(', ')});
+    if(S.src){ out.push({k:'came from', v:S.src}); }
+    if(S.path){ out.push({k:'declared', v:segShort(S.path)}); }
+    return out;
+  }
+  function renderKnown(){
+    var wrap = $('#hook-known'), box = $('#knowns');
+    if(!box){ return; }
+    var f = knownFacts();
+    var stamp = f.map(function(x){ return x.k + x.v; }).join('|');
+    if(box.dataset.stamp === stamp){ return; }
+    box.dataset.stamp = stamp;
+    box.innerHTML = f.map(function(x){
+      return '<span class="known">' + esc(x.k) + ' <b>' + esc(x.v) + '</b></span>';
+    }).join('');
+    if(wrap){ wrap.hidden = false; }
+  }
+
+  /* Everything the page knows, in a shape that reads sensibly at the bottom of
+     an email. This is the argument: the enquiry arrives pre-qualified. */
+  function contextBlock(){
+    var lines = ['', '— what the page worked out on its own —'];
+    knownFacts().forEach(function(x){ lines.push(x.k + ': ' + x.v); });
+    lines.push('time on page: ' + fmtTime(Date.now()-S.start) + ' · ' + S.depth + '% read · score ' + S.score);
+    if(Object.keys(S.diag).length === DATA.diagnostic.questions.length){
+      var w = weakestZone();
+      lines.push('diagnostic: weakest zone is ' + ((DATA.diagnostic.zones[w]||{}).name || w));
+    }
+    var ids = Object.keys(S.scope.picked);
+    if(ids.length){
+      var hrs = ids.reduce(function(a,k){ return a + S.scope.picked[k]; }, 0);
+      lines.push('scope built: ' + ids.length + ' outcomes, ~' + hrs + 'h at ' + S.scope.cap + 'h/month');
+    }
+    if(S.asked.length){ lines.push('asked the page: ' + S.asked.join(' | ')); }
+    lines.push('', 'Sean — none of the above was typed in. Reply to whatever is wrong about it.');
+    return lines.join('\n');
+  }
+  function mailtoHref(subject, body){
+    return 'mailto:' + DATA.profile.email + '?subject=' + encodeURIComponent(subject) +
+           '&body=' + encodeURIComponent(body + '\n' + contextBlock() + '\n');
+  }
+  function copyText(text, badgeSel){
+    var done = function(){
+      var n = $(badgeSel); if(!n){ return; }
+      n.hidden = false; setTimeout(function(){ n.hidden = true; }, 4000);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, done); }
+    else {
+      var ta = document.createElement('textarea'); ta.value = text;
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(e){}
+      document.body.removeChild(ta); done();
+    }
+  }
+
+  /* ------------------------------------------------------- 1. the sentence */
+  function tokenMenu(btn, options, onPick){
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    $$('.tokpop').forEach(function(el){ el.parentNode.removeChild(el); });
+    $$('.tok').forEach(function(t){ t.setAttribute('aria-expanded','false'); });
+    if(open){ return; }
+    var pop = document.createElement('div');
+    pop.className = 'tokpop'; pop.setAttribute('role','listbox');
+    pop.innerHTML = options.map(function(o,i){
+      return '<button type="button" role="option" data-i="'+i+'">'+esc(o)+'</button>';
+    }).join('');
+    btn.parentNode.appendChild(pop);
+    btn.setAttribute('aria-expanded','true');
+    pop.addEventListener('click', function(ev){
+      var b = ev.target.closest('button[data-i]');
+      if(!b){ return; }
+      onPick(options[+b.dataset.i]);
+      pop.parentNode.removeChild(pop);
+      btn.setAttribute('aria-expanded','false');
+    });
+    setTimeout(function(){
+      document.addEventListener('click', function away(ev){
+        if(pop.contains(ev.target) || ev.target === btn){ return; }
+        if(pop.parentNode){ pop.parentNode.removeChild(pop); }
+        btn.setAttribute('aria-expanded','false');
+        document.removeEventListener('click', away);
+      });
+    }, 0);
+  }
+  function hookSentence(){
+    var h = S.hook;
+    if(!h.problem && !h.outcome){ return ''; }
+    return 'I want to fix ' + (h.problem || 'something in the funnel') +
+           ', and I’d know it worked if ' + (h.outcome || 'one number moved') + '.';
+  }
+  function updateHook(){
+    var btn = $('#hook-btn'), h = S.hook;
+    if(!btn){ return; }
+    var ready = !!(h.problem || h.outcome);
+    btn.setAttribute('aria-disabled', ready ? 'false' : 'true');
+    btn.textContent = ready ? DATA.hook.cta + ' →' : 'Pick one, then send it';
+    if(ready){
+      btn.href = mailtoHref('Fix: ' + (h.problem || 'the funnel'), hookSentence());
+    } else { btn.href = '#'; }
+    renderKnown();
+  }
+  function renderHook(){
+    var H = DATA.hook; if(!H || !$('#hook-line')){ return; }
+    setText('#hook-label', H.label);
+    setText('#hook-known-note', H.known);
+    setText('#hook-foot', H.foot);
+    var pb = $('#tok-problem'), ob = $('#tok-outcome');
+    var wire = function(btn, list, key, label){
+      btn.addEventListener('keydown', function(ev){
+        if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); btn.click(); }
+      });
+      btn.addEventListener('click', function(){
+        tokenMenu(btn, list, function(v){
+          S.hook[key] = v;
+          btn.textContent = v; btn.classList.remove('empty');
+          signal('started an enquiry');
+          logEvent('Filled in half a sentence: <b>' + esc(label) + ' ' + esc(v) + '</b>', 10, 'sig');
+          updateHook();
+        });
+      });
+    };
+    wire(pb, H.problems, 'problem', 'wants to fix');
+    wire(ob, H.outcomes, 'outcome', 'would call it fixed when');
+    $('#hook-btn').addEventListener('click', function(){
+      if(this.getAttribute('aria-disabled') === 'true'){ return; }
+      signal('opened an enquiry');
+      logEvent('<b>Composed an enquiry from the top of the page</b> — with everything above attached to it', 22, 'sig');
+    });
+    $('#hook-copy').addEventListener('click', function(){
+      var t = hookSentence();
+      copyText((t ? t + '\n' : '') + contextBlock(), '#hook-copied');
+      S.copied = true;
+      signal('copied your details');
+      logEvent('Took the enquiry away to send later', 16, 'sig');
+      paint();
+    });
+    updateHook();
+  }
+
+  /* --------------------------------------------------- 2. the one number */
+  function renderNumbers(){
+    var N = DATA.numbers; if(!N || !$('#numgrid')){ return; }
+    setText('#num-label', N.label); setText('#num-head', N.head); setText('#num-lead', N.lead);
+    $('#numgrid').innerHTML = N.items.map(function(it){
+      return '<button class="num" type="button" data-id="'+it.id+'" aria-pressed="false">'+esc(it.l)+'</button>';
+    }).join('');
+    $$('.num').forEach(function(b){
+      b.addEventListener('click', function(){ pickNumber(b.dataset.id); });
+    });
+  }
+  function pickNumber(id){
+    var it = DATA.numbers.items.filter(function(x){ return x.id===id; })[0];
+    if(!it){ return; }
+    S.number = id;
+    $$('.num').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.id===id ? 'true':'false'); });
+    var box = $('#numout');
+    box.innerHTML =
+      '<h3 class="display">' + esc(it.l) + '</h3>' +
+      '<p>' + esc(it.read) + '</p>' +
+      '<div class="numfacts">' +
+        '<div class="numfact"><span>Usually takes</span><b>' + esc(it.hours) + '</b></div>' +
+        '<div class="numfact"><span>What I would need to start</span><b>' + esc(it.need) + '</b></div>' +
+      '</div>' +
+      '<p class="note" style="margin-bottom:var(--s5)">' + esc(DATA.numbers.after) + '</p>' +
+      '<div class="numrow">' +
+        '<a class="btn" id="num-send" href="' + esc(mailtoHref(
+            'Moving the number: ' + it.l,
+            'The number I want moved is ' + it.l.toLowerCase() + '.\n\nYour written answer said: ' + it.hours +
+            ', and you would need ' + it.need.charAt(0).toLowerCase() + it.need.slice(1) + '\n\nHere is what is actually going on:')) +
+          '">Send this to Sean &rarr;</a>' +
+        '<a class="btn ghost" href="#diag-sec">Or answer the seven questions &darr;</a>' +
+      '</div>';
+    box.hidden = false;
+    signal('named their number');
+    logEvent('Told you which number they want moved: <b>' + esc(it.l.toLowerCase()) + '</b>', 18, 'sig');
+    var send = $('#num-send');
+    if(send){ send.addEventListener('click', function(){
+      logEvent('<b>Enquiry opened from the one-number answer</b>', 20, 'sig');
+    }); }
+    noteMaybe();
+  }
+
+  /* --------------------------------------------------------- 3. ask it */
+  function normalise(q){ return String(q||'').toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ').trim(); }
+  var STOP = {the:1,a:1,an:1,is:1,are:1,do:1,does:1,you:1,your:1,i:1,it:1,of:1,to:1,in:1,on:1,and:1,for:1,what:1,how:1,'with':1,me:1,my:1,can:1,would:1,'will':1,'if':1,that:1,this:1,be:1};
+  function askMatch(raw){
+    var q = normalise(raw);
+    if(!q){ return null; }
+    var words = q.split(' ').filter(function(w){ return w.length>2 && !STOP[w]; });
+    var best = null;
+    DATA.ask.bank.forEach(function(item){
+      var score = 0;
+      item.keys.forEach(function(k){ if(q.indexOf(normalise(k)) >= 0){ score += 3; } });
+      var qw = normalise(item.q).split(' ');
+      words.forEach(function(w){ if(qw.indexOf(w) >= 0){ score += 1; } });
+      if(!best || score > best.score){ best = {item:item, score:score}; }
+    });
+    return (best && best.score >= 3) ? best.item : null;
+  }
+  function answerAsk(raw){
+    var q = String(raw||'').trim();
+    if(!q){ return; }
+    S.asked.push(q.slice(0,80));
+    var hit = askMatch(q), box = $('#askout');
+    if(hit){
+      box.innerHTML = '<div class="askq display">' + esc(hit.q) + '</div><p>' + esc(hit.a) + '</p>' +
+        '<div class="numrow"><a class="btn ghost" href="' + esc(mailtoHref('Following up: ' + hit.q, 'You wrote an answer to this on the site. Mine is more specific:\n\n')) +
+        '">That is not quite my situation &rarr;</a></div>';
+      signal('asked the page a question');
+      logEvent('Asked: <b>' + esc(q.slice(0,60)) + '</b> — answered from the written bank', 12, 'sig');
+    } else {
+      box.innerHTML = '<div class="askq display">' + esc(q) + '</div>' +
+        '<p>' + esc(DATA.ask.miss) + '</p>' +
+        '<div class="numrow"><a class="btn" href="' + esc(mailtoHref('Question: ' + q.slice(0,70), q + '\n\n')) +
+        '">' + esc(DATA.ask.cta) + ' &rarr;</a></div>';
+      signal('asked something I have not answered');
+      logEvent('<b>Asked something with no written answer: &ldquo;' + esc(q.slice(0,60)) + '&rdquo;</b> — that is the one to reply to', 20, 'sig');
+    }
+    box.hidden = false;
+    noteMaybe();
+  }
+  function renderAsk(){
+    var A = DATA.ask; if(!A || !$('#askform')){ return; }
+    setText('#ask-label', A.label); setText('#ask-head', A.head); setText('#ask-lead', A.lead);
+    $('#askinput').placeholder = A.placeholder;
+    $('#asksug').innerHTML = A.suggest.map(function(q){
+      return '<button type="button">' + esc(q) + '</button>';
+    }).join('');
+    $$('#asksug button').forEach(function(b){
+      b.addEventListener('click', function(){ $('#askinput').value = b.textContent; answerAsk(b.textContent); });
+    });
+    $('#askform').addEventListener('submit', function(e){ e.preventDefault(); answerAsk($('#askinput').value); });
+  }
+
   /* ------------------------------------------------------------- weather */
   /* The only thing on this page fetched from a third party about the visitor.
      open-meteo, no key, no cookie, and we send it a city name — never an IP.
@@ -2248,6 +2690,8 @@ __SITE_DATA__
     applyFlags();
     renderMetrics(); renderPaths(); renderCaps(); renderWork();
     renderDemo(); renderDiag(); renderScope(); renderTimeline(); setupDrawer();
+    renderHook(); renderNumbers(); renderAsk();
+    renderTiers();
 
     document.addEventListener('click', function(e){
       var b = e.target.closest ? e.target.closest('.readcase[data-case]') : null;
@@ -2259,13 +2703,15 @@ __SITE_DATA__
 
     var params = new URLSearchParams(location.search);
     var src = params.get('utm_source') || params.get('src') || document.referrer || '';
-    setText('#d-src', src ? String(src).replace(/^https?:\/\//,'').split('/')[0] : 'direct');
+    S.src = src ? String(src).replace(/^https?:\/\//,'').split('/')[0] : '';
+    setText('#d-src', S.src || 'direct');
 
     $('#pathreset').addEventListener('click', function(){
       S.path=null; document.body.classList.remove('has-path');
       $$('#paths .path').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
       $$('section[data-audiences]').forEach(function(s){ s.hidden=false; });
       logEvent('You cleared that — showing everything again', 0);
+      updateHook();
       paint();
     });
 

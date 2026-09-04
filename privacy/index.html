@@ -447,6 +447,115 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ============================================================== THE TIERS */
+.tiers{display:grid;gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--surface)}
+.tier{display:grid;gap:var(--s4);padding:var(--s6);border-top:1px solid var(--rule-soft);position:relative}
+.tier:first-child{border-top:0}
+.tier.now{background:var(--surface-2);border-left:3px solid var(--signal)}
+.tier.next{border-left:3px solid var(--accent)}
+.tier.far{border-left:3px solid var(--rule)}
+@media(min-width:820px){.tier{grid-template-columns:76px 1fr 220px;align-items:start;gap:var(--s6)}}
+.tier .n{font-family:var(--mono);font-size:26px;line-height:1;color:var(--muted)}
+.tier.now .n{color:var(--signal)}
+.tier.next .n{color:var(--accent)}
+.tier h3{font-family:var(--display);font-size:clamp(21px,2.5vw,28px);line-height:1.2;margin-bottom:var(--s2)}
+.tier .w{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:var(--s3);display:block}
+.tier p{font-size:15.5px;line-height:1.65;color:var(--ink-soft);max-width:62ch}
+.tier .side{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--muted);
+  border-top:1px solid var(--rule-soft);padding-top:var(--s3)}
+@media(min-width:820px){.tier .side{border-top:0;border-left:1px solid var(--rule-soft);
+  padding:0 0 0 var(--s5);margin-top:6px}}
+.tier .youarehere{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:#fff;background:var(--signal);border-radius:3px;padding:3px 7px;margin-bottom:var(--s3)}
+
+/* ============================================================ THE HOOK */
+.hook{border:1px solid var(--rule);border-top:3px solid var(--signal);border-radius:6px;
+  background:var(--surface);padding:var(--s6) var(--s6) var(--s5)}
+.hook-line{font-family:var(--display);font-size:clamp(23px,3vw,36px);line-height:1.34;
+  color:var(--ink);margin:var(--s4) 0 var(--s5);max-width:24ch;letter-spacing:-.01em}
+@media(min-width:700px){.hook-line{max-width:44ch}}
+.tok{
+  /* An inline span, not a button, so the dashed rule breaks with the words
+     instead of ruling the whole line when the phrase wraps. */
+  display:inline;font:inherit;color:var(--accent);cursor:pointer;
+  border-bottom:2px dashed var(--accent);
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  transition:background .15s ease;
+}
+.tok:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.tok:hover,.tok[aria-expanded="true"]{background:rgba(14,110,99,.09)}
+.tok.empty{color:var(--muted);border-bottom-color:var(--muted);font-style:italic}
+.tok::after{content:"";display:inline-block;width:0;height:0;margin:0 0 4px 8px;
+  border:4px solid transparent;border-top-color:currentColor;vertical-align:middle}
+.tokwrap{position:relative;display:inline}
+.tokpop{
+  position:absolute;z-index:60;top:calc(100% + 8px);left:0;min-width:min(88vw,420px);
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:6px;
+  box-shadow:0 18px 46px rgba(0,0,0,.20);padding:var(--s2);
+  max-height:min(52vh,340px);overflow-y:auto;animation:slidein .16s ease;
+}
+.tokpop button{
+  display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+  font-family:var(--body);font-size:15px;line-height:1.4;color:var(--ink-soft);
+  padding:9px 11px;border-radius:4px;
+}
+.tokpop button:hover,.tokpop button:focus-visible{background:var(--surface);color:var(--ink);outline:none}
+.hook-known{border-top:1px solid var(--rule-soft);padding-top:var(--s4);margin-bottom:var(--s5)}
+.hook-known .label{margin-bottom:var(--s3)}
+.knowns{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:var(--s3)}
+.known{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;
+  padding:5px 9px;color:var(--ink-soft);animation:slidein .3s ease;
+}
+.known b{color:var(--accent);font-weight:500}
+.hook-send{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+.hook-send .btn[aria-disabled="true"]{opacity:.35;pointer-events:none}
+
+/* ====================================================== ONE NUMBER */
+.numgrid{display:grid;gap:var(--s3);grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:var(--s5)}
+.num{
+  cursor:pointer;text-align:left;background:var(--surface);border:1px solid var(--rule);
+  border-radius:5px;padding:var(--s4) var(--s4);font-family:var(--mono);font-size:12.5px;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);transition:all .14s ease;
+}
+.num:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-1px)}
+.num[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.numout[hidden]{display:none}
+.numout{
+  border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:5px;
+  background:var(--surface);padding:var(--s6);animation:slidein .35s ease;
+}
+.numout h3{font-family:var(--display);font-size:clamp(20px,2.4vw,27px);line-height:1.2;margin-bottom:var(--s3)}
+.numout p{font-size:16px;line-height:1.65;max-width:64ch;color:var(--ink-soft)}
+.numfacts{display:flex;flex-wrap:wrap;gap:var(--s5);margin:var(--s5) 0;
+  border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);padding:var(--s4) 0}
+.numfact span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.numfact b{font-size:15px;font-weight:600;color:var(--ink);line-height:1.45;display:block;max-width:44ch}
+.numrow{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+
+/* ========================================================== ASK IT */
+.askbar{display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s3)}
+.askbar input{
+  flex:1 1 300px;font-family:var(--body);font-size:16px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--rule);border-radius:5px;padding:14px var(--s4);
+}
+.askbar input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,110,99,.14)}
+.asksug{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:var(--s5)}
+.asksug button{
+  cursor:pointer;background:none;border:1px solid var(--rule);border-radius:999px;
+  padding:6px 13px;font-size:13px;color:var(--muted);transition:all .12s ease;
+}
+.asksug button:hover{border-color:var(--accent);color:var(--accent)}
+.askout[hidden]{display:none}
+.askout{border:1px solid var(--rule);border-left:3px solid var(--signal);border-radius:5px;
+  background:var(--surface);padding:var(--s6);animation:slidein .35s ease}
+.askout .askq{font-family:var(--display);font-size:clamp(19px,2.3vw,26px);line-height:1.25;margin-bottom:var(--s4)}
+.askout p{font-size:16px;line-height:1.65;max-width:64ch;color:var(--ink-soft)}
+.askout .numrow{margin-top:var(--s5)}
+
 /* ============================================================ THE NOTE */
 #note-sec[hidden]{display:none !important}
 .note-card{
@@ -652,7 +761,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">What</th>
       <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">Notes</th>
     </tr></thead>
-    <tbody><tr><td><b>The panel on the site</b></td><td>Your time zone, device and browser, how far you scroll, whether you leave and come back, and whether you copy something. A small note is kept in your own browser so the page recognises you on a return visit.</td><td>Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data.</td></tr><tr><td><b>Cloudflare Web Analytics</b></td><td>Page views, referrer, country, and page performance.</td><td>Cookieless. Sets nothing on your device and does not fingerprint you, which is why it is not covered by the cookie choice.</td></tr><tr><td><b>Google Analytics 4</b></td><td>Standard web analytics — pages viewed, how you arrived, approximate location, device.</td><td>Sets cookies. Processed by Google in the United States. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>ContentSquare</b></td><td>How the page is used — clicks, scrolling and interaction with the tools on it. Text you type is masked.</td><td>Sets cookies. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>Network lookup</b></td><td>The city and the network your connection belongs to, and where it resolves, the company that network belongs to.</td><td>Account level only — the organisation, never you as an individual. Computed per request and not stored.</td></tr><tr><td><b>Weather (open-meteo.com)</b></td><td>Once the network lookup has returned a city, the site asks open-meteo for the current temperature and conditions in that city.</td><td>A city name is sent, never your IP address or anything identifying. No key, no cookie, no account. Used only to write the line on the page.</td></tr></tbody>
+    <tbody><tr><td><b>The panel on the site</b></td><td>Your time zone, device and browser, how far you scroll, whether you leave and come back, and whether you copy something. A small note is kept in your own browser so the page recognises you on a return visit.</td><td>Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data.</td></tr><tr><td><b>The enquiry hooks</b></td><td>The sentence you complete, the number you pick and anything you type into the ask box.</td><td>Composed entirely in your browser. There is no form endpoint and nothing is posted anywhere: the send button opens your own mail client with the text already written, and nothing leaves until you press send.</td></tr><tr><td><b>Cloudflare Web Analytics</b></td><td>Page views, referrer, country, and page performance.</td><td>Cookieless. Sets nothing on your device and does not fingerprint you, which is why it is not covered by the cookie choice.</td></tr><tr><td><b>Google Analytics 4</b></td><td>Standard web analytics — pages viewed, how you arrived, approximate location, device.</td><td>Sets cookies. Processed by Google in the United States. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>ContentSquare</b></td><td>How the page is used — clicks, scrolling and interaction with the tools on it. Text you type is masked.</td><td>Sets cookies. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>Network lookup</b></td><td>The city and the network your connection belongs to, and where it resolves, the company that network belongs to.</td><td>Account level only — the organisation, never you as an individual. Computed per request and not stored.</td></tr><tr><td><b>Weather (open-meteo.com)</b></td><td>Once the network lookup has returned a city, the site asks open-meteo for the current temperature and conditions in that city.</td><td>A city name is sent, never your IP address or anything identifying. No key, no cookie, no account. Used only to write the line on the page.</td></tr></tbody>
   </table></div>
   <style>tbody td{padding:12px;border-bottom:1px solid var(--rule-soft);vertical-align:top;color:var(--ink-soft)}
   tbody td b{color:var(--ink)}</style>

@@ -108,6 +108,12 @@ def render_privacy(data, html):
         "and whether you copy something. A small note is kept in your own browser so the page "
         "recognises you on a return visit.",
         "Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data."))
+    rows.append((
+        "The enquiry hooks",
+        "The sentence you complete, the number you pick and anything you type into the ask box.",
+        "Composed entirely in your browser. There is no form endpoint and nothing is posted "
+        "anywhere: the send button opens your own mail client with the text already written, "
+        "and nothing leaves until you press send."))
     if a.get("cloudflareToken"):
         rows.append((
             "Cloudflare Web Analytics",
