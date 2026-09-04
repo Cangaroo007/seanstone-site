@@ -40,7 +40,6 @@ fallthrough = true
 
 # The record. Create it once, then apply the schema:
 #   wrangler d1 create seanstone
-#   (paste the database_id it prints below)
 #   wrangler d1 execute seanstone --remote --file=./schema.sql
 [[d1_databases]]
 binding = "DB"

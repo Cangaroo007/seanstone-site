@@ -351,7 +351,24 @@ section[hidden]{display:none !important}
 .readout{display:flex;flex-direction:column;gap:3px}
 .readout b{font-family:var(--display);font-size:38px;line-height:1}
 .readout span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-input[type=range]{width:100%;accent-color:var(--accent)}
+/* A 16px-tall range input is a desktop control. Touch needs a target you can
+   actually land on, so the track keeps its look and the hit area grows. */
+input[type=range]{
+  width:100%;accent-color:var(--accent);height:44px;background:transparent;
+  -webkit-appearance:none;appearance:none;cursor:pointer;margin:0;
+}
+input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:var(--surface-2);border:1px solid var(--rule)}
+input[type=range]::-moz-range-track{height:6px;border-radius:999px;background:var(--surface-2);border:1px solid var(--rule)}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--paper);margin-top:-11px;
+  box-shadow:0 1px 4px rgba(0,0,0,.28);
+}
+input[type=range]::-moz-range-thumb{
+  width:26px;height:26px;border-radius:50%;background:var(--accent);
+  border:2px solid var(--paper);box-shadow:0 1px 4px rgba(0,0,0,.28);
+}
 .cap-bar{height:9px;background:var(--surface);border:1px solid var(--rule-soft);border-radius:999px;overflow:hidden;display:flex}
 .cap-bar i{display:block;height:100%;background:var(--accent);transition:width .35s ease}
 .cap-bar i.over{background:var(--crit)}
@@ -413,7 +430,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 @media(min-width:1080px){.telebtn{display:none}}
 .drawer{display:none}
 .drawer.open{display:block;position:fixed;inset:auto 0 0 0;z-index:60;max-height:72vh;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -18px 40px -20px rgba(0,0,0,.5)}
-.drawer .rail-in{border:0;border-radius:0;max-height:72vh}
+.drawer .rail-in{border:0;border-radius:0;max-height:72vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 
 /* ============================================================ DASHBOARD SECTION */
 .dash{display:grid;gap:var(--s4)}
@@ -447,6 +464,48 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ====================================================== SUPPORT LAUNCHER */
+.fab{
+  position:fixed;z-index:110;right:16px;bottom:16px;display:flex;align-items:center;gap:9px;
+  border:1px solid var(--rule);background:var(--ink);color:var(--paper);cursor:pointer;
+  border-radius:999px;padding:14px 18px;font-family:var(--mono);font-size:12px;
+  letter-spacing:.06em;text-transform:uppercase;box-shadow:0 10px 30px rgba(0,0,0,.28);
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.fab:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.34)}
+.fab[hidden]{display:none !important}
+.fab .dot{width:7px;height:7px;border-radius:50%;background:var(--signal);flex:none;
+  animation:pulse 2.4s ease-in-out infinite}
+.fab .long{display:none}
+@media(min-width:560px){.fab .long{display:inline}.fab .short{display:none}}
+.fabmenu{
+  position:fixed;z-index:111;right:16px;bottom:74px;width:min(320px,calc(100vw - 32px));
+  background:var(--surface);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:0 18px 50px rgba(0,0,0,.3);padding:var(--s3);animation:sheetup .18s ease;
+}
+.fabmenu[hidden]{display:none !important}
+.fabmenu h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);padding:var(--s2) var(--s3) var(--s3)}
+.fabmenu button{
+  display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+  border-radius:6px;padding:13px var(--s3);color:var(--ink);
+}
+.fabmenu button:hover{background:var(--surface-2)}
+.fabmenu button b{display:block;font-size:15px;font-weight:600;margin-bottom:3px}
+.fabmenu button small{display:block;font-size:12.5px;color:var(--muted);line-height:1.45}
+
+/* The context disclosure inside the compose panel */
+.cdisc{border:1px solid var(--rule-soft);border-radius:5px;background:var(--surface-2);
+  padding:var(--s3) var(--s4);margin-top:var(--s4)}
+.cdisc summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;
+  letter-spacing:.05em;color:var(--muted);display:flex;justify-content:space-between;gap:var(--s3);align-items:center}
+.cdisc summary::-webkit-details-marker{display:none}
+.cdisc summary::after{content:"show";font-size:10.5px;text-decoration:underline}
+.cdisc[open] summary::after{content:"hide"}
+.cdisc pre{white-space:pre-wrap;font-family:var(--mono);font-size:11.5px;line-height:1.6;
+  color:var(--ink-soft);margin-top:var(--s3);max-height:220px;overflow:auto}
+.cdisc .note{margin-top:var(--s3)}
+
 /* ========================================================= COMPOSE PANEL */
 .compose[hidden]{display:none !important}
 .compose{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;
@@ -477,7 +536,8 @@ details.more[open] summary{margin-bottom:var(--s4)}
   resize:vertical;
 }
 .compose input[type=email]{font-family:var(--body);font-size:16px;padding:12px var(--s4)}
-.compose textarea{min-height:230px}
+.compose textarea{min-height:150px}
+@media(min-height:760px){.compose textarea{min-height:210px}}
 .compose textarea:focus,.compose input[type=email]:focus{outline:none;border-color:var(--accent);
   box-shadow:0 0 0 3px rgba(14,110,99,.14)}
 .compose-foot{padding:var(--s5) var(--s6) var(--s6);border-top:1px solid var(--rule-soft);
@@ -533,17 +593,31 @@ details.more[open] summary{margin-bottom:var(--s4)}
 .tok::after{content:"";display:inline-block;width:0;height:0;margin:0 0 4px 8px;
   border:4px solid transparent;border-top-color:currentColor;vertical-align:middle}
 .tokwrap{position:relative;display:inline}
+/* On a phone this is a bottom sheet, not a dropdown. Anchoring a 420px menu to a
+   word in the middle of a wrapped line put two thirds of every option past the
+   right edge of the screen — which broke the most important control on the page
+   for exactly the visitors most likely to be reading it on the way somewhere. */
 .tokpop{
-  position:absolute;z-index:60;top:calc(100% + 8px);left:0;min-width:min(88vw,420px);
-  background:var(--surface-2);border:1px solid var(--rule);border-radius:6px;
-  box-shadow:0 18px 46px rgba(0,0,0,.20);padding:var(--s2);
-  max-height:min(52vh,340px);overflow-y:auto;animation:slidein .16s ease;
+  position:fixed;z-index:120;left:10px;right:10px;bottom:10px;top:auto;
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:0 -14px 50px rgba(0,0,0,.34);padding:var(--s2);
+  max-height:min(62vh,460px);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  animation:sheetup .2s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes sheetup{from{transform:translateY(16px);opacity:.5}to{transform:none;opacity:1}}
+@media(min-width:760px){
+  .tokpop{
+    position:absolute;z-index:60;top:calc(100% + 8px);left:0;right:auto;bottom:auto;
+    min-width:min(88vw,420px);border-radius:6px;box-shadow:0 18px 46px rgba(0,0,0,.20);
+    max-height:min(52vh,340px);animation:slidein .16s ease;
+  }
 }
 .tokpop button{
   display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
-  font-family:var(--body);font-size:15px;line-height:1.4;color:var(--ink-soft);
-  padding:9px 11px;border-radius:4px;
+  font-family:var(--body);font-size:16px;line-height:1.4;color:var(--ink-soft);
+  padding:14px 13px;border-radius:5px;min-height:48px;
 }
+@media(min-width:760px){.tokpop button{font-size:15px;padding:9px 11px;min-height:0}}
 .tokpop button:hover,.tokpop button:focus-visible{background:var(--surface);color:var(--ink);outline:none}
 .hook-known{border-top:1px solid var(--rule-soft);padding-top:var(--s4);margin-bottom:var(--s5)}
 .hook-known .label{margin-bottom:var(--s3)}
@@ -652,6 +726,11 @@ details.more[open] summary{margin-bottom:var(--s4)}
 .consent .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .consent a{color:var(--accent)}
 .footlink{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline}
+/* Footer links sit on a 15px line. Padding keeps the visual rhythm and gives a
+   thumb something to hit. */
+@media(max-width:759px){
+  footer a, .footlink{display:inline-block;padding:9px 0;min-height:24px}
+}
 
 /* ============================================================ PRIORITISATION */
 .prioritybar{
@@ -1961,7 +2040,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   "enquiry": {
     "endpoint": "https://id.seanstone.com/enquiry",
     "head": "Your enquiry, already written.",
-    "lead": "The page composed this from what you did on it. Edit anything that is wrong — that is the useful part — then send it.",
+    "lead": "The page has already written the parts it can. Edit anything that is wrong, add whatever matters, then send it.",
     "emailLabel": "Your email, if you want a reply",
     "emailNote": "The only thing this page could not work out on its own. Optional: send it without and I still get the message, I just have nowhere to reply to.",
     "send": "Send it to Sean",
@@ -1972,7 +2051,12 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     "copy": "Copy it all",
     "mailapp": "Open in mail app",
     "copied": "Copied. Paste it into an email to sean@cangaroo.ai.",
-    "note": "Sent to a Cloudflare Worker that forwards it to my inbox. What you see here is exactly what I receive."
+    "note": "Posted to a Cloudflare Worker on this domain that forwards it to my inbox, together with what the page worked out on its own — which you can read below before you send.",
+    "contextLabel": "Sean also receives what the page worked out on its own",
+    "contextNote": "Attached automatically to every message. Shown here because you should be able to see it before you press send, not because you need to read it.",
+    "headBlank": "Tell Sean what you need.",
+    "leadBlank": "One or two lines is plenty — what you are trying to fix, and what you want it to look like instead. He reads these himself.",
+    "placeholder": "What are you trying to fix?"
   },
   "alert": {
     "endpoint": "https://id.seanstone.com/session",
@@ -1981,6 +2065,15 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     "railLabel": "Alert",
     "railSent": "sent to Sean just now",
     "railWaiting": "not triggered"
+  },
+  "support": {
+    "label": "Ask or get in touch",
+    "short": "Ask",
+    "head": "What would help?",
+    "ask": "Ask a question about Sean",
+    "askSub": "Answered from everything he has written",
+    "message": "Send Sean a message",
+    "messageSub": "Goes straight to his inbox"
   }
 }
 </script>
@@ -2345,6 +2438,15 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 </aside>
 </div>
 
+<button class="fab" id="fab" type="button" aria-haspopup="menu" aria-expanded="false">
+  <span class="dot"></span><span class="long"></span><span class="short"></span>
+</button>
+<div class="fabmenu" id="fabmenu" role="menu" hidden>
+  <h4 id="fab-head"></h4>
+  <button type="button" id="fab-ask" role="menuitem"><b></b><small></small></button>
+  <button type="button" id="fab-msg" role="menuitem"><b></b><small></small></button>
+</div>
+
 <div class="compose" id="compose" role="dialog" aria-modal="true" aria-labelledby="compose-h" hidden>
   <div class="compose-in">
     <div class="compose-head">
@@ -2359,6 +2461,11 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="cfield"><div class="label" id="c-email-label"></div>
         <input type="email" id="c-email" autocomplete="email" placeholder="you@company.com">
         <p class="note" id="c-email-note" style="margin-top:8px"></p></div>
+      <details class="cdisc" id="c-disc">
+        <summary id="c-disc-label"></summary>
+        <pre id="c-disc-body"></pre>
+        <p class="note" id="c-disc-note"></p>
+      </details>
     </div>
     <div class="compose-foot">
       <button class="btn" type="button" id="c-send"></button>
@@ -3391,6 +3498,55 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 
 
 
+  /* ==================================================== SUPPORT LAUNCHER
+     The two ways to reach Sean used to live at the bottom of a very long page and
+     in the middle of another section. This follows the reader instead. */
+  function wireFab(){
+    var S_ = DATA.support, fab = $('#fab'), menu = $('#fabmenu');
+    if(!S_ || !fab){ return; }
+    $('.fab .long').textContent = S_.label;
+    $('.fab .short').textContent = S_.short || 'Ask';
+    setText('#fab-head', S_.head);
+    $('#fab-ask b').textContent = S_.ask;   $('#fab-ask small').textContent = S_.askSub || '';
+    $('#fab-msg b').textContent = S_.message; $('#fab-msg small').textContent = S_.messageSub || '';
+
+    var close = function(){ menu.hidden = true; fab.setAttribute('aria-expanded','false'); };
+    var open  = function(){ menu.hidden = false; fab.setAttribute('aria-expanded','true'); };
+
+    fab.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(menu.hidden){ open(); logEvent('Opened the contact menu', 6); } else { close(); }
+    });
+    document.addEventListener('click', function(e){
+      if(!menu.hidden && !menu.contains(e.target) && e.target !== fab){ close(); }
+    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ close(); } });
+
+    $('#fab-ask').addEventListener('click', function(){
+      close();
+      var sec = $('#ask-sec');
+      if(sec){
+        sec.scrollIntoView({behavior:'smooth', block:'start'});
+        setTimeout(function(){ var i = $('#askinput'); if(i){ i.focus({preventScroll:true}); } }, 620);
+      }
+      signal('came looking for an answer');
+      logEvent('Went to ask a question', 8, 'sig');
+    });
+    $('#fab-msg').addEventListener('click', function(){
+      close();
+      openCompose('Enquiry from seanstone.com', '', mailtoHref('Enquiry from seanstone.com', ''));
+    });
+
+    /* It must never sit on top of the thing the visitor just opened. */
+    var hideWhenBusy = function(){
+      var busy = !$('#compose').hidden || $('#drawer').classList.contains('open');
+      fab.hidden = busy;
+      if(busy){ close(); }
+    };
+    new MutationObserver(hideWhenBusy).observe($('#compose'), {attributes:true, attributeFilter:['hidden']});
+    new MutationObserver(hideWhenBusy).observe($('#drawer'), {attributes:true, attributeFilter:['class']});
+  }
+
   /* ================================================== THE THRESHOLD ALERT
      The one thing on this page that reaches Sean without the visitor doing
      anything. Which is exactly why the page says so, out loud, in the log, at the
@@ -3514,9 +3670,16 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   function openCompose(subject, body, href){
     var E = DATA.enquiry || {};
     CO.subject = subject; CO.body = body; CO.href = href || mailtoHref(subject, '');
-    setText('#compose-h', E.head || 'Your enquiry');
-    setText('#compose-lead', E.lead || '');
+    /* Opened from the launcher there is nothing pre-written, so the panel must
+       not claim there is. */
+    var blank = !String(body || '').trim();
+    setText('#compose-h', (blank ? E.headBlank : E.head) || 'Your enquiry');
+    setText('#compose-lead', (blank ? E.leadBlank : E.lead) || '');
+    $('#c-body').placeholder = E.placeholder || '';
     setText('#c-subject', subject);
+    setText('#c-disc-label', E.contextLabel || 'What else Sean receives');
+    setText('#c-disc-note', E.contextNote || '');
+    setText('#c-disc-body', contextBlock().replace(/^\n+/, ''));
     setText('#c-email-label', E.emailLabel || 'Your email');
     setText('#c-email-note', E.emailNote || '');
     setText('#c-note', E.note || '');
@@ -3525,6 +3688,9 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     $('#c-copy').textContent = E.copy || 'Copy it all';
     $('#c-mailapp').textContent = E.mailapp || 'Open in mail app';
     $('#c-mailapp').href = CO.href;
+    $('#c-body').addEventListener('input', function(){
+      $('#c-mailapp').href = mailtoHref(CO.subject, this.value);
+    });
     $('#c-send').setAttribute('aria-disabled','false');
     var st = $('#c-status'); st.hidden = true; st.className = 'cstatus';
     $('#compose').hidden = false;
@@ -3590,7 +3756,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     });
     $('#c-send').addEventListener('click', sendEnquiry);
     $('#c-copy').addEventListener('click', function(){
-      var t = 'To: ' + DATA.profile.email + '\nSubject: ' + CO.subject + '\n\n' + $('#c-body').value;
+      var t = 'To: ' + DATA.profile.email + '\nSubject: ' + CO.subject + '\n\n' +
+              $('#c-body').value + '\n' + contextBlock();
       copyText(t, null);
       composeStatus((DATA.enquiry || {}).copied || 'Copied.', 'ok');
       S.copied = true;
@@ -3608,8 +3775,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       var m = parseMailto(a.getAttribute('href'));
       /* An empty first line so the cursor lands somewhere that invites typing,
          with the page's own findings sitting underneath it. */
-      openCompose(m.subject || 'Enquiry from seanstone.com',
-                  m.body || ('\n\n' + contextBlock()), a.getAttribute('href'));
+      openCompose(m.subject || 'Enquiry from seanstone.com', m.body || '', a.getAttribute('href'));
     });
   }
 
@@ -3685,6 +3851,12 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     lines.push('', 'Sean — none of the above was typed in. Reply to whatever is wrong about it.');
     return lines.join('\n');
   }
+  /* The visible message is only ever what the visitor wrote. Everything the page
+     worked out travels with the POST and is shown to them in a disclosure, not
+     pasted into the words they are about to send — reading your own scroll depth
+     and visit count inside your own enquiry is unnerving, and it buried the
+     sentence that actually mattered. The mailto fallback still carries it inline,
+     because there is no server on that path to attach it. */
   function mailtoHref(subject, body){
     return 'mailto:' + DATA.profile.email + '?subject=' + encodeURIComponent(subject) +
            '&body=' + encodeURIComponent(body + '\n' + contextBlock() + '\n');
@@ -3716,6 +3888,13 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     }).join('');
     btn.parentNode.appendChild(pop);
     btn.setAttribute('aria-expanded','true');
+    /* Desktop only: the sheet is already viewport-bounded on phones. A token near
+       the right edge of a line would otherwise anchor its menu off-screen. */
+    if(window.matchMedia('(min-width:760px)').matches){
+      var r = pop.getBoundingClientRect();
+      var over = r.right - (window.innerWidth - 16);
+      if(over > 0){ pop.style.left = (-over) + 'px'; }
+    }
     pop.addEventListener('click', function(ev){
       var b = ev.target.closest('button[data-i]');
       if(!b){ return; }
@@ -3852,11 +4031,17 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       esc(mailtoHref(subject, preamble)) + '">' +
       esc((DATA.ask.aiFollow || 'Send it to Sean')) + ' &rarr;</a></div>';
   }
-  function answerAsk(raw){
+  function answerAsk(raw, exact){
     var q = String(raw||'').trim();
     if(!q){ return; }
     S.asked.push(q.slice(0,80));
-    var A = DATA.ask, hit = askMatch(q), box = $('#askout');
+    /* Only a suggestion chip gets the written answer. A typed question goes to
+       Claude, always. The keyword matcher used to intercept anything sharing a
+       word with the bank — "what experience does Sean have with building revenue
+       systems" matched "do you write the code yourself" on the word "build" and
+       returned a confident answer to a question nobody asked. A near-miss from a
+       matcher is worse than no matcher, because it looks deliberate. */
+    var A = DATA.ask, hit = exact ? askMatch(q) : null, box = $('#askout');
 
     if(hit){
       box.innerHTML = askShell(hit.q, askBadge('written'), '<p>' + esc(hit.a) + '</p>') +
@@ -3918,7 +4103,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       return '<button type="button">' + esc(q) + '</button>';
     }).join('');
     $$('#asksug button').forEach(function(b){
-      b.addEventListener('click', function(){ $('#askinput').value = b.textContent; answerAsk(b.textContent); });
+      b.addEventListener('click', function(){ $('#askinput').value = b.textContent; answerAsk(b.textContent, true); });
     });
     $('#askform').addEventListener('submit', function(e){ e.preventDefault(); answerAsk($('#askinput').value); });
   }
@@ -4217,7 +4402,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     renderMetrics(); renderPaths(); renderCaps(); renderWork();
     renderDemo(); renderDiag(); renderScope(); renderTimeline(); setupDrawer();
     renderHook(); renderNumbers(); renderAsk();
-    renderTiers(); wireCompose(); watchAlert();
+    renderTiers(); wireCompose(); watchAlert(); wireFab();
 
     document.addEventListener('click', function(e){
       var b = e.target.closest ? e.target.closest('.readcase[data-case]') : null;

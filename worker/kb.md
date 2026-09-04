@@ -231,6 +231,145 @@ channel pays, not how to make the ad better. Anything needing a large team held 
 years; wrong shape, which is why he works in blocks. And he is slow to be diplomatic about a
 number being reported in a misleading way.
 
+## 12. The career, in more detail
+
+**Cangaroo — founder, 2025–present.** The current practice. Revenue operations and GTM
+engineering for B2B companies, and the vehicle under which Road Runner was built.
+
+**Kervio — creator, 2025–2026.** See section 4.
+
+**Sales Hunters — founder and principal, 2018–2025.** Seven years, 50+ early-stage B2B
+technology companies. Sales strategy, execution and team build-out, typically taking companies
+from zero towards $10M. Ran it as a **HubSpot Solutions Partner practice**, which is the part
+people underrate: it means knowing the platform at build level — custom objects, association
+labels, workflow limits, the things that decide whether an implementation survives contact with
+a real sales team — rather than as a user who has clicked through the settings.
+
+**Balentic — advisory board member, 2023–2025.** GTM and revenue growth strategy.
+
+**Venture Lane (startup hub) — mentor, 2022–2025.** Coaching founders on go-to-market, sales
+and revenue operations.
+
+**Channel Partners Pte Ltd — Chief Marketing Officer, 2014–2017.** Demand generation and
+partner programmes across cloud, analytics, mobile and social CRM. This is where the channel
+and partner-motion experience comes from — a different animal from direct sales, and the reason
+he is comfortable with dealer, distributor and franchise structures.
+
+**LikeJobs — founder and CEO, 2012–2014.**
+
+**BDMG Pte Ltd — managing director, 2000–2014.** Fourteen years running a business across
+Singapore, Malaysia and the Philippines. The Asia-Pacific operating experience is real and
+long, not a line on a CV.
+
+**Intel Corporation — Program Manager, Asia Pacific, 1997–1999.**
+
+**Queensland University of Technology.**
+
+The shape of it: founder, CEO, CMO and board advisor across multiple companies and exits, in
+three regions. When he says a revenue problem is really an ownership problem, it is pattern
+recognition rather than theory.
+
+## 13. What he actually believes about this work
+
+These are his positions. Stated plainly, because a page that will not commit to a view is not
+worth asking anything.
+
+- **Most companies' front door is stupid.** It does not know who is standing at it and cannot
+  answer a question about the business behind it. Everything else follows from that.
+- **Tracking is table stakes and nobody buys it.** The hard part is the layer above: a score
+  that reflects how *you* qualify, a stage a sales team recognises, and a next action worded
+  specifically enough that a rep does it instead of ignoring it.
+- **A sales team acts on a score it can argue with and quietly ignores one it cannot.** If the
+  scoring is a black box it will not be used, whatever the model's accuracy.
+- **Speed-to-lead problems are almost never speed problems.** They are ownership problems. The
+  enquiry lands somewhere nobody owns and the clock starts before anyone has been told.
+- **Cost per lead is usually the wrong number to optimise.** Cheap leads that never close are
+  more expensive than dear ones that do.
+- **Do not migrate the CRM.** Nine months of pain solving a problem you usually do not have.
+  Nearly every CRM is fine; what is broken is what does and does not reach it.
+- **A single conversion rate is usually two populations moving in opposite directions.**
+- **The CRM should be shaped like the business, not like the software's defaults.** Branching
+  logic at the front door forces a real taxonomy of who you sell to, and the CRM restructure
+  falls out of it as a by-product.
+- **Founder instinct does not transfer to a team.** That is the wall early-stage companies hit,
+  and it is a systems problem, not a hiring problem — though it usually gets treated as one.
+- **AI does the labour; judgement stays human.** Specification, acceptance criteria and
+  ground-truth verification gates are what make AI-directed building produce software you can
+  put in front of customers instead of a demo that falls over.
+- **Hand over the source.** An arrangement that depends on the client never learning how it
+  works is not one he would sign either.
+
+## 14. The method, in practice
+
+Four stages, in order, every time:
+
+1. **Specification.** What the system must do, written before anything is built, in the
+   language of the business rather than the language of the tool.
+2. **Acceptance criteria.** How you will know it is right. Written at the same time as the
+   specification, not afterwards, because criteria invented after the build tend to describe
+   whatever got built.
+3. **Ground-truth verification gates.** The output is checked against reality — real quotes,
+   real records, real edge cases — before it moves on. This is the step that separates AI-built
+   software that works from AI-built software that demos.
+4. **Build**, directed rather than typed.
+
+The economics: Road Runner — the platform and the site together — took **109 hours** across May
+and June 2026. Kervio is a live multi-tenant production system built without an engineering
+team. Those two numbers are the whole argument for the method, and they are why twenty hours a
+month buys something rather than nothing.
+
+He will also say when something is a bad candidate for the method. Anything where the cost of
+being subtly wrong is very high, or where the domain has no ground truth to check against, is
+better built the slow way.
+
+## 15. What a first engagement looks like
+
+**Week one is read-only.** The CRM, the enquiry log, a week of calls, and an hour each with two
+reps doing their actual admin — screen shared, not a survey, because people describe the process
+they are supposed to follow rather than the one they use.
+
+**Week two is the map.** What is actually happening, and the three things he would fix,
+sequenced, with hours against each. Nothing gets built until the client has seen both and
+disagreed with at least one of them.
+
+**Then the first block of work**, ending in something live. Small on purpose: the point is that
+the client finds out in weeks whether the diagnosis was right, not in quarters.
+
+Typical first-block work: unify the customer record so finance and ops join to one canonical
+object; put ownership on inbound at the moment of arrival with an escalation; rebuild
+attribution as cost per closed-won by channel; or make the front door able to answer one
+question it currently cannot.
+
+## 16. Where he is strongest, and where he is not
+
+**Domains he knows well.** B2B technology and SaaS, particularly early-stage moving to a first
+sales team. Building products, distribution and materials supply — stone fabrication end to end,
+through Kervio and Alpha Surfaces, including quoting, configuration, stock, lead times and
+trade-versus-consumer segmentation. Channel, partner, dealer and distributor motions, from the
+Channel Partners years. Asia-Pacific and US markets.
+
+**Tools at build level.** HubSpot (partner-grade), Pipedrive, Salesforce, webhooks and APIs
+generally, attribution and UTM plumbing, landing-page infrastructure, and the AI-direction
+method that ties them together.
+
+**Not his work.** Brand, creative and paid media buying — he can tell you whether a channel pays,
+not how to make the ad better. Long programmes needing a large team held together over years;
+wrong shape, which is why he works in blocks. Anything requiring him to be diplomatic about a
+number being reported in a misleading way, at which he is slow.
+
+## 17. What this knowledge base does not have
+
+Stated so the engine does not fill the gap with invention.
+
+- **No named client outcomes.** The portfolio numbers ($200M+ in sales, $500M+ raised across
+  50+ companies) are aggregate. There is no "we took Acme from A to B" story here yet, because
+  none has been cleared for use. If asked for one, say so and offer to put the question to Sean.
+- **No client testimonials or references.**
+- **No before-and-after numbers for the Alpha Surfaces engagement** beyond the 3,025
+  organisations behind the company lookup.
+- **No pricing beyond the rate and the indicative hour ranges.** Anything specific to a client's
+  situation is a conversation, not a number this page can produce.
+
 ## 12. Boundaries for the answer engine
 
 - Answer **only** from this file. If it is not here, say so plainly and offer the enquiry panel.

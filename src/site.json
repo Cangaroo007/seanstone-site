@@ -1155,7 +1155,7 @@
   "enquiry": {
     "endpoint": "https://id.seanstone.com/enquiry",
     "head": "Your enquiry, already written.",
-    "lead": "The page composed this from what you did on it. Edit anything that is wrong — that is the useful part — then send it.",
+    "lead": "The page has already written the parts it can. Edit anything that is wrong, add whatever matters, then send it.",
     "emailLabel": "Your email, if you want a reply",
     "emailNote": "The only thing this page could not work out on its own. Optional: send it without and I still get the message, I just have nowhere to reply to.",
     "send": "Send it to Sean",
@@ -1166,7 +1166,12 @@
     "copy": "Copy it all",
     "mailapp": "Open in mail app",
     "copied": "Copied. Paste it into an email to sean@cangaroo.ai.",
-    "note": "Sent to a Cloudflare Worker that forwards it to my inbox. What you see here is exactly what I receive."
+    "note": "Posted to a Cloudflare Worker on this domain that forwards it to my inbox, together with what the page worked out on its own — which you can read below before you send.",
+    "contextLabel": "Sean also receives what the page worked out on its own",
+    "contextNote": "Attached automatically to every message. Shown here because you should be able to see it before you press send, not because you need to read it.",
+    "headBlank": "Tell Sean what you need.",
+    "leadBlank": "One or two lines is plenty — what you are trying to fix, and what you want it to look like instead. He reads these himself.",
+    "placeholder": "What are you trying to fix?"
   },
   "alert": {
     "endpoint": "https://id.seanstone.com/session",
@@ -1175,5 +1180,14 @@
     "railLabel": "Alert",
     "railSent": "sent to Sean just now",
     "railWaiting": "not triggered"
+  },
+  "support": {
+    "label": "Ask or get in touch",
+    "short": "Ask",
+    "head": "What would help?",
+    "ask": "Ask a question about Sean",
+    "askSub": "Answered from everything he has written",
+    "message": "Send Sean a message",
+    "messageSub": "Goes straight to his inbox"
   }
 }

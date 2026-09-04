@@ -351,7 +351,24 @@ section[hidden]{display:none !important}
 .readout{display:flex;flex-direction:column;gap:3px}
 .readout b{font-family:var(--display);font-size:38px;line-height:1}
 .readout span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-input[type=range]{width:100%;accent-color:var(--accent)}
+/* A 16px-tall range input is a desktop control. Touch needs a target you can
+   actually land on, so the track keeps its look and the hit area grows. */
+input[type=range]{
+  width:100%;accent-color:var(--accent);height:44px;background:transparent;
+  -webkit-appearance:none;appearance:none;cursor:pointer;margin:0;
+}
+input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:var(--surface-2);border:1px solid var(--rule)}
+input[type=range]::-moz-range-track{height:6px;border-radius:999px;background:var(--surface-2);border:1px solid var(--rule)}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--paper);margin-top:-11px;
+  box-shadow:0 1px 4px rgba(0,0,0,.28);
+}
+input[type=range]::-moz-range-thumb{
+  width:26px;height:26px;border-radius:50%;background:var(--accent);
+  border:2px solid var(--paper);box-shadow:0 1px 4px rgba(0,0,0,.28);
+}
 .cap-bar{height:9px;background:var(--surface);border:1px solid var(--rule-soft);border-radius:999px;overflow:hidden;display:flex}
 .cap-bar i{display:block;height:100%;background:var(--accent);transition:width .35s ease}
 .cap-bar i.over{background:var(--crit)}
@@ -413,7 +430,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 @media(min-width:1080px){.telebtn{display:none}}
 .drawer{display:none}
 .drawer.open{display:block;position:fixed;inset:auto 0 0 0;z-index:60;max-height:72vh;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -18px 40px -20px rgba(0,0,0,.5)}
-.drawer .rail-in{border:0;border-radius:0;max-height:72vh}
+.drawer .rail-in{border:0;border-radius:0;max-height:72vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 
 /* ============================================================ DASHBOARD SECTION */
 .dash{display:grid;gap:var(--s4)}
@@ -447,6 +464,48 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ====================================================== SUPPORT LAUNCHER */
+.fab{
+  position:fixed;z-index:110;right:16px;bottom:16px;display:flex;align-items:center;gap:9px;
+  border:1px solid var(--rule);background:var(--ink);color:var(--paper);cursor:pointer;
+  border-radius:999px;padding:14px 18px;font-family:var(--mono);font-size:12px;
+  letter-spacing:.06em;text-transform:uppercase;box-shadow:0 10px 30px rgba(0,0,0,.28);
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.fab:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.34)}
+.fab[hidden]{display:none !important}
+.fab .dot{width:7px;height:7px;border-radius:50%;background:var(--signal);flex:none;
+  animation:pulse 2.4s ease-in-out infinite}
+.fab .long{display:none}
+@media(min-width:560px){.fab .long{display:inline}.fab .short{display:none}}
+.fabmenu{
+  position:fixed;z-index:111;right:16px;bottom:74px;width:min(320px,calc(100vw - 32px));
+  background:var(--surface);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:0 18px 50px rgba(0,0,0,.3);padding:var(--s3);animation:sheetup .18s ease;
+}
+.fabmenu[hidden]{display:none !important}
+.fabmenu h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);padding:var(--s2) var(--s3) var(--s3)}
+.fabmenu button{
+  display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+  border-radius:6px;padding:13px var(--s3);color:var(--ink);
+}
+.fabmenu button:hover{background:var(--surface-2)}
+.fabmenu button b{display:block;font-size:15px;font-weight:600;margin-bottom:3px}
+.fabmenu button small{display:block;font-size:12.5px;color:var(--muted);line-height:1.45}
+
+/* The context disclosure inside the compose panel */
+.cdisc{border:1px solid var(--rule-soft);border-radius:5px;background:var(--surface-2);
+  padding:var(--s3) var(--s4);margin-top:var(--s4)}
+.cdisc summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;
+  letter-spacing:.05em;color:var(--muted);display:flex;justify-content:space-between;gap:var(--s3);align-items:center}
+.cdisc summary::-webkit-details-marker{display:none}
+.cdisc summary::after{content:"show";font-size:10.5px;text-decoration:underline}
+.cdisc[open] summary::after{content:"hide"}
+.cdisc pre{white-space:pre-wrap;font-family:var(--mono);font-size:11.5px;line-height:1.6;
+  color:var(--ink-soft);margin-top:var(--s3);max-height:220px;overflow:auto}
+.cdisc .note{margin-top:var(--s3)}
+
 /* ========================================================= COMPOSE PANEL */
 .compose[hidden]{display:none !important}
 .compose{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;
@@ -477,7 +536,8 @@ details.more[open] summary{margin-bottom:var(--s4)}
   resize:vertical;
 }
 .compose input[type=email]{font-family:var(--body);font-size:16px;padding:12px var(--s4)}
-.compose textarea{min-height:230px}
+.compose textarea{min-height:150px}
+@media(min-height:760px){.compose textarea{min-height:210px}}
 .compose textarea:focus,.compose input[type=email]:focus{outline:none;border-color:var(--accent);
   box-shadow:0 0 0 3px rgba(14,110,99,.14)}
 .compose-foot{padding:var(--s5) var(--s6) var(--s6);border-top:1px solid var(--rule-soft);
@@ -533,17 +593,31 @@ details.more[open] summary{margin-bottom:var(--s4)}
 .tok::after{content:"";display:inline-block;width:0;height:0;margin:0 0 4px 8px;
   border:4px solid transparent;border-top-color:currentColor;vertical-align:middle}
 .tokwrap{position:relative;display:inline}
+/* On a phone this is a bottom sheet, not a dropdown. Anchoring a 420px menu to a
+   word in the middle of a wrapped line put two thirds of every option past the
+   right edge of the screen — which broke the most important control on the page
+   for exactly the visitors most likely to be reading it on the way somewhere. */
 .tokpop{
-  position:absolute;z-index:60;top:calc(100% + 8px);left:0;min-width:min(88vw,420px);
-  background:var(--surface-2);border:1px solid var(--rule);border-radius:6px;
-  box-shadow:0 18px 46px rgba(0,0,0,.20);padding:var(--s2);
-  max-height:min(52vh,340px);overflow-y:auto;animation:slidein .16s ease;
+  position:fixed;z-index:120;left:10px;right:10px;bottom:10px;top:auto;
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:0 -14px 50px rgba(0,0,0,.34);padding:var(--s2);
+  max-height:min(62vh,460px);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  animation:sheetup .2s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes sheetup{from{transform:translateY(16px);opacity:.5}to{transform:none;opacity:1}}
+@media(min-width:760px){
+  .tokpop{
+    position:absolute;z-index:60;top:calc(100% + 8px);left:0;right:auto;bottom:auto;
+    min-width:min(88vw,420px);border-radius:6px;box-shadow:0 18px 46px rgba(0,0,0,.20);
+    max-height:min(52vh,340px);animation:slidein .16s ease;
+  }
 }
 .tokpop button{
   display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
-  font-family:var(--body);font-size:15px;line-height:1.4;color:var(--ink-soft);
-  padding:9px 11px;border-radius:4px;
+  font-family:var(--body);font-size:16px;line-height:1.4;color:var(--ink-soft);
+  padding:14px 13px;border-radius:5px;min-height:48px;
 }
+@media(min-width:760px){.tokpop button{font-size:15px;padding:9px 11px;min-height:0}}
 .tokpop button:hover,.tokpop button:focus-visible{background:var(--surface);color:var(--ink);outline:none}
 .hook-known{border-top:1px solid var(--rule-soft);padding-top:var(--s4);margin-bottom:var(--s5)}
 .hook-known .label{margin-bottom:var(--s3)}
@@ -652,6 +726,11 @@ details.more[open] summary{margin-bottom:var(--s4)}
 .consent .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .consent a{color:var(--accent)}
 .footlink{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline}
+/* Footer links sit on a 15px line. Padding keeps the visual rhythm and gives a
+   thumb something to hit. */
+@media(max-width:759px){
+  footer a, .footlink{display:inline-block;padding:9px 0;min-height:24px}
+}
 
 /* ============================================================ PRIORITISATION */
 .prioritybar{

@@ -1,5 +1,82 @@
 # Build log
 
+## 4 Sep 2026 — v2.0: mobile, a launcher, and an answer engine that stops guessing
+
+Sean, with the emphasis his: *"Is the site also optimized for mobile?? This is very very very
+important."* Then three more, all correct.
+
+### Mobile — one real break, found by auditing rather than assuming
+
+Four viewports (390, 375, 360, 768), measured rather than eyeballed. No horizontal scroll
+anywhere, the hero scaled, the rail hid and the telemetry drawer took over, the compose panel
+fitted with its buttons above the fold. So far so good — and then the important one:
+
+**The token dropdown in the hero sentence rendered mostly off-screen.** A 420px menu anchored to
+a word in the middle of a wrapped line: left edge at 172px on a 390px viewport, right edge at
+516px. Every option cut in half. The single most important control on the page, broken for
+exactly the visitors most likely to be reading on the way somewhere.
+
+Fixed as a **bottom sheet** under 760px — full width, 48px rows, viewport-bounded — and a
+clamped dropdown above it. Also: the hours slider was a 16px-tall range input, which is a
+desktop control, now a 44px hit area with a 26px thumb; footer links got a real tap area; and
+the mobile drawer gained `overflow-y:auto` so a long event log can actually be scrolled.
+
+The lesson is the same one as the dead `mailto:` earlier today. Both features were *correct*
+and both were unusable. Nothing catches that except opening the thing at the size people use it.
+
+### The enquiry no longer reads the visitor their own file
+
+Sean: *"Don't include all that info in the enquiry form."* Right, and worse than clutter — the
+textarea opened with the visitor's own city, weather, visit count, scroll depth and score sitting
+above the sentence they were meant to write. Unnerving to read about yourself, and it buried the
+only part that mattered.
+
+Now the message box holds **only what the visitor wrote**. Everything the page inferred travels
+with the POST and sits under a collapsed disclosure: *"Sean also receives what the page worked
+out on its own — shown here because you should be able to see it before you press send, not
+because you need to read it."* Honesty kept, clutter gone. The mailto fallback still carries it
+inline, because there is no server on that path to attach it.
+
+Opened from the launcher there is nothing pre-written, so the panel stops claiming there is:
+heading and lead swap to *"Tell Sean what you need."*
+
+### The answer engine was guessing, and a near-miss is worse than a miss
+
+Sean asked his own site *"What experience does Sean have with building revenue systems??"* and
+got back the written answer to **"Do you write the code yourself?"** — matched on the word
+*build*. A confident, well-written answer to a question nobody asked.
+
+The keyword matcher was intercepting anything sharing a word with the bank. **Written answers
+are now reserved for the suggestion chips; anything typed goes to Claude, always.** The written
+answers are inside `kb.md` anyway, so nothing is lost — Claude has them and can quote them when
+they fit, rather than a substring match deciding on its behalf.
+
+A matcher that returns the adjacent answer is worse than one that returns nothing, because it
+looks deliberate.
+
+### The knowledge base, roughly doubled
+
+2,400 → 3,700 words, and more usefully, five new sections: the full career with the parts that
+explain the judgement (fourteen years running a business across Singapore, Malaysia and the
+Philippines; the HubSpot Solutions Partner practice at build level; channel and partner motions
+from the CMO years); **eleven positions he actually holds** about this work, stated plainly,
+because a page that will not commit to a view is not worth asking anything; the four-stage method
+with the 109-hour number attached to it; what a first engagement looks like week by week; where
+he is strongest and where he is not.
+
+And a section titled **what this knowledge base does not have** — no named client outcomes, no
+testimonials, no Alpha Surfaces before-and-after — so the engine says so instead of filling the
+gap with invention. That section is the one that keeps the rest trustworthy.
+
+### The support launcher
+
+A fixed pill, bottom right, following the reader down the page. Two routes: ask a question, or
+message Sean. It hides itself whenever the compose panel or the telemetry drawer is open, so it
+never sits on top of the thing the visitor just opened.
+
+Both ways of reaching him previously lived at the bottom of a very long page and in the middle
+of another section.
+
 ## 4 Sep 2026 — v1.9: the record, and the alert that announces itself
 
 Sean: *"Can we track all the people we send something to, their email addresses and any other
