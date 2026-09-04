@@ -814,8 +814,8 @@
     "endpoint": ""
   },
   "analytics": {
-    "cloudflareToken": "",
-    "ga4": "",
+    "cloudflareToken": "PASTE_CLOUDFLARE_TOKEN_HERE",
+    "ga4": "G-60G7VKJ4ZN",
     "contentsquare": "597912112e565"
   }
 }
