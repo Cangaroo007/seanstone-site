@@ -114,6 +114,23 @@ def render_privacy(data, html):
         "Composed entirely in your browser as you use the page. Nothing is transmitted at this "
         "stage \u2014 it becomes an enquiry only if you open the panel and press send, and you "
         "can read and edit every word first."))
+    if data.get("alert", {}).get("endpoint"):
+        rows.append((
+            "The engagement alert",
+            "If your engagement score passes 80 \u2014 which takes sustained, deliberate use of "
+            "the tools on this page \u2014 the contents of the live panel are emailed to Sean and "
+            "stored: the resolved company, city and network, your score, what you read, the "
+            "diagnostic result and any scope you built. No name, no email address, nothing "
+            "you did not do on this page.",
+            "The page tells you in the log at the moment this happens, rather than after the "
+            "fact in a policy. This is the one thing on the site that reaches Sean without you "
+            "choosing to contact him, which is why it announces itself."))
+        rows.append((
+            "What is kept, and where",
+            "Enquiries you send, and the sessions described above.",
+            "A Cloudflare D1 database on Sean's own account, readable only by him behind a "
+            "password. No third-party CRM, no data broker, no advertising platform. Ask at the "
+            "address below and it will be deleted."))
     if data.get("ask", {}).get("endpoint"):
         rows.append((
             "Asking the page a question",

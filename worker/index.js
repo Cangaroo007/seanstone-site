@@ -5,6 +5,9 @@
  *   POST /enquiry   the enquiry the page composed, forwarded to Sean's inbox.
  *   POST /ask       a question the written answers did not cover, answered by Claude
  *                   from kb.md and from nothing else.
+ *   POST /session   a visitor whose engagement score crossed 80. Emailed and stored.
+ *                   The page tells them this happened, in the panel, as it happens.
+ *   GET  /admin     the private record. Basic auth against ADMIN_PASSWORD.
  *
  * Account level only. Never a person, unless a person types their own address
  * into the compose panel and presses send. See TIER1-INTELLIGENCE.md.
@@ -30,6 +33,7 @@
  */
 
 import KB from './kb.md';
+import { render as renderAdmin, authorised, unauthorised } from './admin.js';
 
 const ALLOWED = ['https://seanstone.com', 'https://www.seanstone.com'];
 
@@ -52,6 +56,10 @@ const seen = new Map();
 // anyone who finds the endpoint.
 const ASK_RATE = { max: 8, windowMs: 15 * 60 * 1000 };
 const asked = new Map();
+
+const ALERT_RATE = { max: 4, windowMs: 15 * 60 * 1000 };
+const alerted = new Map();
+const alertedSids = new Set();
 const MAX_Q = 400;
 // Left at the model default rather than pinned: newer models reject an explicit
 // temperature when extended thinking is on, and the length is governed by the
@@ -144,6 +152,26 @@ async function identity(request, env) {
   return out;
 }
 
+// D1 is an archive, never a dependency: a write failure must not cost Sean the
+// email, so every store is wrapped and the result ignored.
+async function store(env, sql, values) {
+  if (!env.DB) { return false; }
+  try {
+    await env.DB.prepare(sql).bind(...values).run();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function place(d, cf) {
+  return [
+    d.company ? 'company: ' + d.company : '',
+    (d.city || cf.city) ? 'city: ' + (d.city || cf.city) + (cf.country ? ', ' + cf.country : '') : '',
+    cf.asOrganization ? 'network: ' + cf.asOrganization : '',
+  ].filter(Boolean);
+}
+
 async function enquiry(request, env, headers) {
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   if (throttled(ip)) {
@@ -186,6 +214,19 @@ async function enquiry(request, env, headers) {
 <hr style="border:0;border-top:1px solid #ddd;margin:20px 0">
 <pre style="font:12px/1.6 ui-monospace,Menlo,monospace;white-space:pre-wrap;color:#5D665F;margin:0">${esc(meta)}</pre>
 </div>`;
+
+  await store(env,
+    `INSERT INTO enquiries
+       (ts, sid, email, subject, body, company, city, country, network,
+        segment, score, depth, weakzone, scopehours, asked, referrer, ua)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    [new Date().toISOString(), String(d.sid || '').slice(0, 64), replyTo, subject, body,
+     String(d.company || '').slice(0, 200), String(d.city || cf.city || '').slice(0, 120),
+     cf.country || '', String(cf.asOrganization || '').slice(0, 200),
+     String(d.segment || '').slice(0, 40), Number(d.score) || 0, Number(d.depth) || 0,
+     String(d.weakzone || '').slice(0, 80), Number(d.scopehours) || 0,
+     String(d.asked || '').slice(0, 1000), String(d.referrer || '').slice(0, 200),
+     (request.headers.get('User-Agent') || '').slice(0, 300)]);
 
   try {
     const sent = await env.EMAIL.send({
@@ -274,6 +315,106 @@ async function ask(request, env, headers) {
   }
 }
 
+/**
+ * A visitor crossed the score threshold without contacting anybody. This is the
+ * whole thesis of the site running on the site: the account is known, the intent
+ * is scored, and the alert goes out before a word has been exchanged.
+ *
+ * The page announces this to the visitor as it happens. That is a product
+ * decision, not a legal one — a site that argues for candour about what it does
+ * does not get one silent exception for the part that benefits its owner.
+ */
+async function session(request, env, headers) {
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (throttled(ip, alerted, ALERT_RATE)) {
+    return new Response(JSON.stringify({ ok: false, error: 'rate_limited' }), { status: 429, headers });
+  }
+  const raw = await request.text();
+  if (!raw || raw.length > 8000) {
+    return new Response(JSON.stringify({ ok: false, error: 'bad_size' }), { status: 400, headers });
+  }
+  let d;
+  try { d = JSON.parse(raw); } catch (e) {
+    return new Response(JSON.stringify({ ok: false, error: 'bad_json' }), { status: 400, headers });
+  }
+  const sid = String(d.sid || '').slice(0, 64);
+  const score = Number(d.score) || 0;
+  if (!sid || score < 80) {
+    return new Response(JSON.stringify({ ok: false, error: 'not_eligible' }), { status: 400, headers });
+  }
+
+  const cf = request.cf || {};
+  const clip = (v, n) => String(v == null ? '' : v).slice(0, n);
+  const row = {
+    ts: new Date().toISOString(), sid: sid,
+    company: clip(d.company, 200), city: clip(d.city || cf.city, 120),
+    country: cf.country || '', network: clip(cf.asOrganization, 200),
+    segment: clip(d.segment, 40), score: score, depth: Number(d.depth) || 0,
+    minutes: Number(d.minutes) || 0, visits: Number(d.visits) || 0,
+    signals: clip(d.signals, 400), weakzone: clip(d.weakzone, 80),
+    scopehours: Number(d.scopehours) || 0, asked: clip(d.asked, 1000),
+    stage: clip(d.stage, 120), nba: clip(d.nba, 600),
+    referrer: clip(d.referrer, 200),
+    ua: clip(request.headers.get('User-Agent'), 300),
+  };
+
+  // UNIQUE(sid) in the schema is what actually enforces one alert per session:
+  // a duplicate insert fails, and a failed insert means no email. Doing it in the
+  // database rather than in memory means it survives isolate churn.
+  const fresh = await store(env,
+    `INSERT INTO sessions
+       (ts, sid, company, city, country, network, segment, score, depth, minutes,
+        visits, signals, weakzone, scopehours, asked, stage, nba, referrer, ua)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    [row.ts, row.sid, row.company, row.city, row.country, row.network, row.segment,
+     row.score, row.depth, row.minutes, row.visits, row.signals, row.weakzone,
+     row.scopehours, row.asked, row.stage, row.nba, row.referrer, row.ua]);
+
+  // No database bound: fall back to in-memory dedupe so a misconfigured Worker
+  // still cannot send the same alert twice from one isolate.
+  if (!env.DB) {
+    if (alertedSids.has(sid)) {
+      return new Response(JSON.stringify({ ok: true, duplicate: true }), { headers });
+    }
+    alertedSids.add(sid);
+    if (alertedSids.size > 5000) { alertedSids.clear(); }
+  } else if (!fresh) {
+    return new Response(JSON.stringify({ ok: true, duplicate: true }), { headers });
+  }
+
+  const lines = [
+    row.company ? row.company : (row.city || 'An unidentified visitor'),
+    '',
+    'score ' + row.score + ' · ' + row.depth + '% read · ' + row.minutes + ' min · visit ' + (row.visits || 1),
+    row.stage ? 'stage: ' + row.stage : '',
+    row.segment ? 'told the router: ' + row.segment : 'never told the router what they are',
+    row.city ? 'where: ' + row.city + (row.country ? ', ' + row.country : '') : '',
+    row.network ? 'network: ' + row.network : '',
+    row.weakzone ? 'weakest zone: ' + row.weakzone : '',
+    row.scopehours ? 'scope built: ' + row.scopehours + ' hours' : '',
+    row.signals ? 'signals: ' + row.signals : '',
+    row.asked ? 'asked: ' + row.asked : '',
+    row.referrer ? 'came from: ' + row.referrer : '',
+    '',
+    row.nba ? 'What the panel told you to do:\n' + row.nba : '',
+    '',
+    'They have not contacted you. The site told them this alert was sent.',
+    'https://id.seanstone.com/admin?v=sessions',
+  ].filter((l) => l !== '').join('\n');
+
+  try {
+    await env.EMAIL.send({
+      to: TO, from: FROM,
+      subject: `[seanstone.com] Hot session — ${row.company || row.city || 'unidentified'} · score ${row.score}`,
+      text: lines,
+    });
+  } catch (e) {
+    // Stored but not delivered. The record is in /admin either way.
+    return new Response(JSON.stringify({ ok: true, mail: false }), { headers });
+  }
+  return new Response(JSON.stringify({ ok: true }), { headers });
+}
+
 export default {
   async fetch(request, env) {
     const headers = { ...cors(request.headers.get('Origin') || '') };
@@ -281,6 +422,18 @@ export default {
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: { ...headers, 'Access-Control-Max-Age': '86400' } });
+    }
+
+    if (url.pathname === '/admin') {
+      if (!authorised(request, env)) { return unauthorised(); }
+      return renderAdmin(request, env);
+    }
+
+    if (url.pathname === '/session') {
+      if (request.method !== 'POST') {
+        return new Response(JSON.stringify({ ok: false, error: 'post_only' }), { status: 405, headers });
+      }
+      return session(request, env, headers);
     }
 
     if (url.pathname === '/ask') {

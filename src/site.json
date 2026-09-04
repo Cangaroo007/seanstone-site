@@ -1167,5 +1167,13 @@
     "mailapp": "Open in mail app",
     "copied": "Copied. Paste it into an email to sean@cangaroo.ai.",
     "note": "Sent to a Cloudflare Worker that forwards it to my inbox. What you see here is exactly what I receive."
+  },
+  "alert": {
+    "endpoint": "https://id.seanstone.com/session",
+    "threshold": 80,
+    "line": "<b>Score crossed 80. Sean has just been emailed about this session</b> — the company, the city, the score, everything in this panel. You are watching the alert go out, which is the part most sites do not show you.",
+    "railLabel": "Alert",
+    "railSent": "sent to Sean just now",
+    "railWaiting": "not triggered"
   }
 }

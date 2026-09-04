@@ -1,5 +1,77 @@
 # Build log
 
+## 4 Sep 2026 — v1.9: the record, and the alert that announces itself
+
+Sean: *"Can we track all the people we send something to, their email addresses and any other
+information we get on them? Also if a visitor starts to score more than 80 can you send me an
+email alert?"* Plus the plan decision: Workers Paid, not a third-party mail vendor.
+
+Two features, one of which needed a decision about honesty before it needed any code.
+
+### The threshold alert
+
+At score 80 — which takes sustained, deliberate use of the tools, not idle scrolling — the
+session is emailed to Sean and stored. Company, city, network, score, depth, minutes, visit
+number, declared segment, signals, weakest diagnostic zone, scope hours, questions asked, the
+stage, and the next action the panel recommended. Nobody has filled in anything.
+
+**The page says so, in the log, at the moment it happens.** *"Score crossed 80. Sean has just
+been emailed about this session — the company, the city, the score, everything in this panel.
+You are watching the alert go out, which is the part most sites do not show you."* A rail row
+appears alongside it.
+
+Every other site does this silently and discloses it in a policy nobody reads. Doing it out loud
+costs nothing legally — the US and Australia require notice, not consent — and it is a
+materially better demonstration: a visitor watching their own hot-lead alert fire is a stronger
+argument than any paragraph about hot-lead alerts. It is also the only position consistent with
+four thousand words arguing for candour. A page like this does not get one silent exception for
+the part that benefits its owner.
+
+**Announced immediately, sent twenty seconds later.** The first build fired on crossing and the
+record was thin — score 81, no diagnostic result, no scope, stage still *"Identified"*, because
+people cross 80 mid-action. Waiting twenty seconds produced: score 100, weakest zone *Data
+unity*, 76 hours of scope, stage *"Qualified — has costed the work"*, and the good next action.
+`pagehide` and `visibilitychange` flush it via `sendBeacon` if they leave first, so the wait
+costs nothing.
+
+**Failure is not narrated as success.** If the POST fails the page retries once and then says
+*"could not send"* and logs it. The first version of `undo()` cleared `crossedAt`, which let
+`maybeAlert()` re-announce the crossing on the next tick — the visitor would have watched the
+same alert "go out" every twenty seconds forever. Caught by testing the failure path with the
+endpoint aborted, which is the test worth writing.
+
+Dedupe is `UNIQUE(sid)` in the database, not a flag in memory: a duplicate insert fails, a
+failed insert means no email, and it survives isolate churn. In-memory fallback only when no
+database is bound.
+
+### The record
+
+Cloudflare **D1**, two tables. `enquiries` is people who deliberately made contact. `sessions`
+is people who engaged hard and never said anything — the ones an ordinary site loses entirely.
+An enquiry now carries the same session payload, so the two join on `sid`: you can see what
+somebody did before they wrote to you.
+
+**D1 is an archive, never a dependency.** Every write is wrapped and its result ignored for the
+email path. A database failure must not cost Sean a message.
+
+`GET /admin` on the Worker, HTTP basic auth against an `ADMIN_PASSWORD` secret, fails closed
+when the secret is absent. Server-rendered, no framework, one filter box, light and dark. It is
+a list to be read on a phone, not a dashboard to be admired.
+
+Honest about the lock: one password over TLS with no rate limiting beyond Cloudflare's own.
+Proportionate for a list of enquiries; it would not be for anything more sensitive.
+
+### The rail had to stop saying something that was no longer true
+
+It read *"This panel runs in your browser… nothing leaves."* That was true this morning. It now
+reads: *"Almost none of it is sent anywhere — with one exception, and you will be told the
+moment it applies."* Privacy page gains two rows: exactly what the alert contains, and what is
+stored where, with deletion on request.
+
+Rewriting a sentence that became false is not housekeeping. The whole asset here is that the
+page describes itself accurately, and a stale claim is worth more damage than the feature is
+worth value.
+
 ## 4 Sep 2026 — v1.7: the page answers questions nobody wrote answers to
 
 Sean: *"I want to build Anthropic into this so people can query and they'll get a concise

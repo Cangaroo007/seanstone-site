@@ -1972,6 +1972,14 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     "mailapp": "Open in mail app",
     "copied": "Copied. Paste it into an email to sean@cangaroo.ai.",
     "note": "Sent to a Cloudflare Worker that forwards it to my inbox. What you see here is exactly what I receive."
+  },
+  "alert": {
+    "endpoint": "https://id.seanstone.com/session",
+    "threshold": 80,
+    "line": "<b>Score crossed 80. Sean has just been emailed about this session<\/b> — the company, the city, the score, everything in this panel. You are watching the alert go out, which is the part most sites do not show you.",
+    "railLabel": "Alert",
+    "railSent": "sent to Sean just now",
+    "railWaiting": "not triggered"
   }
 }
 </script>
@@ -2292,7 +2300,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   <div class="rail-in" id="rail-desktop">
     <div class="rail-head">
       <div class="label"><span class="pulse"></span> If this were your site</div>
-      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it.</p><p id="rail-disclosure">This panel runs in your browser; a small note is kept there so the page recognises you next time. The site also runs ordinary analytics — which is rather the point: you can measure everything and still know nothing about who is on your site.</p><p id="rail-tier">This panel is the <b>entry-level engagement</b>, and it is the smallest part of the work. Wired into Road Runner the same stream stops being a display and starts writing records, routing accounts and answering buyers from your live systems. <a href="#tier-sec">The three tiers &darr;</a></p>
+      <p>You haven't filled in a form. This is what your CRM would already know, and what it would tell your team to do about it.</p><p id="rail-disclosure">This panel runs in your browser and a small note is kept there, so the page recognises you next time. Almost none of it is sent anywhere — with one exception, and you will be told the moment it applies: cross a score of 80 and this session is emailed to Sean, because that is precisely the thing the page is arguing a site should be able to do.</p><p id="rail-tier">This panel is the <b>entry-level engagement</b>, and it is the smallest part of the work. Wired into Road Runner the same stream stops being a display and starts writing records, routing accounts and answering buyers from your live systems. <a href="#tier-sec">The three tiers &darr;</a></p>
     </div>
 
     <div class="verdict">
@@ -2318,6 +2326,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="krow" id="row-network" hidden><span>Network</span><div id="d-network">—</div></div>
       <div class="krow" id="row-company" hidden><span>Company</span><div id="d-company"></div></div>
       <div class="krow" id="row-weather" hidden><span>Weather</span><div id="d-weather">—</div></div>
+      <div class="krow" id="row-alert" hidden><span id="l-alert">Alert</span><div id="d-alert" style="color:var(--signal);font-weight:600">—</div></div>
       <div class="krow"><span>Device</span><div id="d-device">—</div></div>
       <div class="krow"><span>Visits</span><div id="d-visits">first</div></div>
       <div class="krow"><span>Attention</span><div id="d-attn">just arrived</div></div>
@@ -2388,7 +2397,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     path:null, score:0, events:0, sections:{}, signals:[],
     start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20},
     caps:[], analyticsLoaded:false, geo:null, company:null, weather:null,
-    hook:{problem:null,outcome:null}, number:null, asked:[], src:'', sent:false, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
+    hook:{problem:null,outcome:null}, number:null, asked:[], src:'', sent:false, sid:'', alerted:false, crossedAt:0, alertTries:0, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
   };
 
   /* ------------------------------------------------------------ event log */
@@ -2430,6 +2439,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     paintEnv();
     renderKnown();
     noteMaybe();
+    maybeAlert();
   }
 
   /* The payoff: the message a real system would send a real sales team. */
@@ -3380,6 +3390,103 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 
 
 
+  /* ================================================== THE THRESHOLD ALERT
+     The one thing on this page that reaches Sean without the visitor doing
+     anything. Which is exactly why the page says so, out loud, in the log, at the
+     moment it happens — a site that spends four thousand words arguing for
+     candour about what it is doing does not get one silent exception for the
+     part that benefits its owner. */
+  function sessionId(){
+    var k = 'ss.sid';
+    try {
+      var v = sessionStorage.getItem(k);
+      if(v){ return v; }
+      v = (crypto && crypto.randomUUID) ? crypto.randomUUID()
+        : String(Date.now()) + '-' + Math.random().toString(36).slice(2);
+      sessionStorage.setItem(k, v);
+      return v;
+    } catch(e){
+      // Private window or storage blocked: a per-load id still dedupes a reload's
+      // worth of paint() calls, which is all the client side needs to guarantee.
+      return String(Date.now()) + '-' + Math.random().toString(36).slice(2);
+    }
+  }
+  function sessionPayload(){
+    var ids = Object.keys(S.scope.picked);
+    var done = Object.keys(S.diag).length === DATA.diagnostic.questions.length;
+    return {
+      sid: S.sid, score: S.score, depth: S.depth,
+      minutes: Math.round((Date.now()-S.start)/60000),
+      visits: S.mem.n, company: S.company || '',
+      city: (S.geo && S.geo.city) || '', segment: S.path ? segShort(S.path) : '',
+      signals: S.signals.join(', '), stage: stageName(), nba: nextAction(),
+      weakzone: done ? ((DATA.diagnostic.zones[weakestZone()]||{}).name || '') : '',
+      scopehours: ids.reduce(function(a,k){ return a + S.scope.picked[k]; }, 0),
+      asked: S.asked.join(' | '), referrer: S.src || ''
+    };
+  }
+  /* Crossing the threshold is announced immediately and sent a little later. The
+     twenty-second wait is not hesitation: a visitor crosses 80 mid-action, and an
+     alert that arrives before they have finished the diagnostic carries a much
+     thinner record than one that waits for them to land. If they leave first,
+     sendBeacon gets it out on the way. */
+  var ALERT_WAIT = 20000;
+  function maybeAlert(){
+    var A = DATA.alert;
+    if(!A || !A.endpoint || S.alerted || S.crossedAt){ return; }
+    if(S.score < (A.threshold || 80)){ return; }
+    S.crossedAt = Date.now();
+    var row = $('#row-alert');
+    if(row){
+      row.hidden = false;
+      setText('#l-alert', A.railLabel || 'Alert');
+      setText('#d-alert', 'composing…');
+    }
+    logEvent(A.line, 0, 'sig');
+    signal('alerted the owner');
+  }
+  function flushAlert(viaBeacon){
+    var A = DATA.alert;
+    if(!A || !A.endpoint || S.alerted || !S.crossedAt){ return; }
+    S.alerted = true;                            // paint() runs every second
+    var body = JSON.stringify(sessionPayload());
+
+    if(viaBeacon && navigator.sendBeacon){
+      try {
+        navigator.sendBeacon(A.endpoint, new Blob([body], {type:'text/plain;charset=UTF-8'}));
+        return;
+      } catch(e){ /* fall through to fetch */ }
+    }
+    fetch(A.endpoint, {
+      method:'POST', mode:'cors', credentials:'omit', keepalive:true,
+      headers:{'Content-Type':'text/plain;charset=UTF-8'}, body: body
+    }).then(function(r){ return r.json().catch(function(){ return null; }); })
+      .then(function(d){
+        if(d && d.ok){ setText('#d-alert', d.duplicate ? 'already sent this session' : (A.railSent || 'sent')); }
+        else { undo(); }
+      }).catch(undo);
+
+    function undo(){
+      // Nothing was delivered, so the page must not claim it was. One retry, then
+      // it stops and says so: crossedAt is deliberately left set, because clearing
+      // it would let maybeAlert() re-announce the crossing on the next tick and the
+      // visitor would watch the same alert 'go out' every twenty seconds.
+      S.alertTries++;
+      if(S.alertTries < 2){
+        S.alerted = false; S.crossedAt = Date.now();
+        setText('#d-alert', 'retrying…');
+        return;
+      }
+      setText('#d-alert', 'could not send');
+      logEvent('The alert did not go through — nothing about this session was sent', 0);
+    }
+  }
+  function watchAlert(){
+    var out = function(){ if(S.crossedAt && !S.alerted){ flushAlert(true); } };
+    window.addEventListener('pagehide', out);
+    document.addEventListener('visibilitychange', function(){ if(document.hidden){ out(); } });
+  }
+
   /* ==================================================== THE COMPOSE PANEL
      Every "send" on this page used to be a bare mailto:, which does nothing at
      all on a machine with no mail client registered — a large share of desktop
@@ -3441,11 +3548,9 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     btn.textContent = E.sending || 'Sending…';
     composeStatus('', '');
     $('#c-status').hidden = true;
-    var payload = {
-      subject: CO.subject, body: body, email: email,
-      page: location.pathname, score: S.score, depth: S.depth,
-      company: S.company || '', city: (S.geo && S.geo.city) || ''
-    };
+    var payload = sessionPayload();
+    payload.subject = CO.subject; payload.body = body; payload.email = email;
+    payload.page = location.pathname;
     var giveUp = setTimeout(function(){ fail(); }, 12000);
     var settled = false;
     var fail = function(){
@@ -4065,6 +4170,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   }
 
   function tick(){
+    if(S.crossedAt && !S.alerted && Date.now()-S.crossedAt > ALERT_WAIT){ flushAlert(false); }
     var el = Date.now()-S.start;
     setText('#t-time', fmtTime(el));
     setText('#d-time', fmtTime(el));
@@ -4110,7 +4216,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     renderMetrics(); renderPaths(); renderCaps(); renderWork();
     renderDemo(); renderDiag(); renderScope(); renderTimeline(); setupDrawer();
     renderHook(); renderNumbers(); renderAsk();
-    renderTiers(); wireCompose();
+    renderTiers(); wireCompose(); watchAlert();
 
     document.addEventListener('click', function(e){
       var b = e.target.closest ? e.target.closest('.readcase[data-case]') : null;
@@ -4134,6 +4240,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       paint();
     });
 
+    S.sid = sessionId();
     S.env = env();
     S.mem = memory();
 
