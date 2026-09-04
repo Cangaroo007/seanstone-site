@@ -7,9 +7,7 @@
 <meta name="description" content="Sean Stone builds revenue systems — CRM architecture, GTM engineering and AI-directed product builds. Twenty-five years, 50+ B2B companies, production software shipped.">
 <meta name="robots" content="index, follow">
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "37cc0106ca90411db930bf9b7a2cecb0"}'></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-60G7VKJ4ZN"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-60G7VKJ4ZN');</script>
-<script src="https://t.contentsquare.net/uxa/597912112e565.js" defer></script>
+<script>window.__ANALYTICS__={"ga4": "G-60G7VKJ4ZN", "contentsquare": "597912112e565"};</script>
 <link rel="canonical" href="https://seanstone.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://seanstone.com/">
@@ -448,6 +446,20 @@ details.more summary::after{content:"+";font-family:var(--mono);color:var(--mute
 details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
+
+/* ============================================================ CONSENT */
+.consent{
+  position:fixed;left:var(--s4);right:var(--s4);bottom:var(--s4);z-index:80;
+  max-width:560px;margin:0 auto;background:var(--surface);border:1px solid var(--ink);
+  border-radius:5px;padding:var(--s5);box-shadow:0 18px 50px -20px rgba(0,0,0,.5);
+  display:none;flex-direction:column;gap:var(--s3);animation:slidein .3s ease;
+}
+.consent.on{display:flex}
+.consent h4{font-size:16px;font-weight:600}
+.consent p{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+.consent .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.consent a{color:var(--accent)}
+.footlink{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline}
 
 /* ============================================================ PRIORITISATION */
 .prioritybar{
@@ -1418,6 +1430,11 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     "cloudflareToken": "37cc0106ca90411db930bf9b7a2cecb0",
     "ga4": "G-60G7VKJ4ZN",
     "contentsquare": "597912112e565"
+  },
+  "privacy": {
+    "updated": "4 September 2026",
+    "contact": "sean@cangaroo.ai",
+    "note": "Consent is gated for Europe/UK only. Australia and the US require notice, not opt-in — see BUILD-LOG."
   }
 }
 </script>
@@ -1656,7 +1673,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     </div>
     <footer>
       <div>Sean Stone · San Francisco · <a href="https://linkedin.com/in/seanstone">linkedin.com/in/seanstone</a></div>
-      <div class="note">Built the way I build for clients — instrumented, data-driven, editable by the person who owns it.</div>
+      <div class="note"><a href="/privacy/">Privacy &amp; cookies</a> &nbsp;·&nbsp; <button class="footlink" type="button" id="consent-reopen">Cookie choice</button> &nbsp;·&nbsp; Built the way I build for clients — instrumented, data-driven, editable by the person who owns it.</div>
     </footer>
   </section>
 
@@ -1711,6 +1728,15 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 
 <div class="drawer" id="drawer" aria-hidden="true"></div>
 
+<div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Cookie choice">
+  <h4>Analytics cookies</h4>
+  <p>You appear to be in Europe, where these need your say-so first. Google Analytics and ContentSquare help me see how this page is used; nothing is loaded until you choose. The live panel on this page runs entirely in your browser either way. <a href="/privacy/">What's collected</a>.</p>
+  <div class="row">
+    <button class="btn small" type="button" id="consent-yes">Accept</button>
+    <button class="btn ghost small" type="button" id="consent-no">Decline</button>
+  </div>
+</div>
+
 <script>
 /* =========================================================================
    Sean Stone — instrumented portfolio, first draft.
@@ -1727,7 +1753,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   var S = {
     path:null, score:0, events:0, sections:{}, signals:[],
     start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20},
-    caps:[], geo:null, company:null, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
+    caps:[], analyticsLoaded:false, geo:null, company:null, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
   };
 
   /* ------------------------------------------------------------ event log */
@@ -2569,6 +2595,76 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     });
   }
 
+  /* ------------------------------------------------------------- consent gate */
+  /* Europe and the UK require opt-in before non-essential cookies. Australia and
+     the US require notice, not consent — so no banner there, and the tags load
+     immediately. Global Privacy Control is honoured everywhere: twelve US states,
+     California included, require it to be respected automatically.
+     Cloudflare's beacon is cookieless and is not gated at all. */
+  function consentRequired(){
+    var tz = S.env.tz || '';
+    if(S.geo && S.geo.country){
+      var EEA = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'];
+      return EEA.indexOf(S.geo.country) >= 0;
+    }
+    return /^Europe\//.test(tz) || /^Atlantic\/(Canary|Azores|Madeira|Faroe|Reykjavik)/.test(tz);
+  }
+  function gpcOn(){
+    try { return navigator.globalPrivacyControl === true; } catch(e){ return false; }
+  }
+  function storedConsent(){
+    try { return localStorage.getItem('ss.consent'); } catch(e){ return null; }
+  }
+  function setConsent(v){
+    try { localStorage.setItem('ss.consent', v); } catch(e){}
+  }
+  function loadAnalytics(){
+    if(S.analyticsLoaded){ return; }
+    var a = window.__ANALYTICS__ || {};
+    S.analyticsLoaded = true;
+    if(a.ga4){
+      var g = document.createElement('script');
+      g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + a.ga4;
+      document.head.appendChild(g);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', a.ga4);
+    }
+    if(a.contentsquare){
+      var c = document.createElement('script');
+      c.defer = true; c.src = 'https://t.contentsquare.net/uxa/' + a.contentsquare + '.js';
+      document.head.appendChild(c);
+    }
+  }
+  function showConsent(){ var el = $('#consent'); if(el){ el.classList.add('on'); } }
+  function hideConsent(){ var el = $('#consent'); if(el){ el.classList.remove('on'); } }
+
+  function decideConsent(){
+    var box = $('#consent');
+    if(box){
+      $('#consent-yes').addEventListener('click', function(){
+        setConsent('yes'); hideConsent(); loadAnalytics();
+        logEvent('You accepted analytics cookies', 0);
+      });
+      $('#consent-no').addEventListener('click', function(){
+        setConsent('no'); hideConsent();
+        logEvent('You declined analytics cookies — nothing loaded', 0);
+      });
+    }
+    var reopen = $('#consent-reopen');
+    if(reopen){ reopen.addEventListener('click', function(){ showConsent(); }); }
+
+    if(gpcOn()){
+      logEvent('Your browser sent a Global Privacy Control signal — analytics not loaded', 0);
+      return;
+    }
+    if(!consentRequired()){ loadAnalytics(); return; }
+    var choice = storedConsent();
+    if(choice === 'yes'){ loadAnalytics(); }
+    else if(choice !== 'no'){ showConsent(); }
+  }
+
   /* ---------------------------------------------------- server-side identity */
   /* Optional. With DATA.identity.endpoint empty the site is browser-only and the
      panel says so. With it set, one call names the city, the network and — where
@@ -2716,6 +2812,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     if(src){ logEvent('They came from <b>'+esc(String(src).replace(/^https?:\/\//,'').split('/')[0])+'</b>', 0); }
     logEvent('Waiting to find out who they are…', 0);
 
+    decideConsent();
     watchSections();
     watchAttention();
     identify();

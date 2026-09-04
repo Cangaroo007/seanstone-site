@@ -817,5 +817,10 @@
     "cloudflareToken": "37cc0106ca90411db930bf9b7a2cecb0",
     "ga4": "G-60G7VKJ4ZN",
     "contentsquare": "597912112e565"
+  },
+  "privacy": {
+    "updated": "4 September 2026",
+    "contact": "sean@cangaroo.ai",
+    "note": "Consent is gated for Europe/UK only. Australia and the US require notice, not opt-in — see BUILD-LOG."
   }
 }

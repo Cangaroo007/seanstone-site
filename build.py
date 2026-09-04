@@ -30,7 +30,7 @@ OUT = ROOT           # deployable files sit at the repo root, so GitHub Pages
 BUILD = ROOT / ".build"  # serves from "/" with no build step of its own
 TOKEN = "__SITE_DATA__"
 ROBOTS = "__ROBOTS__"
-ANALYTICS = "__ANALYTICS__"
+ANALYTICS = "<!--ANALYTICS-->"  # a comment, so it cannot collide with window.__ANALYTICS__ in the page JS
 
 
 def esc(s):
@@ -75,6 +75,116 @@ def render_case(project, projects):
     )
 
 
+def render_privacy(data, html):
+    """Generate /privacy/ from the same config that drives the tags, so the page
+    can never claim something the site does not actually do. Reuses the built
+    page's <head> for fonts and CSS."""
+    a = data.get("analytics", {})
+    ident = data.get("identity", {}).get("endpoint", "")
+    p = data.get("privacy", {})
+    prof = data.get("profile", {})
+    head = html[html.index("<title>"):html.index("</head>")]
+    head = head.replace(
+        "<title>Sean Stone — Revenue Systems</title>",
+        "<title>Privacy — Sean Stone</title>", 1)
+    head = head.replace('<meta name="robots" content="index, follow">',
+                        '<meta name="robots" content="noindex, follow">')
+
+    rows = []
+    rows.append((
+        "The panel on the site",
+        "Your time zone, device and browser, how far you scroll, whether you leave and come back, "
+        "and whether you copy something. A small note is kept in your own browser so the page "
+        "recognises you on a return visit.",
+        "Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data."))
+    if a.get("cloudflareToken"):
+        rows.append((
+            "Cloudflare Web Analytics",
+            "Page views, referrer, country, and page performance.",
+            "Cookieless. Sets nothing on your device and does not fingerprint you, which is why it "
+            "is not covered by the cookie choice."))
+    if a.get("ga4"):
+        rows.append((
+            "Google Analytics 4",
+            "Standard web analytics — pages viewed, how you arrived, approximate location, device.",
+            "Sets cookies. Processed by Google in the United States. In Europe and the UK it does not "
+            "load at all unless you accept."))
+    if a.get("contentsquare"):
+        rows.append((
+            "ContentSquare",
+            "How the page is used — clicks, scrolling and interaction with the tools on it. Text you "
+            "type is masked.",
+            "Sets cookies. In Europe and the UK it does not load at all unless you accept."))
+    if ident:
+        rows.append((
+            "Network lookup",
+            "The city and the network your connection belongs to, and where it resolves, the company "
+            "that network belongs to.",
+            "Account level only — the organisation, never you as an individual. Computed per request "
+            "and not stored."))
+
+    table = "".join(
+        f"<tr><td><b>{r[0]}</b></td><td>{r[1]}</td><td>{r[2]}</td></tr>" for r in rows)
+
+    body = f"""<div class="shell"><main>
+<section class="hero" style="padding-bottom:var(--s6)">
+  <a class="backlink" href="/">← Back to the site</a>
+  <h1 class="display" style="font-size:clamp(38px,6vw,64px);margin-top:var(--s5)">Privacy</h1>
+  <p class="lede">What this site collects, who gets it, and how to say no. Last updated {p.get('updated','')}.</p>
+</section>
+<section>
+  <div class="sec-head"><div class="label"><span class="tick"></span> What is collected</div></div>
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:14.5px">
+    <thead><tr>
+      <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">Source</th>
+      <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">What</th>
+      <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">Notes</th>
+    </tr></thead>
+    <tbody>{table}</tbody>
+  </table></div>
+  <style>tbody td{{padding:12px;border-bottom:1px solid var(--rule-soft);vertical-align:top;color:var(--ink-soft)}}
+  tbody td b{{color:var(--ink)}}</style>
+</section>
+<section>
+  <div class="sec-head"><div class="label"><span class="tick"></span> Your choices</div>
+    <h2 class="display" style="font-size:clamp(24px,3vw,34px)">Three ways to say no</h2></div>
+  <ul class="klist" style="max-width:66ch">
+    <li><b>Global Privacy Control.</b> If your browser sends a GPC signal, no analytics load at all,
+        wherever you are. Nothing to click.</li>
+    <li><b>The cookie choice.</b> Shown automatically in Europe and the UK, where opt-in is required
+        before non-essential cookies. Reopen it any time from the footer link on the main page.</li>
+    <li><b>Your browser.</b> Blocking cookies or using a private window works, and the site is built
+        to degrade quietly when you do.</li>
+  </ul>
+  <p class="note" style="margin-top:var(--s4);max-width:66ch">Outside Europe and the UK the tags load
+    without a banner, which is what the law in the United States and Australia actually requires —
+    notice rather than opt-in. This page is that notice.</p>
+</section>
+<section>
+  <div class="sec-head"><div class="label"><span class="tick"></span> Automated assessment</div>
+    <h2 class="display" style="font-size:clamp(24px,3vw,34px)">The page scores you. Here is how.</h2></div>
+  <p class="prose">The live panel assigns you an engagement score, a stage and a suggested next action,
+    computed from what you do on the page — sections read, tools used, time spent. It is arithmetic
+    running in your browser, it is shown to you as it happens, and it makes no decision that affects
+    your rights or your access to anything. Nothing about it is stored on a server or used to decide
+    anything about you.</p>
+  <p class="prose" style="margin-top:var(--s3)">This disclosure is voluntary. It is the kind of thing
+    Australian privacy law will require of larger organisations from December 2026, and it seems
+    contrary to the spirit of a site about being straight with people to wait to be asked.</p>
+</section>
+<section>
+  <div class="sec-head"><div class="label"><span class="tick"></span> Contact</div></div>
+  <p class="prose">Questions, or want anything removed: <a href="mailto:{p.get('contact', prof.get('email',''))}">{p.get('contact', prof.get('email',''))}</a>.
+    There is no account to delete and no mailing list to leave.</p>
+</section>
+<footer><div>Sean Stone · <a href="/">seanstone.com</a></div></footer>
+</main></div>"""
+    return "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n" \
+           "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" \
+           + head + "</head>\n<body>\n" + body + "\n</body>\n</html>\n"
+
+
 def main() -> int:
     template = (SRC / "template.html").read_text(encoding="utf-8")
     raw = (SRC / "site.json").read_text(encoding="utf-8")
@@ -100,23 +210,19 @@ def main() -> int:
               else '<meta name="robots" content="index, follow">')
     html = html.replace(ROBOTS, robots)
 
-    # Analytics tags, injected only when an ID is present in site.json.
+    # Analytics. Cloudflare's beacon is cookieless so it loads unconditionally;
+    # GA4 and ContentSquare set cookies, so they are handed to the page as config
+    # and loaded by the consent gate in template.html — blocked until accepted
+    # where consent is legally required, immediate elsewhere.
     a = data.get("analytics", {})
     tags = []
     if a.get("cloudflareToken"):
         tags.append(
             '<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" '
             f'data-cf-beacon=\'{{"token": "{a["cloudflareToken"]}"}}\'></script>')
-    if a.get("ga4"):
-        gid = a["ga4"]
-        tags.append(
-            f'<script async src="https://www.googletagmanager.com/gtag/js?id={gid}"></script>\n'
-            "<script>window.dataLayer=window.dataLayer||[];"
-            "function gtag(){dataLayer.push(arguments);}gtag('js',new Date());"
-            f"gtag('config','{gid}');</script>")
-    if a.get("contentsquare"):
-        tags.append(
-            f'<script src="https://t.contentsquare.net/uxa/{a["contentsquare"]}.js" defer></script>')
+    gated = {k: a.get(k, "") for k in ("ga4", "contentsquare") if a.get(k)}
+    if gated:
+        tags.append("<script>window.__ANALYTICS__=" + json.dumps(gated) + ";</script>")
     html = html.replace(ANALYTICS, "\n".join(tags))
 
     (OUT / "index.html").write_text(html, encoding="utf-8")
@@ -140,6 +246,10 @@ def main() -> int:
             '<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             f"{entries}\n</urlset>\n", encoding="utf-8")
+
+    priv = OUT / "privacy"
+    priv.mkdir(exist_ok=True)
+    (priv / "index.html").write_text(render_privacy(data, html), encoding="utf-8")
 
     # Standalone, indexable page per case study at /case/<id>/ — same single file,
     # opened straight onto that case, with its own title, description and canonical.
@@ -199,7 +309,7 @@ def main() -> int:
     on = [k for k, v in data.get("analytics", {}).items() if v]
     print(f"  tags:    {', '.join(on) if on else 'none — see ROADMAP.md Phase 1'}")
     print(f"  identity:{' ' + data.get('identity', {}).get('endpoint', '') if data.get('identity', {}).get('endpoint') else ' browser-only (no Worker endpoint set)'}")
-    print(f"  pages:   / plus {sum(1 for p in data.get('projects', []) if p.get('case'))} case pages")
+    print(f"  pages:   / plus {sum(1 for p in data.get('projects', []) if p.get('case'))} case pages, /privacy/")
     return 0
 
 
