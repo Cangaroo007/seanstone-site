@@ -69,14 +69,14 @@ employer's logo.
 
 ---
 
-## Sprint 3 — Tue 8 – Wed 9 Sep · **the funky tier** · ~5h, mine
+## Sprint 3 — Tue 8 – Wed 9 Sep · **the funky tier** · ~5h, mine · **1 and 2 shipped in v1.4**
 
 Ranked by impact per hour. We can cut from the bottom.
 
-1. **The page writes them a note.** At high engagement it produces a short paragraph in
+1. ✅ **The page writes them a note.** At high engagement it produces a short paragraph in
    prose — their segment, their weakest zone, what you'd do first. Being spoken to rather
    than scored. *~2h*
-2. **Live weather at their real location.** "It's 14°C and foggy in San Francisco." Trivial,
+2. ✅ **Live weather at their real location.** "It's 14°C and foggy in San Francisco." Trivial,
    but it proves the page is pulling live external data *about them*. *~1h*
 3. **"Four other people are reading this right now."** A Durable Object holding a live count.
    The only thing on the site that can't be faked client-side. *~3h*

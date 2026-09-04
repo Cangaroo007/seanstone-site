@@ -853,7 +853,7 @@
     ]
   },
   "identity": {
-    "endpoint": ""
+    "endpoint": "https://id.seanstone.com"
   },
   "analytics": {
     "cloudflareToken": "37cc0106ca90411db930bf9b7a2cecb0",

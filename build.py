@@ -133,6 +133,12 @@ def render_privacy(data, html):
             "that network belongs to.",
             "Account level only — the organisation, never you as an individual. Computed per request "
             "and not stored."))
+        rows.append((
+            "Weather (open-meteo.com)",
+            "Once the network lookup has returned a city, the site asks open-meteo for the current "
+            "temperature and conditions in that city.",
+            "A city name is sent, never your IP address or anything identifying. No key, no cookie, "
+            "no account. Used only to write the line on the page."))
 
     table = "".join(
         f"<tr><td><b>{r[0]}</b></td><td>{r[1]}</td><td>{r[2]}</td></tr>" for r in rows)
@@ -180,6 +186,10 @@ def render_privacy(data, html):
     running in your browser, it is shown to you as it happens, and it makes no decision that affects
     your rights or your access to anything. Nothing about it is stored on a server or used to decide
     anything about you.</p>
+  <p class="prose" style="margin-top:var(--s3)">If you spend long enough on the page, or complete the
+    diagnostic, it also writes you a short note in prose. That note is assembled in your browser from
+    the same facts listed above, it lists at the bottom exactly which ones it used, and no copy of it
+    exists anywhere else.</p>
   <p class="prose" style="margin-top:var(--s3)">This disclosure is voluntary. It is the kind of thing
     Australian privacy law will require of larger organisations from December 2026, and it seems
     contrary to the spirit of a site about being straight with people to wait to be asked.</p>

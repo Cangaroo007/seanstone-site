@@ -447,6 +447,21 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ============================================================ THE NOTE */
+#note-sec[hidden]{display:none !important}
+.note-card{
+  border:1px solid var(--rule);border-left:3px solid var(--signal);border-radius:5px;
+  background:var(--surface);padding:var(--s6) var(--s6) var(--s5);
+  display:flex;flex-direction:column;gap:var(--s4);animation:slidein .5s ease;
+}
+.note-card .open{font-family:var(--display);font-size:clamp(22px,2.6vw,30px);line-height:1.2}
+.note-card p{font-size:16px;line-height:1.65;max-width:64ch;color:var(--ink-soft)}
+.note-card p b{color:var(--ink);font-weight:600}
+.note-meta{
+  border-top:1px solid var(--rule-soft);padding-top:var(--s3);margin-top:var(--s2);
+  font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--muted);
+}
+
 /* ============================================================ SCREENS */
 .shots{padding:0 var(--s5) var(--s5);display:grid;gap:var(--s6);grid-template-columns:1fr}
 /* Always one per row: these are dense product UIs and halving the width makes
@@ -1480,7 +1495,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     ]
   },
   "identity": {
-    "endpoint": ""
+    "endpoint": "https://id.seanstone.com"
   },
   "analytics": {
     "cloudflareToken": "37cc0106ca90411db930bf9b7a2cecb0",
@@ -1707,6 +1722,16 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     </div>
   </section>
 
+  <!-- ============================== THE NOTE ============================== -->
+  <section id="note-sec" hidden>
+    <div class="sec-head">
+      <div class="label"><span class="tick"></span> Written just now</div>
+      <h2 class="display">A note, assembled for you.</h2>
+    </div>
+    <p class="prose" style="margin-bottom:var(--s5)">None of this was written in advance. The page put it together from what you actually did on it — which is the whole argument: this is what a system that pays attention can say to someone before they have spoken to you.</p>
+    <div class="note-card" id="note-card"></div>
+  </section>
+
   <!-- ============================== CV ============================== -->
   <section id="cv-sec" data-audiences="hire,look">
     <div class="sec-head">
@@ -1765,6 +1790,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="krow"><span>Local time</span><div id="d-local">—</div></div>
       <div class="krow" id="row-network" hidden><span>Network</span><div id="d-network">—</div></div>
       <div class="krow" id="row-company" hidden><span>Company</span><div id="d-company"></div></div>
+      <div class="krow" id="row-weather" hidden><span>Weather</span><div id="d-weather">—</div></div>
       <div class="krow"><span>Device</span><div id="d-device">—</div></div>
       <div class="krow"><span>Visits</span><div id="d-visits">first</div></div>
       <div class="krow"><span>Attention</span><div id="d-attn">just arrived</div></div>
@@ -1809,7 +1835,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   var S = {
     path:null, score:0, events:0, sections:{}, signals:[],
     start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20},
-    caps:[], analyticsLoaded:false, geo:null, company:null, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
+    caps:[], analyticsLoaded:false, geo:null, company:null, weather:null, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
   };
 
   /* ------------------------------------------------------------ event log */
@@ -1849,6 +1875,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     if(g){ g.style.color = S.score>=70?'var(--signal)':S.score>=40?'var(--warn)':'var(--muted)'; }
     paintAlert();
     paintEnv();
+    noteMaybe();
   }
 
   /* The payoff: the message a real system would send a real sales team. */
@@ -2709,7 +2736,22 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   function showConsent(){ var el = $('#consent'); if(el){ el.classList.add('on'); } }
   function hideConsent(){ var el = $('#consent'); if(el){ el.classList.remove('on'); } }
 
-  function decideConsent(){
+  /* With the Worker live we know the real country, which is both more accurate and
+     legally cleaner than guessing from a time zone. So hold the tags until the lookup
+     answers — but never for long, and never at the cost of loading nothing at all. */
+  var consentSettled = false;
+  function settleConsent(){
+    if(consentSettled){ return; }
+    consentSettled = true;
+    decideConsent();
+  }
+  function startConsent(){
+    wireConsentButtons();
+    if(!(DATA.identity && DATA.identity.endpoint)){ settleConsent(); return; }
+    setTimeout(settleConsent, 1500);
+  }
+
+  function wireConsentButtons(){
     var box = $('#consent');
     if(box){
       $('#consent-yes').addEventListener('click', function(){
@@ -2723,7 +2765,9 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     }
     var reopen = $('#consent-reopen');
     if(reopen){ reopen.addEventListener('click', function(){ showConsent(); }); }
+  }
 
+  function decideConsent(){
     if(gpcOn()){
       logEvent('Your browser sent a Global Privacy Control signal — analytics not loaded', 0);
       return;
@@ -2738,21 +2782,22 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
   /* Optional. With DATA.identity.endpoint empty the site is browser-only and the
      panel says so. With it set, one call names the city, the network and — where
      it resolves — the company. Account level only, never a person. */
-  function identify(){
+  function identify(done){
     var ep = (DATA.identity && DATA.identity.endpoint) || '';
-    if(!ep){ return; }
-    var done = false;
-    var giveUp = setTimeout(function(){ done = true; }, 4000);
+    if(!ep){ if(done){ done(); } return; }
+    var timedOut = false;
+    var giveUp = setTimeout(function(){ timedOut = true; if(done){ done(); } }, 4000);
     fetch(ep, {mode:'cors', credentials:'omit'})
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){
         clearTimeout(giveUp);
-        if(done || !d){ return; }
+        if(timedOut || !d){ if(done){ done(); } return; }
         S.geo = d;
         if(d.city){
           var note = $('#tz-note'); if(note){ note.hidden = true; }
           setText('#d-local', localTime(S.env.tz) + ' · ' + d.city + (d.country ? ', ' + d.country : ''));
           logEvent('Looked up where they actually are — <b>' + esc(d.city) + '</b>', 4);
+          weather();
         }
         if(d.network){
           var row = $('#row-network'); if(row){ row.hidden = false; }
@@ -2772,8 +2817,241 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
           logEvent('<b>Matched the company: ' + esc(d.company.name) + '.</b> No form, no cookie, no name — just the network they are on', 14, 'sig');
         }
         paint();
+        if(done){ done(); }
       })
-      .catch(function(){ /* Worker down or blocked — the browser-only panel is still correct */ });
+      .catch(function(){ /* Worker down or blocked — the browser-only panel is still correct */
+        if(done){ done(); }
+      });
+  }
+
+
+  /* ------------------------------------------------------------- weather */
+  /* The only thing on this page fetched from a third party about the visitor.
+     open-meteo, no key, no cookie, and we send it a city name — never an IP.
+     It runs only once the Worker has given us a real city, because guessing the
+     weather from a time-zone proxy would be exactly the fakery this page argues
+     against. */
+  var WMO = {
+    0:['clear','clear'], 1:['mostly clear','mostly clear'], 2:['partly cloudy','partly cloudy'],
+    3:['overcast','overcast'], 45:['fog','foggy'], 48:['freezing fog','foggy'],
+    51:['drizzle','drizzling'], 53:['drizzle','drizzling'], 55:['drizzle','drizzling hard'],
+    56:['freezing drizzle','drizzling, just about freezing'], 57:['freezing drizzle','drizzling, just about freezing'],
+    61:['light rain','raining lightly'], 63:['rain','raining'], 65:['heavy rain','raining hard'],
+    66:['freezing rain','sleeting'], 67:['freezing rain','sleeting'],
+    71:['light snow','snowing lightly'], 73:['snow','snowing'], 75:['heavy snow','snowing hard'],
+    77:['snow','snowing'], 80:['showers','showery'], 81:['showers','raining'],
+    82:['heavy showers','raining hard'], 85:['snow showers','snowing'],
+    86:['snow showers','snowing'], 95:['thunderstorms','thundering'],
+    96:['hail','hailing'], 99:['hail','hailing']
+  };  function weather(){
+    var g = S.geo;
+    if(!g || !g.city){ return; }
+    var f = g.country === 'US';
+    var unit = f ? 'fahrenheit' : 'celsius', sym = f ? '°F' : '°C';
+    var url = 'https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&format=json&name=' +
+              encodeURIComponent(g.city) + (g.country ? '&countryCode=' + encodeURIComponent(g.country) : '');
+    fetch(url).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+      var hit = d && d.results && d.results[0];
+      if(!hit){ return null; }
+      return fetch('https://api.open-meteo.com/v1/forecast?latitude=' + hit.latitude +
+                   '&longitude=' + hit.longitude + '&current=temperature_2m,weather_code,is_day' +
+                   '&temperature_unit=' + unit + '&timezone=auto')
+        .then(function(r){ return r.ok ? r.json() : null; });
+    }).then(function(d){
+      var c = d && d.current;
+      if(!c || typeof c.temperature_2m !== 'number'){ return; }
+      var code = WMO[c.weather_code] || ['','' ];
+      S.weather = {
+        temp: Math.round(c.temperature_2m), sym: sym,
+        word: code[0], phrase: code[1], day: c.is_day !== 0
+      };
+      var row = $('#row-weather'); if(row){ row.hidden = false; }
+      setText('#d-weather', S.weather.temp + sym + (S.weather.word ? ' · ' + S.weather.word : ''));
+      logEvent('It is <b>' + S.weather.temp + sym + '</b> and ' + esc(S.weather.phrase || 'unremarkable') +
+               ' in ' + esc(g.city) + ' right now', 2);
+      noteMaybe();
+    }).catch(function(){ /* no weather, no problem */ });
+  }
+
+  /* ---------------------------------------------------------- the note */
+  /* Everything below is assembled at read time from facts the page already has.
+     No template with a name dropped into it: if a fact is missing the sentence
+     that needed it does not get written. */
+  function partOfDay(h){
+    return h < 5 ? 'night' : h < 12 ? 'morning' : h < 17 ? 'afternoon' : h < 22 ? 'evening' : 'night';
+  }
+  function weekday(tz){
+    try { return new Date().toLocaleDateString('en-GB', {weekday:'long', timeZone: tz || undefined}); }
+    catch(e){ return new Date().toLocaleDateString('en-GB', {weekday:'long'}); }
+  }
+  function minutesHere(){ return Math.max(1, Math.round((Date.now()-S.start)/60000)); }
+
+  function noteFacts(){
+    var e = S.env, g = S.geo || {}, h = localHour(e.tz);
+    return {
+      city: g.city || '', country: g.country || '', company: S.company || '',
+      zone: zoneLabel(e.tz), hour: h, part: partOfDay(h), day: weekday(e.tz),
+      mins: minutesHere(), depth: S.depth, visits: S.mem.n, first: S.mem.first,
+      away: S.away, copied: S.copied, path: S.path, weather: S.weather || null,
+      diagDone: Object.keys(S.diag).length === DATA.diagnostic.questions.length,
+      weak: null, scope: Object.keys(S.scope.picked), cap: S.scope.cap,
+      resolved: S.signals.indexOf('resolved an account') >= 0
+    };
+  }
+
+  function noteHtml(){
+    var f = noteFacts();
+    if(f.diagDone){ f.weak = weakestZone(); }
+    var out = [], used = [];
+
+    /* ---- the opening line */
+    var open;
+    if(f.company){
+      open = 'Someone at ' + esc(f.company) + ', on a ' + f.day + ' ' + f.part + '.';
+      used.push('company: ' + f.company);
+    } else if(f.city){
+      open = 'Good ' + (f.part === 'night' ? 'evening' : f.part) + ', ' + esc(f.city) + '.';
+      used.push('city: ' + f.city);
+    } else if(f.zone){
+      open = 'Somewhere ' + (/ time$/.test(f.zone) ? 'on ' : 'in ') + esc(f.zone) + ', ' + f.day + ' ' + f.part + '.';
+      used.push('time zone: ' + f.zone);
+    } else {
+      open = 'Hello, whoever you are.';
+    }
+    out.push('<div class="open">' + open + '</div>');
+
+    /* ---- what they have actually done */
+    var p1 = [];
+    p1.push('You have been reading for <b>' + f.mins + ' minute' + (f.mins===1?'':'s') +
+            '</b> and are <b>' + f.depth + '%</b> of the way down the page');
+    if(f.away === 1){ p1.push(', having left once and come back'); }
+    else if(f.away > 1){ p1.push(', having left and come back ' + f.away + ' times'); }
+    p1.push('.');
+    used.push(f.mins + (f.mins===1?' minute':' minutes') + ' on page', f.depth + '% read');
+    if(f.away){ used.push('left and returned ' + f.away + '×'); }
+
+    if(f.weather && f.city){
+      p1.push(' It is ' + f.weather.temp + f.weather.sym + ' and ' + esc(f.weather.phrase) +
+              ' in ' + esc(f.city) + ' — the page went and asked, a minute ago. It knows your city. It does not know your street, and there is no version of this where it does.');
+      used.push('weather: ' + f.weather.temp + f.weather.sym + ', ' + f.weather.word);
+    }
+    if(f.hour < 7 || f.hour >= 19){
+      p1.push(' It is ' + esc(localTime(S.env.tz)) + ' where you are, which is outside anyone’s working hours. ' +
+              'People read a supplier’s site at this hour when it is their own decision, not an errand.');
+      used.push('local time: ' + localTime(S.env.tz) + ' (out of hours)');
+    }
+    if(f.visits > 1){
+      p1.push(' This is your <b>' + ordinal(f.visits) + ' visit</b> — the first was ' + daysAgo(f.first) +
+              '. Your browser remembered that, not a server; nobody was told you came back.');
+      used.push(ordinal(f.visits) + ' visit');
+    }
+    out.push('<p>' + p1.join('') + '</p>');
+
+    /* ---- who they said they were */
+    var p2;
+    if(f.path === 'build'){
+      p2 = 'You told the page you are here about revenue systems, so it put the work and the numbers first and moved the career history out of your way. ';
+    } else if(f.path === 'hire'){
+      p2 = 'You told the page you are hiring, so it led with the twenty-five years and the shape of the roles rather than with rate cards. ';
+    } else if(f.path === 'product'){
+      p2 = 'You told the page you are looking at this as a product or an investment, so it put the two builds and how they were architected in front of everything else. ';
+    } else {
+      p2 = 'You have not told the page what you are here for, and it has not asked you twice. ';
+    }
+    if(f.resolved){
+      p2 += 'You also ran a company through the enquiry engine, which means you were picturing it on a site of your own. That is the part worth talking about: the demo is a stand-in for whatever system actually holds your customers.';
+      used.push('used the enquiry engine');
+    } else {
+      p2 += 'Everything it changed, it told you about in the log on the right, at the moment it changed it.';
+    }
+    out.push('<p>' + p2 + '</p>');
+
+    /* ---- the substance: diagnostic, then scope, then neither */
+    if(f.weak){
+      var zn = (DATA.diagnostic.zones[f.weak] || {}).name || f.weak;
+      var fx = DATA.diagnostic.fixes[f.weak] || {};
+      var p3 = 'Your seven answers put <b>' + esc(String(zn).toLowerCase()) + '</b> at the bottom, ' +
+               'and on a first engagement that is where I would start. <b>' + esc(fx.t || 'The obvious fix') + '</b> — ' +
+               esc((fx.d || '').charAt(0).toLowerCase() + (fx.d || '').slice(1)) + ' ' +
+               'Seven questions is not an audit. It is enough to know which conversation to have.';
+      out.push('<p>' + p3 + '</p>');
+      used.push('diagnostic: weakest zone is ' + zn);
+    }
+    if(f.scope.length){
+      var hours = f.scope.reduce(function(a,k){ return a + S.scope.picked[k]; }, 0);
+      var months = Math.ceil(hours / f.cap);
+      var names = f.scope.map(function(id){
+        var o = DATA.scope.outcomes.filter(function(x){ return x.id===id; })[0];
+        return o ? o.l.toLowerCase() : id;
+      });
+      /* Several outcome names contain "and" themselves, so an Oxford list of them
+         reads as one long run-on. Semicolons when that happens. */
+      var messy = names.some(function(n){ return n.indexOf(' and ') >= 0; });
+      var list = names.length === 1 ? names[0]
+        : messy ? names.join('; ')
+        : names.slice(0,-1).join(', ') + ' and ' + names[names.length-1];
+      out.push('<p>You costed it yourself: <b>' + esc(list) + '</b> — about <b>' + hours + ' hours</b> at ' +
+               f.cap + ' hours a month, so roughly ' + months + ' month' + (months>1?'s':'') +
+               ', with something live inside the first fortnight. That number came off the same rate card everyone else gets; ' +
+               'there is no version of this page that quotes you differently because of where you are sitting.</p>');
+      used.push('scope: ' + hours + 'h across ' + f.scope.length + ' outcomes');
+    }
+    if(!f.weak && !f.scope.length){
+      out.push('<p>What this note cannot do yet is be specific about <em>you</em>, because you have not given it anything to be specific about. ' +
+               'The diagnostic is seven questions and about ninety seconds, and it is the difference between this paragraph and one that names the part of your funnel that is leaking.</p>');
+    }
+
+    /* ---- the close */
+    if(f.copied){
+      out.push('<p>You took my details a moment ago, so I will assume the next move is yours. When you write, ' +
+               'quote a line of this note back at me and I will know exactly which version of the page you were reading.</p>');
+      used.push('copied contact details');
+    } else if(DATA.flags && DATA.flags.engagementOffer !== false){
+      out.push('<p>If any of that landed, the useful next step is a short email describing the one number you want moved. ' +
+               'I will tell you whether it is a twenty-hour problem or a twenty-week one before either of us books a call.</p>');
+    } else {
+      out.push('<p>If any of that landed, the useful next step is a short email. I answer them myself.</p>');
+    }
+
+    /* ---- the receipt */
+    out.push('<div class="note-meta">Assembled at ' + esc(localTime(S.env.tz)) + ' from ' + used.length +
+             ' fact' + (used.length===1?'':'s') + ' · ' + esc(used.join(' · ')) +
+             '<br>Composed in your browser. Not stored, not sent, not the same note as anyone else’s.</div>');
+
+    return out.join('');
+  }
+
+  function noteReady(){
+    /* Deliberately hard to trigger. A note written to someone who has read two
+       paragraphs would be the parlour trick this page is arguing against. */
+    return Object.keys(S.diag).length === DATA.diagnostic.questions.length
+        || Object.keys(S.scope.picked).length >= 2
+        || S.copied
+        || (S.score >= 45 && S.depth >= 35)
+        || (S.mem.n > 1 && S.depth >= 45);
+  }
+  var noteBusy = false;
+  function noteMaybe(){
+    if(noteBusy || !noteReady()){ return; }
+    var sec = $('#note-sec'), card = $('#note-card');
+    if(!sec || !card) { return; }
+    if(sec.dataset.audiencesHidden === '1'){ return; }
+    var f = noteFacts();
+    /* Re-write only when a fact it actually uses has changed — not every second. */
+    var stamp = [f.company, f.city, f.path, f.depth >= 90 ? 90 : Math.floor(f.depth/10)*10,
+                 f.visits, f.away, f.copied, f.resolved, f.diagDone, f.scope.join(','), f.cap,
+                 f.weather ? f.weather.temp + f.weather.word : '', Math.min(f.mins, 30)].join('|');
+    if(card.dataset.stamp === stamp){ return; }
+    card.dataset.stamp = stamp;
+    noteBusy = true;
+    try {
+      card.innerHTML = noteHtml();
+      if(sec.hidden){
+        sec.hidden = false;
+        signal('the page wrote to them');
+        logEvent('<b>Wrote them a note</b> — assembled from what they did, not from a template', 8, 'sig');
+      }
+    } finally { noteBusy = false; }
   }
 
   /* --------------------------------------------------------- observers etc */
@@ -2881,10 +3159,10 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     if(src){ logEvent('They came from <b>'+esc(String(src).replace(/^https?:\/\//,'').split('/')[0])+'</b>', 0); }
     logEvent('Waiting to find out who they are…', 0);
 
-    decideConsent();
+    startConsent();
     watchSections();
     watchAttention();
-    identify();
+    identify(settleConsent);
     setInterval(tick, 1000);
     tick();
   }

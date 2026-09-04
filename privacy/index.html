@@ -447,6 +447,21 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ============================================================ THE NOTE */
+#note-sec[hidden]{display:none !important}
+.note-card{
+  border:1px solid var(--rule);border-left:3px solid var(--signal);border-radius:5px;
+  background:var(--surface);padding:var(--s6) var(--s6) var(--s5);
+  display:flex;flex-direction:column;gap:var(--s4);animation:slidein .5s ease;
+}
+.note-card .open{font-family:var(--display);font-size:clamp(22px,2.6vw,30px);line-height:1.2}
+.note-card p{font-size:16px;line-height:1.65;max-width:64ch;color:var(--ink-soft)}
+.note-card p b{color:var(--ink);font-weight:600}
+.note-meta{
+  border-top:1px solid var(--rule-soft);padding-top:var(--s3);margin-top:var(--s2);
+  font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--muted);
+}
+
 /* ============================================================ SCREENS */
 .shots{padding:0 var(--s5) var(--s5);display:grid;gap:var(--s6);grid-template-columns:1fr}
 /* Always one per row: these are dense product UIs and halving the width makes
@@ -637,7 +652,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">What</th>
       <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">Notes</th>
     </tr></thead>
-    <tbody><tr><td><b>The panel on the site</b></td><td>Your time zone, device and browser, how far you scroll, whether you leave and come back, and whether you copy something. A small note is kept in your own browser so the page recognises you on a return visit.</td><td>Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data.</td></tr><tr><td><b>Cloudflare Web Analytics</b></td><td>Page views, referrer, country, and page performance.</td><td>Cookieless. Sets nothing on your device and does not fingerprint you, which is why it is not covered by the cookie choice.</td></tr><tr><td><b>Google Analytics 4</b></td><td>Standard web analytics — pages viewed, how you arrived, approximate location, device.</td><td>Sets cookies. Processed by Google in the United States. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>ContentSquare</b></td><td>How the page is used — clicks, scrolling and interaction with the tools on it. Text you type is masked.</td><td>Sets cookies. In Europe and the UK it does not load at all unless you accept.</td></tr></tbody>
+    <tbody><tr><td><b>The panel on the site</b></td><td>Your time zone, device and browser, how far you scroll, whether you leave and come back, and whether you copy something. A small note is kept in your own browser so the page recognises you on a return visit.</td><td>Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data.</td></tr><tr><td><b>Cloudflare Web Analytics</b></td><td>Page views, referrer, country, and page performance.</td><td>Cookieless. Sets nothing on your device and does not fingerprint you, which is why it is not covered by the cookie choice.</td></tr><tr><td><b>Google Analytics 4</b></td><td>Standard web analytics — pages viewed, how you arrived, approximate location, device.</td><td>Sets cookies. Processed by Google in the United States. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>ContentSquare</b></td><td>How the page is used — clicks, scrolling and interaction with the tools on it. Text you type is masked.</td><td>Sets cookies. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>Network lookup</b></td><td>The city and the network your connection belongs to, and where it resolves, the company that network belongs to.</td><td>Account level only — the organisation, never you as an individual. Computed per request and not stored.</td></tr><tr><td><b>Weather (open-meteo.com)</b></td><td>Once the network lookup has returned a city, the site asks open-meteo for the current temperature and conditions in that city.</td><td>A city name is sent, never your IP address or anything identifying. No key, no cookie, no account. Used only to write the line on the page.</td></tr></tbody>
   </table></div>
   <style>tbody td{padding:12px;border-bottom:1px solid var(--rule-soft);vertical-align:top;color:var(--ink-soft)}
   tbody td b{color:var(--ink)}</style>
@@ -665,6 +680,10 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     running in your browser, it is shown to you as it happens, and it makes no decision that affects
     your rights or your access to anything. Nothing about it is stored on a server or used to decide
     anything about you.</p>
+  <p class="prose" style="margin-top:var(--s3)">If you spend long enough on the page, or complete the
+    diagnostic, it also writes you a short note in prose. That note is assembled in your browser from
+    the same facts listed above, it lists at the bottom exactly which ones it used, and no copy of it
+    exists anywhere else.</p>
   <p class="prose" style="margin-top:var(--s3)">This disclosure is voluntary. It is the kind of thing
     Australian privacy law will require of larger organisations from December 2026, and it seems
     contrary to the spirit of a site about being straight with people to wait to be asked.</p>

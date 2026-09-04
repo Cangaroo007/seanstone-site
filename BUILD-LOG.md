@@ -1,6 +1,143 @@
 # Build log
 
+## 4 Sep 2026 — v1.4: the page writes them a note, and looks up their weather
+
+Sprint 3, items 1 and 2. Neither needed a Worker change.
+
+**Why the live site looked *less* specific than it should.** Sean noticed the panel saying
+"Pacific time" with no company row, and asked whether we had actually shipped anything. The
+Worker was fine — a direct call to `id.seanstone.com` returns the city, the network, and now
+a real company object from IPLocate. The problem was that the `index.html` sitting on
+seanstone.com still carried `"identity": {"endpoint": ""}`; it was built before the endpoint
+was switched on, so `identify()` returned immediately and the panel fell back to the
+browser-only time-zone proxy. v1.4 carries the endpoint. Nothing was broken, and nothing was
+missing — a stale build was pretending the Worker did not exist.
+
+**The note.** At genuine engagement — the diagnostic finished, two or more scope items
+picked, contact details copied, or score 45+ *with* a third of the page read — a section
+unhides and the page writes four or five paragraphs of prose addressed to the reader.
+Composed at read time from facts it already holds: the company if it resolved, the city, the
+local hour, whether that hour is outside working hours, the visit number, minutes on page,
+scroll depth, leave-and-return count, the declared segment, whether they used the enquiry
+engine, the weakest diagnostic zone with the fix I'd start on, and the scope they costed with
+the hours and the months.
+
+Three rules kept it honest:
+
+- **No sentence exists without its fact.** There is no template with blanks. If the company
+  didn't resolve, the sentence that would have named it is never written.
+- **It shows its working.** A monospace receipt at the foot lists every fact it used, counted.
+  The trick is only impressive if you can see it isn't a trick.
+- **It is deliberately hard to trigger.** A note written to someone who has read two
+  paragraphs is a parlour trick. `noteReady()` is the gate.
+
+Re-composed only when a fact it uses actually changes — a stamp on the card compares the
+inputs, so `paint()` can call it every second for nothing.
+
+**The weather.** Once the Worker returns a real city, the browser asks open-meteo for the
+current temperature and conditions there — geocode the city name, then one forecast call.
+No key, no cookie, no account, and a *city name* goes over the wire, never an IP. Fahrenheit
+for US visitors, Celsius everywhere else. It only runs when there is a real city: guessing
+the weather from a time-zone proxy would be exactly the fakery the rest of the page argues
+against, so with the Worker down the row simply never appears.
+
+The line reads as prose in the note ("It is 57°F and foggy in San Francisco — the page went
+and asked, a minute ago. It knows your city. It does not know your street"), which is the
+point: it is the cheapest possible proof that the page is pulling live external data *about
+the reader*, and the sentence immediately draws the boundary.
+
+**Privacy page** gained a row for the open-meteo lookup and a paragraph about the note under
+Automated assessment — generated from the same config, so it cannot drift.
+
+**Verified** in Playwright across four states: Worker up with a company match, Worker down
+(no geo, no weather, note still composes from browser facts), no declared segment with a
+scope built, and an out-of-hours Sydney visitor. Two prose bugs found and fixed — outcome
+names that contain "and" turned the scope list into a run-on, and "Somewhere on Sydney or
+Melbourne" needed "in".
+
+## 4 Sep 2026 — company resolution: don't pay for it
+
+Sean offered to pay for the best IP-to-company service, strongest in the US and secondly
+Australia. Two agents researched it. The answer is that he should not pay, and two things I
+had told him earlier were wrong.
+
+**Corrections.** IPinfo's Business API is **closed to new customers**; company data is now
+Enterprise-tier only at a 1M+ requests/month minimum, so the plan I suggested does not exist
+for a site with a few hundred lookups. And I quoted Warmly at "~$700/month" from a secondary
+source — its AI web-deanonymisation product starts at **$10,000/year**.
+
+**MaxMind would have been a trap.** Its EULA bans "displaying geolocation pairing
+information" and displaying the services to others; standard pricing is internal-business-use
+only. A public "you're visiting from Acme" panel needs a redistribution licence.
+
+**Chosen: IPLocate free tier.** 1,000 requests/day forever, returns
+`company{name, domain, type}`, and the API licence *explicitly* grants the right to
+"receive, store, process, and display the data returned by the API" — which most competitors'
+terms do not. Runner-up if a second source is ever wanted: **ipregistry**, $10 for 15,000
+credits that never expire, attribution optional.
+
+**Australia is structurally hard, and nobody has a number.** APNIC allocations sit largely
+with Telstra, Optus and TPG/Vocus, so a mid-market Australian business on ordinary business
+broadband resolves to the *carrier*, not the employer — no vendor fixes this. The only
+published AU figure anywhere is a vendor's own (35–55% company-level vs 40–65% US, no sample
+size). The genuinely strong international graphs are 6sense and Demandbase at a $63–69k/year
+median. Live tests confirmed the pattern: organisations with their own ASN resolve cleanly
+(University of Melbourne → unimelb.edu.au), ordinary businesses do not.
+
+Also dead and removed from consideration: **Koala** (shut down 30 Sep 2025) and **Clearbit
+Reveal** as a standalone (absorbed into HubSpot Breeze, HubSpot-only, no external API).
+
+**Worker updated** to call IPLocate when `IPLOCATE_KEY` is set, cached at the edge for a day
+so the free tier is never troubled, and to suppress `isp`, `hosting`, `mobile` and
+`education_and_research` types — "You're visiting from Telstra Corporation" is worse than
+showing nothing. Without the key it behaves exactly as before.
+
+**The measurement that matters:** run it for a month and log what fraction of Australian
+visitors resolve to a real company rather than a carrier. That single number is worth more
+than every published benchmark in this category.
+
+## 4 Sep 2026 — v1.3 — the Worker is live
+
+`id.seanstone.com` deployed (version `2d25d1ec`) and switched on. Returns real data:
+
+```json
+{"city":"San Francisco","region":"California","country":"US",
+ "network":"Webpass Inc.","asn":19165,"company":null}
+```
+
+**Deploy notes worth keeping.** Sean's `CLOUDFLARE_API_TOKEN` had DNS scope but not Workers,
+and belonged to a *different account* (`1dba4525…`) than the zone (`16fbf46a…`). Fix was
+`unset CLOUDFLARE_API_TOKEN` plus OAuth login. The Worker must live in the same account as
+the zone or the custom domain will not attach.
+
+**Consent now decides on the real country code, not the time zone.** This is the material
+improvement: a visitor in Germany whose browser reports an American time zone previously got
+no banner and had tags loaded. The gate now holds the tags until the lookup answers — capped
+at 1.5 seconds, after which it falls back to the time-zone heuristic rather than blocking
+analytics indefinitely. `identify()` takes a callback; `settleConsent()` is idempotent so
+whichever fires first wins.
+
+**Verified across three payloads** with the endpoint stubbed:
+
+| Scenario | Banner | Loaded |
+|---|---|---|
+| US, real Worker payload | no | Cloudflare, GA4, ContentSquare |
+| DE country with a US time zone | **yes** | Cloudflare only |
+| US, company resolves to Salesforce | no | all three |
+
+The panel now reads "1:02 PM · San Francisco, US" with a Network row, and the zone-proxy
+explanation hides itself. With a company match the next action becomes "Someone from
+Salesforce is on the page. You know the account before they have said a word."
+
+`company` is null on residential connections — Webpass is an ISP, not an employer — which is
+the expected 30–50% miss rate behaving correctly. An `IPINFO_TOKEN` secret would add
+company resolution for corporate networks.
+
 ## 4 Sep 2026 — v1.2 — the screens
+
+**DEPLOYED — commit `95f4d51`, verified live.** All seven images serving from
+`seanstone.com/img/` with correct byte counts (326KB, 394KB, 171KB spot-checked). 2.00 MiB
+pushed. First commit in this repo to carry binaries.
 
 Seven product screenshots in, with captions, on both the work accordion and the case pages.
 Sprint 1's biggest item closed: the work section is no longer text-only.
