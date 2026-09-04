@@ -111,9 +111,17 @@ def render_privacy(data, html):
     rows.append((
         "The enquiry hooks",
         "The sentence you complete, the number you pick and anything you type into the ask box.",
-        "Composed entirely in your browser. There is no form endpoint and nothing is posted "
-        "anywhere: the send button opens your own mail client with the text already written, "
-        "and nothing leaves until you press send."))
+        "Composed entirely in your browser as you use the page. Nothing is transmitted at this "
+        "stage \u2014 it becomes an enquiry only if you open the panel and press send, and you "
+        "can read and edit every word first."))
+    if data.get("enquiry", {}).get("endpoint"):
+        rows.append((
+            "Sending an enquiry",
+            "Only what you choose to send: the message shown in the panel, which you can edit "
+            "or delete before sending, and your email address if you fill that field in.",
+            "Posted to a Cloudflare Worker on this domain, which forwards it to my inbox and "
+            "keeps no copy. Nothing is sent until you press the button, the email field is "
+            "optional, and there is no third-party form service involved."))
     if a.get("cloudflareToken"):
         rows.append((
             "Cloudflare Web Analytics",

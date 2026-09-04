@@ -948,11 +948,11 @@
     "lead": "I have written honest answers to the ones I actually get. Type your own — if I have not answered it, that is worth knowing too, and it becomes the first line of your email.",
     "placeholder": "What would you actually do in the first month?",
     "suggest": [
+      "How do you engage with companies?",
       "What does this cost?",
       "Why not an agency?",
-      "How fast can you start?",
       "What if it doesn't work?",
-      "What would you do in the first month?"
+      "What are you not good at?"
     ],
     "bank": [
       {
@@ -967,6 +967,22 @@
           "week one"
         ],
         "a": "Week one is read-only: your CRM, your enquiry log, a week of calls, and an hour each with two reps doing their actual admin. Week two you get the map and the three things I would fix, sequenced, with hours against each. Nothing gets built until you have seen both and disagreed with at least one of them."
+      },
+      {
+        "q": "How do you engage with companies?",
+        "keys": [
+          "engage",
+          "engagement",
+          "work with",
+          "how do you work",
+          "arrangement",
+          "contract",
+          "retainer",
+          "structure",
+          "get started",
+          "process"
+        ],
+        "a": "Monthly blocks of hours, no minimum term, no retainer that buys you nothing. The first block is diagnostic and ends in something live, so you find out early whether this is working. Twenty hours a month is the common shape. I hold two engagements at a time and I hand over the source, because the point is that you stop needing me — an arrangement that depends on you never learning how it works is not one I would sign either."
       },
       {
         "q": "What does this cost?",
@@ -1129,5 +1145,21 @@
       }
     ],
     "foot": "The tracking on this page is the demonstration, not the offer. Nobody has ever bought analytics from me; they buy the layer above it, and this is the cheapest honest way to show you what that layer does."
+  },
+  "enquiry": {
+    "endpoint": "https://id.seanstone.com/enquiry",
+    "head": "Your enquiry, already written.",
+    "lead": "The page composed this from what you did on it. Edit anything that is wrong — that is the useful part — then send it.",
+    "emailLabel": "Your email, if you want a reply",
+    "emailNote": "The only thing this page could not work out on its own. Optional: send it without and I still get the message, I just have nowhere to reply to.",
+    "send": "Send it to Sean",
+    "sending": "Sending…",
+    "ok": "Sent. I read these myself, usually the same day.",
+    "okNoReply": "Sent. I read these myself — though without an address I have no way to reply, so do come back if you want an answer.",
+    "fail": "That did not go through. Nothing is lost — copy it below and mail it to sean@cangaroo.ai, or press the mail-app button.",
+    "copy": "Copy it all",
+    "mailapp": "Open in mail app",
+    "copied": "Copied. Paste it into an email to sean@cangaroo.ai.",
+    "note": "Sent to a Cloudflare Worker that forwards it to my inbox. What you see here is exactly what I receive."
   }
 }

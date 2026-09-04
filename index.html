@@ -447,6 +447,50 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ========================================================= COMPOSE PANEL */
+.compose[hidden]{display:none !important}
+.compose{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(6,10,8,.55);backdrop-filter:blur(3px);animation:fadein .18s ease}
+@media(min-width:700px){.compose{align-items:center;padding:var(--s6)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.compose-in{
+  background:var(--paper);border:1px solid var(--rule);border-radius:8px 8px 0 0;
+  width:min(720px,100%);max-height:92vh;display:flex;flex-direction:column;
+  box-shadow:0 -20px 70px rgba(0,0,0,.4);animation:slideup .26s cubic-bezier(.2,.8,.3,1);
+}
+@media(min-width:700px){.compose-in{border-radius:8px;box-shadow:0 30px 90px rgba(0,0,0,.45)}}
+@keyframes slideup{from{transform:translateY(28px);opacity:.4}to{transform:none;opacity:1}}
+.compose-head{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s4);
+  padding:var(--s6) var(--s6) var(--s4);border-bottom:1px solid var(--rule-soft)}
+.compose-head h3{font-family:var(--display);font-size:clamp(21px,2.6vw,28px);line-height:1.15}
+.compose-head p{font-size:14px;line-height:1.55;color:var(--muted);margin-top:6px;max-width:52ch}
+.compose-x{background:none;border:0;cursor:pointer;font-size:26px;line-height:1;color:var(--muted);padding:0 4px}
+.compose-x:hover{color:var(--ink)}
+.compose-body{padding:var(--s5) var(--s6);overflow-y:auto;flex:1}
+.cfield{margin-bottom:var(--s4)}
+.cfield .label{margin-bottom:6px}
+.cmeta{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:4px;padding:9px 11px;word-break:break-word}
+.compose textarea,.compose input[type=email]{
+  width:100%;font-family:var(--mono);font-size:13px;line-height:1.65;color:var(--ink);
+  background:var(--surface);border:1px solid var(--rule);border-radius:5px;padding:var(--s4);
+  resize:vertical;
+}
+.compose input[type=email]{font-family:var(--body);font-size:16px;padding:12px var(--s4)}
+.compose textarea{min-height:230px}
+.compose textarea:focus,.compose input[type=email]:focus{outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(14,110,99,.14)}
+.compose-foot{padding:var(--s5) var(--s6) var(--s6);border-top:1px solid var(--rule-soft);
+  display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;background:var(--surface)}
+.compose-foot .note{flex-basis:100%;margin:0}
+.cstatus{flex-basis:100%;font-size:14.5px;line-height:1.55;padding:var(--s3) 0 0}
+.cstatus.ok{color:var(--accent);font-weight:600}
+.cstatus.bad{color:var(--signal)}
+.compose .btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.csent{padding:var(--s8) var(--s6);text-align:center}
+.csent b{display:block;font-family:var(--display);font-size:clamp(24px,3vw,34px);line-height:1.2;margin-bottom:var(--s4)}
+.csent p{font-size:15.5px;line-height:1.65;color:var(--ink-soft);max-width:46ch;margin:0 auto var(--s5)}
+
 /* ============================================================== THE TIERS */
 .tiers{display:grid;gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--surface)}
 .tier{display:grid;gap:var(--s4);padding:var(--s6);border-top:1px solid var(--rule-soft);position:relative}
@@ -1698,11 +1742,11 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     "lead": "I have written honest answers to the ones I actually get. Type your own — if I have not answered it, that is worth knowing too, and it becomes the first line of your email.",
     "placeholder": "What would you actually do in the first month?",
     "suggest": [
+      "How do you engage with companies?",
       "What does this cost?",
       "Why not an agency?",
-      "How fast can you start?",
       "What if it doesn't work?",
-      "What would you do in the first month?"
+      "What are you not good at?"
     ],
     "bank": [
       {
@@ -1717,6 +1761,22 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
           "week one"
         ],
         "a": "Week one is read-only: your CRM, your enquiry log, a week of calls, and an hour each with two reps doing their actual admin. Week two you get the map and the three things I would fix, sequenced, with hours against each. Nothing gets built until you have seen both and disagreed with at least one of them."
+      },
+      {
+        "q": "How do you engage with companies?",
+        "keys": [
+          "engage",
+          "engagement",
+          "work with",
+          "how do you work",
+          "arrangement",
+          "contract",
+          "retainer",
+          "structure",
+          "get started",
+          "process"
+        ],
+        "a": "Monthly blocks of hours, no minimum term, no retainer that buys you nothing. The first block is diagnostic and ends in something live, so you find out early whether this is working. Twenty hours a month is the common shape. I hold two engagements at a time and I hand over the source, because the point is that you stop needing me — an arrangement that depends on you never learning how it works is not one I would sign either."
       },
       {
         "q": "What does this cost?",
@@ -1879,6 +1939,22 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       }
     ],
     "foot": "The tracking on this page is the demonstration, not the offer. Nobody has ever bought analytics from me; they buy the layer above it, and this is the cheapest honest way to show you what that layer does."
+  },
+  "enquiry": {
+    "endpoint": "https://id.seanstone.com/enquiry",
+    "head": "Your enquiry, already written.",
+    "lead": "The page composed this from what you did on it. Edit anything that is wrong — that is the useful part — then send it.",
+    "emailLabel": "Your email, if you want a reply",
+    "emailNote": "The only thing this page could not work out on its own. Optional: send it without and I still get the message, I just have nowhere to reply to.",
+    "send": "Send it to Sean",
+    "sending": "Sending…",
+    "ok": "Sent. I read these myself, usually the same day.",
+    "okNoReply": "Sent. I read these myself — though without an address I have no way to reply, so do come back if you want an answer.",
+    "fail": "That did not go through. Nothing is lost — copy it below and mail it to sean@cangaroo.ai, or press the mail-app button.",
+    "copy": "Copy it all",
+    "mailapp": "Open in mail app",
+    "copied": "Copied. Paste it into an email to sean@cangaroo.ai.",
+    "note": "Sent to a Cloudflare Worker that forwards it to my inbox. What you see here is exactly what I receive."
   }
 }
 </script>
@@ -2242,6 +2318,31 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 </aside>
 </div>
 
+<div class="compose" id="compose" role="dialog" aria-modal="true" aria-labelledby="compose-h" hidden>
+  <div class="compose-in">
+    <div class="compose-head">
+      <div><h3 class="display" id="compose-h"></h3><p id="compose-lead"></p></div>
+      <button class="compose-x" type="button" id="compose-x" aria-label="Close">&times;</button>
+    </div>
+    <div class="compose-body" id="compose-body">
+      <div class="cfield"><div class="label">To</div><div class="cmeta">sean@cangaroo.ai</div></div>
+      <div class="cfield"><div class="label">Subject</div><div class="cmeta" id="c-subject"></div></div>
+      <div class="cfield"><div class="label">Message &mdash; edit anything that is wrong</div>
+        <textarea id="c-body" spellcheck="true"></textarea></div>
+      <div class="cfield"><div class="label" id="c-email-label"></div>
+        <input type="email" id="c-email" autocomplete="email" placeholder="you@company.com">
+        <p class="note" id="c-email-note" style="margin-top:8px"></p></div>
+    </div>
+    <div class="compose-foot">
+      <button class="btn" type="button" id="c-send"></button>
+      <button class="btn ghost" type="button" id="c-copy"></button>
+      <a class="btn ghost" id="c-mailapp" href="#"></a>
+      <div class="cstatus" id="c-status" hidden></div>
+      <p class="note" id="c-note"></p>
+    </div>
+  </div>
+</div>
+
 <div class="drawer" id="drawer" aria-hidden="true"></div>
 
 <div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Cookie choice">
@@ -2270,7 +2371,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     path:null, score:0, events:0, sections:{}, signals:[],
     start:Date.now(), history:[], diag:{}, scope:{picked:{}, cap:20},
     caps:[], analyticsLoaded:false, geo:null, company:null, weather:null,
-    hook:{problem:null,outcome:null}, number:null, asked:[], src:'', env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
+    hook:{problem:null,outcome:null}, number:null, asked:[], src:'', sent:false, env:{}, mem:{n:1,first:Date.now()}, depth:0, away:0, leftAt:0, copied:false, deepRead:false
   };
 
   /* ------------------------------------------------------------ event log */
@@ -3262,6 +3363,133 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 
 
 
+  /* ==================================================== THE COMPOSE PANEL
+     Every "send" on this page used to be a bare mailto:, which does nothing at
+     all on a machine with no mail client registered — a large share of desktop
+     Gmail users, and the reason this exists. Now a mailto click opens the letter
+     the page has already written, editable, with a real endpoint behind it and
+     copy-to-clipboard as the floor. Nobody hits a dead link.
+
+     The email field is optional on purpose. A page whose entire argument is that
+     it did not need to ask you things does not get to end in a required field. */
+  var CO = { subject:'', body:'', href:'' };
+
+  function parseMailto(href){
+    var q = href.split('?')[1] || '';
+    var out = {subject:'', body:''};
+    q.split('&').forEach(function(pair){
+      var i = pair.indexOf('=');
+      if(i < 0){ return; }
+      var k = pair.slice(0,i), v = decodeURIComponent(pair.slice(i+1).replace(/\+/g,' '));
+      if(k === 'subject'){ out.subject = v; }
+      if(k === 'body'){ out.body = v; }
+    });
+    return out;
+  }
+  function openCompose(subject, body, href){
+    var E = DATA.enquiry || {};
+    CO.subject = subject; CO.body = body; CO.href = href || mailtoHref(subject, '');
+    setText('#compose-h', E.head || 'Your enquiry');
+    setText('#compose-lead', E.lead || '');
+    setText('#c-subject', subject);
+    setText('#c-email-label', E.emailLabel || 'Your email');
+    setText('#c-email-note', E.emailNote || '');
+    setText('#c-note', E.note || '');
+    $('#c-body').value = body;
+    $('#c-send').textContent = E.send || 'Send';
+    $('#c-copy').textContent = E.copy || 'Copy it all';
+    $('#c-mailapp').textContent = E.mailapp || 'Open in mail app';
+    $('#c-mailapp').href = CO.href;
+    $('#c-send').setAttribute('aria-disabled','false');
+    var st = $('#c-status'); st.hidden = true; st.className = 'cstatus';
+    $('#compose').hidden = false;
+    document.body.style.overflow = 'hidden';
+    setTimeout(function(){ var t=$('#c-body'); if(t){ t.focus(); t.setSelectionRange(0,0); } }, 60);
+    signal('opened an enquiry');
+    logEvent('<b>Opened the enquiry the page wrote for them</b> — subject: ' + esc(subject), 22, 'sig');
+  }
+  function closeCompose(){
+    $('#compose').hidden = true;
+    document.body.style.overflow = '';
+  }
+  function composeStatus(msg, kind){
+    var st = $('#c-status');
+    st.textContent = msg; st.className = 'cstatus' + (kind ? ' ' + kind : ''); st.hidden = false;
+  }
+  function sendEnquiry(){
+    var E = DATA.enquiry || {}, btn = $('#c-send');
+    var body = $('#c-body').value, email = ($('#c-email').value || '').trim();
+    if(!E.endpoint){ composeStatus(E.fail || 'No endpoint configured.', 'bad'); return; }
+    btn.setAttribute('aria-disabled','true');
+    btn.textContent = E.sending || 'Sending…';
+    composeStatus('', '');
+    $('#c-status').hidden = true;
+    var payload = {
+      subject: CO.subject, body: body, email: email,
+      page: location.pathname, score: S.score, depth: S.depth,
+      company: S.company || '', city: (S.geo && S.geo.city) || ''
+    };
+    var giveUp = setTimeout(function(){ fail(); }, 12000);
+    var settled = false;
+    var fail = function(){
+      if(settled){ return; } settled = true; clearTimeout(giveUp);
+      btn.setAttribute('aria-disabled','false'); btn.textContent = E.send || 'Send';
+      composeStatus(E.fail || 'That did not go through.', 'bad');
+      logEvent('Enquiry POST failed — fell back to copy and mailto', 0);
+    };
+    fetch(E.endpoint, {
+      method:'POST', mode:'cors', credentials:'omit',
+      headers:{'Content-Type':'text/plain;charset=UTF-8'}, /* text/plain keeps it a simple request: no preflight */
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.ok ? r.json().catch(function(){ return {ok:true}; }) : null; })
+      .then(function(d){
+        if(settled){ return; }
+        if(!d || d.ok === false){ fail(); return; }
+        settled = true; clearTimeout(giveUp);
+        $('#compose-body').innerHTML = '<div class="csent"><b class="display">' +
+          (email ? 'Thank you — that is with me.' : 'That is with me.') + '</b><p>' +
+          esc(email ? (E.ok || '') : (E.okNoReply || E.ok || '')) + '</p></div>';
+        $('.compose-foot').innerHTML = '<button class="btn ghost" type="button" onclick="void 0" id="c-done">Close</button>';
+        $('#c-done').addEventListener('click', closeCompose);
+        S.sent = true;
+        signal('sent you an enquiry');
+        logEvent('<b>ENQUIRY RECEIVED' + (email ? ' — reply to ' + esc(email) : ' — no reply address given') +
+                 '</b>. This one is real; everything above it was a demonstration.', 40, 'sig');
+        paint();
+      }).catch(fail);
+  }
+  function wireCompose(){
+    if(!$('#compose')){ return; }
+    $('#compose-x').addEventListener('click', closeCompose);
+    $('#compose').addEventListener('click', function(e){ if(e.target === this){ closeCompose(); } });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && !$('#compose').hidden){ closeCompose(); }
+    });
+    $('#c-send').addEventListener('click', sendEnquiry);
+    $('#c-copy').addEventListener('click', function(){
+      var t = 'To: ' + DATA.profile.email + '\nSubject: ' + CO.subject + '\n\n' + $('#c-body').value;
+      copyText(t, null);
+      composeStatus((DATA.enquiry || {}).copied || 'Copied.', 'ok');
+      S.copied = true;
+      signal('copied your details');
+      logEvent('Copied the enquiry to send by hand', 16, 'sig');
+      paint();
+    });
+    /* One delegated handler catches every mailto: on the page, including the
+       footer CTA that predates all of this. No dead links anywhere. */
+    document.addEventListener('click', function(e){
+      var a = e.target.closest ? e.target.closest('a[href^="mailto:"]') : null;
+      if(!a || a.id === 'c-mailapp'){ return; }
+      if(a.getAttribute('aria-disabled') === 'true'){ e.preventDefault(); return; }
+      e.preventDefault();
+      var m = parseMailto(a.getAttribute('href'));
+      /* An empty first line so the cursor lands somewhere that invites typing,
+         with the page's own findings sitting underneath it. */
+      openCompose(m.subject || 'Enquiry from seanstone.com',
+                  m.body || ('\n\n' + contextBlock()), a.getAttribute('href'));
+    });
+  }
+
   /* ------------------------------------------------------------ the tiers */
   /* The instrumentation on this page is the demonstration, not the offer. If a
      reader leaves thinking "nice tracking widget" the page has undersold by two
@@ -3420,11 +3648,6 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     };
     wire(pb, H.problems, 'problem', 'wants to fix');
     wire(ob, H.outcomes, 'outcome', 'would call it fixed when');
-    $('#hook-btn').addEventListener('click', function(){
-      if(this.getAttribute('aria-disabled') === 'true'){ return; }
-      signal('opened an enquiry');
-      logEvent('<b>Composed an enquiry from the top of the page</b> — with everything above attached to it', 22, 'sig');
-    });
     $('#hook-copy').addEventListener('click', function(){
       var t = hookSentence();
       copyText((t ? t + '\n' : '') + contextBlock(), '#hook-copied');
@@ -3472,10 +3695,6 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     box.hidden = false;
     signal('named their number');
     logEvent('Told you which number they want moved: <b>' + esc(it.l.toLowerCase()) + '</b>', 18, 'sig');
-    var send = $('#num-send');
-    if(send){ send.addEventListener('click', function(){
-      logEvent('<b>Enquiry opened from the one-number answer</b>', 20, 'sig');
-    }); }
     noteMaybe();
   }
 
@@ -3824,7 +4043,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     renderMetrics(); renderPaths(); renderCaps(); renderWork();
     renderDemo(); renderDiag(); renderScope(); renderTimeline(); setupDrawer();
     renderHook(); renderNumbers(); renderAsk();
-    renderTiers();
+    renderTiers(); wireCompose();
 
     document.addEventListener('click', function(e){
       var b = e.target.closest ? e.target.closest('.readcase[data-case]') : null;

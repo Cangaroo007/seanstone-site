@@ -8,3 +8,19 @@ compatibility_date = "2026-08-01"
 routes = [
   { pattern = "id.seanstone.com", custom_domain = true }
 ]
+
+# Account pinned explicitly: this machine's shell exports a CLOUDFLARE_ACCOUNT_ID
+# for a different account, which is how the first deploy went to the wrong place.
+account_id = "16fbf46ad93708dc1953b6a283488d6d"
+
+# Cloudflare Email Service. Sending to a VERIFIED DESTINATION ADDRESS on your own
+# account is free on every plan, including Workers Free — and Sean is the only
+# recipient this Worker will ever have, which `destination_address` enforces at
+# the platform level rather than in code.
+#
+# Setup, once, in the dashboard: seanstone.com -> Email -> Email Routing -> enable,
+# then add sean@cangaroo.ai as a destination address and click the link in the
+# verification email Cloudflare sends you.
+[[send_email]]
+name = "EMAIL"
+destination_address = "sean@cangaroo.ai"

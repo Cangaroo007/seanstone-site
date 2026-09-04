@@ -447,6 +447,50 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ========================================================= COMPOSE PANEL */
+.compose[hidden]{display:none !important}
+.compose{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(6,10,8,.55);backdrop-filter:blur(3px);animation:fadein .18s ease}
+@media(min-width:700px){.compose{align-items:center;padding:var(--s6)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.compose-in{
+  background:var(--paper);border:1px solid var(--rule);border-radius:8px 8px 0 0;
+  width:min(720px,100%);max-height:92vh;display:flex;flex-direction:column;
+  box-shadow:0 -20px 70px rgba(0,0,0,.4);animation:slideup .26s cubic-bezier(.2,.8,.3,1);
+}
+@media(min-width:700px){.compose-in{border-radius:8px;box-shadow:0 30px 90px rgba(0,0,0,.45)}}
+@keyframes slideup{from{transform:translateY(28px);opacity:.4}to{transform:none;opacity:1}}
+.compose-head{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s4);
+  padding:var(--s6) var(--s6) var(--s4);border-bottom:1px solid var(--rule-soft)}
+.compose-head h3{font-family:var(--display);font-size:clamp(21px,2.6vw,28px);line-height:1.15}
+.compose-head p{font-size:14px;line-height:1.55;color:var(--muted);margin-top:6px;max-width:52ch}
+.compose-x{background:none;border:0;cursor:pointer;font-size:26px;line-height:1;color:var(--muted);padding:0 4px}
+.compose-x:hover{color:var(--ink)}
+.compose-body{padding:var(--s5) var(--s6);overflow-y:auto;flex:1}
+.cfield{margin-bottom:var(--s4)}
+.cfield .label{margin-bottom:6px}
+.cmeta{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:4px;padding:9px 11px;word-break:break-word}
+.compose textarea,.compose input[type=email]{
+  width:100%;font-family:var(--mono);font-size:13px;line-height:1.65;color:var(--ink);
+  background:var(--surface);border:1px solid var(--rule);border-radius:5px;padding:var(--s4);
+  resize:vertical;
+}
+.compose input[type=email]{font-family:var(--body);font-size:16px;padding:12px var(--s4)}
+.compose textarea{min-height:230px}
+.compose textarea:focus,.compose input[type=email]:focus{outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(14,110,99,.14)}
+.compose-foot{padding:var(--s5) var(--s6) var(--s6);border-top:1px solid var(--rule-soft);
+  display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;background:var(--surface)}
+.compose-foot .note{flex-basis:100%;margin:0}
+.cstatus{flex-basis:100%;font-size:14.5px;line-height:1.55;padding:var(--s3) 0 0}
+.cstatus.ok{color:var(--accent);font-weight:600}
+.cstatus.bad{color:var(--signal)}
+.compose .btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.csent{padding:var(--s8) var(--s6);text-align:center}
+.csent b{display:block;font-family:var(--display);font-size:clamp(24px,3vw,34px);line-height:1.2;margin-bottom:var(--s4)}
+.csent p{font-size:15.5px;line-height:1.65;color:var(--ink-soft);max-width:46ch;margin:0 auto var(--s5)}
+
 /* ============================================================== THE TIERS */
 .tiers{display:grid;gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--surface)}
 .tier{display:grid;gap:var(--s4);padding:var(--s6);border-top:1px solid var(--rule-soft);position:relative}
@@ -761,7 +805,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">What</th>
       <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)" class="label">Notes</th>
     </tr></thead>
-    <tbody><tr><td><b>The panel on the site</b></td><td>Your time zone, device and browser, how far you scroll, whether you leave and come back, and whether you copy something. A small note is kept in your own browser so the page recognises you on a return visit.</td><td>Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data.</td></tr><tr><td><b>The enquiry hooks</b></td><td>The sentence you complete, the number you pick and anything you type into the ask box.</td><td>Composed entirely in your browser. There is no form endpoint and nothing is posted anywhere: the send button opens your own mail client with the text already written, and nothing leaves until you press send.</td></tr><tr><td><b>Cloudflare Web Analytics</b></td><td>Page views, referrer, country, and page performance.</td><td>Cookieless. Sets nothing on your device and does not fingerprint you, which is why it is not covered by the cookie choice.</td></tr><tr><td><b>Google Analytics 4</b></td><td>Standard web analytics — pages viewed, how you arrived, approximate location, device.</td><td>Sets cookies. Processed by Google in the United States. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>ContentSquare</b></td><td>How the page is used — clicks, scrolling and interaction with the tools on it. Text you type is masked.</td><td>Sets cookies. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>Network lookup</b></td><td>The city and the network your connection belongs to, and where it resolves, the company that network belongs to.</td><td>Account level only — the organisation, never you as an individual. Computed per request and not stored.</td></tr><tr><td><b>Weather (open-meteo.com)</b></td><td>Once the network lookup has returned a city, the site asks open-meteo for the current temperature and conditions in that city.</td><td>A city name is sent, never your IP address or anything identifying. No key, no cookie, no account. Used only to write the line on the page.</td></tr></tbody>
+    <tbody><tr><td><b>The panel on the site</b></td><td>Your time zone, device and browser, how far you scroll, whether you leave and come back, and whether you copy something. A small note is kept in your own browser so the page recognises you on a return visit.</td><td>Stays in your browser. Never sent to a server, never stored by me, gone when you clear site data.</td></tr><tr><td><b>The enquiry hooks</b></td><td>The sentence you complete, the number you pick and anything you type into the ask box.</td><td>Composed entirely in your browser as you use the page. Nothing is transmitted at this stage — it becomes an enquiry only if you open the panel and press send, and you can read and edit every word first.</td></tr><tr><td><b>Sending an enquiry</b></td><td>Only what you choose to send: the message shown in the panel, which you can edit or delete before sending, and your email address if you fill that field in.</td><td>Posted to a Cloudflare Worker on this domain, which forwards it to my inbox and keeps no copy. Nothing is sent until you press the button, the email field is optional, and there is no third-party form service involved.</td></tr><tr><td><b>Cloudflare Web Analytics</b></td><td>Page views, referrer, country, and page performance.</td><td>Cookieless. Sets nothing on your device and does not fingerprint you, which is why it is not covered by the cookie choice.</td></tr><tr><td><b>Google Analytics 4</b></td><td>Standard web analytics — pages viewed, how you arrived, approximate location, device.</td><td>Sets cookies. Processed by Google in the United States. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>ContentSquare</b></td><td>How the page is used — clicks, scrolling and interaction with the tools on it. Text you type is masked.</td><td>Sets cookies. In Europe and the UK it does not load at all unless you accept.</td></tr><tr><td><b>Network lookup</b></td><td>The city and the network your connection belongs to, and where it resolves, the company that network belongs to.</td><td>Account level only — the organisation, never you as an individual. Computed per request and not stored.</td></tr><tr><td><b>Weather (open-meteo.com)</b></td><td>Once the network lookup has returned a city, the site asks open-meteo for the current temperature and conditions in that city.</td><td>A city name is sent, never your IP address or anything identifying. No key, no cookie, no account. Used only to write the line on the page.</td></tr></tbody>
   </table></div>
   <style>tbody td{padding:12px;border-bottom:1px solid var(--rule-soft);vertical-align:top;color:var(--ink-soft)}
   tbody td b{color:var(--ink)}</style>

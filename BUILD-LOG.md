@@ -1,5 +1,64 @@
 # Build log
 
+## 4 Sep 2026 — v1.6: the dead link, and a real endpoint
+
+Sean clicked his own site's contact button and nothing happened. Then: *"So how do I get
+someone's contact information to follow up with them?"*
+
+**The diagnosis.** The hrefs were correct — `mailto:sean@cangaroo.ai?subject=…&body=…`, 608
+characters, properly encoded. The giveaway was that the plain footer CTA did nothing either,
+and that button has been on the site since v0.1. macOS only opens `mailto:` if an application
+has claimed the scheme; if you live in Gmail in a browser and never set Apple Mail up, nothing
+has. So every single conversion path on the site ended in a link that silently did nothing for
+a large share of desktop visitors and most of mobile. No error, no fallback — they conclude the
+site is broken and leave.
+
+Worth recording that this was found by the owner using his own site, not by me testing it.
+Playwright confirmed the href was well-formed and I took that as confirmation the feature
+worked. A correct `mailto:` and a working contact path are not the same claim.
+
+**The compose panel.** Every `mailto:` on the page is now intercepted by one delegated handler
+— including the footer CTA that predates all of this, so there is no dead link anywhere — and
+opens a modal containing the letter the page has already written, in an editable textarea.
+*"Edit anything that is wrong — that is the useful part."* Three ways out: send it through the
+endpoint, copy it all, or open it in a mail app for the people who have one. The floor is
+copy-to-clipboard, which works for everybody.
+
+Making the body editable rather than read-only turned out to be the good decision. It is not a
+form with fields; it is a pre-written email the visitor corrects, which is both a better
+experience and a much higher-quality enquiry.
+
+**The endpoint, and why it is free.** `POST /enquiry` on the existing Worker. Email goes out
+through Cloudflare Email Service's `send_email` binding. The relevant fact: sending to a
+**verified destination address on your own account is free on every plan, including Workers
+Free** — and Sean is the only recipient this Worker will ever have. So no Workers Paid plan, no
+Resend, no MailChannels (whose free Workers integration is end-of-life), no API key, and no new
+vendor on the privacy page.
+
+`destination_address = "sean@cangaroo.ai"` on the binding pins it at the platform level: the
+Worker cannot email anybody else even if it is compromised. Alongside that: a 5-per-15-minutes
+per-IP throttle, a 12 KB body cap, an 8 KB message cap, `text/plain` content type so the
+request stays simple and skips the CORS preflight, and a 12-second client timeout that falls
+back to copy-and-mailto rather than leaving someone staring at a spinner.
+
+**The email field is optional**, and framed as the punchline rather than the price: *"The only
+thing this page could not work out on its own."* A page whose entire argument is that it did
+not need to ask you things does not get to end in a required field. Sending without one still
+delivers; the confirmation says honestly that there is nowhere to reply to.
+
+A successful send logs at weight 40: **"ENQUIRY RECEIVED — reply to …. This one is real;
+everything above it was a demonstration."**
+
+**Also fixed:** Sean typed *"How do you engage with companies??"* into his own ask box and it
+had no answer — close to the most obvious question a buyer has. Written and added, and promoted
+to the first suggested question.
+
+**Privacy page** now carries a row for the endpoint, because this is the first thing on the
+site that actually transmits anything: what is sent, that it is only sent on a button press,
+that the field is optional, that the Worker keeps no copy, and that no third-party form service
+is involved. The old row claiming nothing is ever posted anywhere has been corrected rather
+than left to rot.
+
 ## 4 Sep 2026 — v1.5: three ways in, and an honest ceiling
 
 Sean: *"We need to move an enquiry form near the top... I don't want a typical form, what can we
