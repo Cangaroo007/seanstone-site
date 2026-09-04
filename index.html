@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#E8EBE7">
 <title>Sean Stone — Revenue Systems</title>
 <meta name="description" content="Sean Stone builds revenue systems — CRM architecture, GTM engineering and AI-directed product builds. Twenty-five years, 50+ B2B companies, production software shipped.">
 <meta name="robots" content="index, follow">
@@ -464,6 +465,28 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ========================================================== THEME CONTROL */
+.themeset{display:inline-flex;align-items:center;border:1px solid var(--rule);
+  border-radius:999px;background:var(--surface);padding:2px;gap:2px}
+.themeset button{
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+  background:none;border:0;border-radius:999px;color:var(--muted);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  padding:0 9px;height:24px;min-width:26px;transition:background .14s ease,color .14s ease;
+}
+/* Touch needs something bigger than a 24px pill to land on. */
+@media(hover:none),(max-width:1079px){
+  .themeset button{height:34px;min-width:36px;padding:0 12px}
+  .themeset button svg{width:16px;height:16px}
+}
+.themeset button svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5}
+.themeset button[data-theme-set="dark"] svg{fill:currentColor;stroke:none}
+.themeset button:hover{color:var(--ink)}
+.themeset button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+@media(max-width:559px){
+  .themeset button[data-theme-set="auto"]{padding:0 7px;font-size:10px}
+}
+
 /* ====================================================== SUPPORT LAUNCHER */
 .fab{
   position:fixed;z-index:110;right:16px;bottom:16px;display:flex;align-items:center;gap:9px;
@@ -878,6 +901,13 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 .copybtn{border:1px solid var(--rule);background:var(--surface);border-radius:3px;padding:9px 14px;font-size:13px;cursor:pointer;font-weight:600}
 .copybtn:hover{border-color:var(--accent)}
 </style>
+<script>
+/* Runs before anything renders: reading the stored choice after paint would show
+   every dark-mode visitor a white flash on the way in. Wrapped because a private
+   window can throw on the accessor itself, not just return null. */
+(function(){try{var t=localStorage.getItem('ss.theme');
+if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
 </head>
 <body>
 
@@ -2087,6 +2117,13 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
       <div class="pathchip" id="pathchip">
         <span>viewing as</span> <b id="pathchip-label">—</b>
         <button type="button" id="pathreset" title="Clear and choose again" aria-label="Clear selected path">✕</button>
+      </div>
+      <div class="themeset" id="themeset" role="group" aria-label="Colour theme">
+        <button type="button" data-theme-set="auto"  title="Follow your system setting" aria-pressed="true">Auto</button>
+        <button type="button" data-theme-set="light" title="Light" aria-pressed="false" aria-label="Light">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.1"/><g stroke-linecap="round"><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M12.8 3.2l-1.1 1.1M4.3 11.7l-1.1 1.1"/></g></svg></button>
+        <button type="button" data-theme-set="dark"  title="Dark" aria-pressed="false" aria-label="Dark">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.4 9.9A5.8 5.8 0 0 1 6.1 2.6a5.9 5.9 0 1 0 7.3 7.3z"/></svg></button>
       </div>
       <button class="telebtn" id="telebtn" type="button"><span class="pulse"></span> What it knows</button>
     </div>
@@ -3497,6 +3534,42 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
 
 
 
+  /* ------------------------------------------------------------ the theme
+     Three states, not two. "Auto" is the default and follows the operating
+     system, which is what most people actually want; the other two are an
+     override the page remembers. Kept in the visitor's own browser, like
+     everything else in the panel. */
+  function themeStored(){
+    try { return localStorage.getItem('ss.theme') || 'auto'; } catch(e){ return 'auto'; }
+  }
+  function applyTheme(v, announce){
+    var root = document.documentElement;
+    if(v === 'auto'){ root.removeAttribute('data-theme'); }
+    else { root.setAttribute('data-theme', v); }
+    try { if(v === 'auto'){ localStorage.removeItem('ss.theme'); } else { localStorage.setItem('ss.theme', v); } } catch(e){}
+    $$('#themeset button').forEach(function(b){
+      b.setAttribute('aria-pressed', b.dataset.themeSet === v ? 'true' : 'false');
+    });
+    var m = $('meta[name="theme-color"]');
+    if(m){
+      var dark = v === 'dark' || (v === 'auto' && window.matchMedia &&
+                 window.matchMedia('(prefers-color-scheme: dark)').matches);
+      m.setAttribute('content', dark ? '#0C110F' : '#E8EBE7');
+    }
+    if(announce){
+      logEvent(v === 'auto'
+        ? 'Handed the theme back to their system setting'
+        : 'Switched to the <b>' + v + '</b> version — remembered in their browser, not on a server', 2);
+    }
+  }
+  function wireTheme(){
+    if(!$('#themeset')){ return; }
+    applyTheme(themeStored(), false);
+    $$('#themeset button').forEach(function(b){
+      b.addEventListener('click', function(){ applyTheme(b.dataset.themeSet, true); });
+    });
+  }
+
   /* ==================================================== SUPPORT LAUNCHER
      The two ways to reach Sean used to live at the bottom of a very long page and
      in the middle of another section. This follows the reader instead. */
@@ -4401,7 +4474,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     renderMetrics(); renderPaths(); renderCaps(); renderWork();
     renderDemo(); renderDiag(); renderScope(); renderTimeline(); setupDrawer();
     renderHook(); renderNumbers(); renderAsk();
-    renderTiers(); wireCompose(); watchAlert(); wireFab();
+    renderTiers(); wireCompose(); watchAlert(); wireFab(); wireTheme();
 
     document.addEventListener('click', function(e){
       var b = e.target.closest ? e.target.closest('.readcase[data-case]') : null;

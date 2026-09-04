@@ -1,5 +1,34 @@
 # Build log
 
+## 4 Sep 2026 — v2.1: a theme the visitor chooses
+
+The light and dark palettes were both fully built from v0.1 — `:root`, a
+`prefers-color-scheme` block guarded with `:root:not([data-theme="light"])`, and a
+`:root[data-theme="dark"]` override so a manual choice wins in either direction. Everything was
+there except a control.
+
+**Three states, not two.** Auto is the default and follows the operating system, which is what
+most people want and what the site did already; light and dark are an override the page
+remembers in the visitor's own browser.
+
+**The choice is applied before first paint**, by a small inline script in the head rather than
+in the main bundle at the foot of the page. Reading `localStorage` after paint would show every
+dark-mode visitor a white flash on the way in — the most common bug in hand-rolled theme
+toggles. Wrapped in try/catch because a private window can throw on the accessor itself, not
+merely return null.
+
+`<meta name="theme-color">` is kept in step, so the browser chrome on a phone matches the page
+rather than fighting it.
+
+And, in keeping with the rest: switching it logs a line. *"Switched to the dark version —
+remembered in their browser, not on a server."* Choosing Auto logs *"Handed the theme back to
+their system setting."* Every other preference on this page is narrated; this one does not get
+to be the exception.
+
+Verified in both system settings: default follows the OS, either override wins over it, the
+choice survives a reload with the attribute already set at parse time, and Auto clears the
+stored value rather than writing "auto" into it.
+
 ## 4 Sep 2026 — v2.0: mobile, a launcher, and an answer engine that stops guessing
 
 Sean, with the emphasis his: *"Is the site also optimized for mobile?? This is very very very
