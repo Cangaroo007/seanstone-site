@@ -55,6 +55,16 @@ def render_case(project, projects):
     built = "".join(f"<li>{esc(x)}</li>" for x in c["built"])
     changed = "".join(f"<li>{esc(x)}</li>" for x in c["changed"])
     stack = "".join(f'<span class="pill">{esc(s)}</span>' for s in project["stack"])
+    imgs = project.get("images") or []
+    shots = ""
+    if imgs:
+        figs = "".join(
+            f'<figure><img src="/{esc(im["src"])}" alt="{esc(im["alt"])}" loading="lazy" decoding="async">'
+            f'<figcaption><span class="src">{esc(project["name"])} \u00b7 {i+1:02d}</span> '
+            f'{esc(im["caption"])}</figcaption></figure>'
+            for i, im in enumerate(imgs))
+        shots = ('<div class="case-block"><h3>The screens</h3>'
+                 f'<div class="shots{" multi" if len(imgs) > 1 else ""}">{figs}</div></div>')
     nav = "".join(
         f'<button class="caselink" type="button" data-case="{o["id"]}">{esc(o["name"])} \u2192</button>'
         for o in others)
@@ -68,6 +78,7 @@ def render_case(project, projects):
         f'<div class="case-block"><h3>The problem</h3><p>{esc(c["problem"])}</p></div>'
         f'<div class="case-block"><h3>What was built</h3><ul class="klist">{built}</ul></div>'
         f'<div class="case-block"><h3>What changed</h3><ul class="klist">{changed}</ul></div>'
+        + shots +
         f'<div class="case-block"><h3>Built with</h3><div class="stack">{stack}</div></div>'
         '</div>'
         f'<div class="casenav">{nav}'

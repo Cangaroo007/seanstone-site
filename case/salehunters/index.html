@@ -447,6 +447,19 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ============================================================ SCREENS */
+.shots{padding:0 var(--s5) var(--s5);display:grid;gap:var(--s6);grid-template-columns:1fr}
+/* Always one per row: these are dense product UIs and halving the width makes
+   the detail — the thing that proves the claim — unreadable. */
+.shots figure{margin:0;display:flex;flex-direction:column;gap:10px}
+.shots img{
+  width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:6px;
+  background:var(--surface-2);box-shadow:var(--shadow);
+}
+.shots figcaption{font-size:13.5px;line-height:1.5;color:var(--ink-soft);max-width:62ch}
+.shots .src{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.case-block .shots{padding:0}
+
 /* ============================================================ CONSENT */
 .consent{
   position:fixed;left:var(--s4);right:var(--s4);bottom:var(--s4);z-index:80;
@@ -731,11 +744,35 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
           "Reporting built on the unified record rather than on each silo's own version of the truth."
         ],
         "changed": [
-          "Enquiries arrive segmented, attributed and attached to an account — the qualification work happens before a human sees it.",
+          "170 per-client landing pages live and tracked, up from 150 three weeks earlier — each one generated in minutes rather than queued behind a developer.",
+          "229 stonemasons mapped to the businesses they actually work with. Before the reach view existed, only 20 had any recorded relationship at all.",
+          "Enquiries arrive segmented, attributed and attached to an account, so the qualification happens before a human reads them.",
           "The CRM ends up restructured as a by-product: branching logic forces a real taxonomy of who the business sells to.",
-          "Campaigns can be launched and measured without a developer in the loop."
+          "Built in 109 hours across May and June 2026, site and platform together."
         ]
-      }
+      },
+      "images": [
+        {
+          "src": "img/roadrunner-01-dashboard.png",
+          "caption": "One screen for every enquiry, visit, sample, warranty and landing page — each one resolved against the CRM before anything is written to it.",
+          "alt": "Road Runner dashboard showing CRM pulse, KPI targets, forms inbox and outreach engagement"
+        },
+        {
+          "src": "img/roadrunner-05-landing.png",
+          "caption": "A per-client landing page, and the tracking that follows it: prospect id, UTMs carried through to the sample form, and the timeline from send to sample order to hot lead in the CRM.",
+          "alt": "A partner landing page beside its tracked campaign panel, engagement metrics and event timeline"
+        },
+        {
+          "src": "img/roadrunner-04-account.png",
+          "caption": "A stonemason isn't one account. It's the fourteen cabinet makers, builders and designers connected to it — ranked by reach, so you can see which relationships actually carry volume.",
+          "alt": "Stonemason reach view showing an account expanded to its related companies and trading history"
+        },
+        {
+          "src": "img/roadrunner-02-report.png",
+          "caption": "The weekly report, generated every Friday. It names what needs a decision — and states its own margin of error at the foot: 5.1% of interactions carry no company and are counted nowhere.",
+          "alt": "Weekly sales report with activity by account manager, open deals and rule-based recommendations"
+        }
+      ]
     },
     {
       "id": "kervio",
@@ -774,7 +811,24 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
           "The quote becomes the manufacturing instruction — one document, not two.",
           "Proof that the method scales: complex vertical software, built and commercialised without an engineering team."
         ]
-      }
+      },
+      "images": [
+        {
+          "src": "img/kervio-02-config.png",
+          "caption": "The quote is the manufacturing instruction. Every edge carries its profile, finish and exposure; mitre joins and cutouts are specified here and flow straight through to pricing and the cut list.",
+          "alt": "Kervio piece configurator showing an L-shaped benchtop with edge profiles and dimensions"
+        },
+        {
+          "src": "img/kervio-01-quote.png",
+          "caption": "The job as the shop sees it — customer, site, distance and a running total that updates as the quote is built. Delivery is priced from the road distance, not guessed.",
+          "alt": "Kervio quote screen with customer, job site and a live cost summary"
+        },
+        {
+          "src": "img/kervio-03-pricing.png",
+          "caption": "Every dollar traceable to a line: linear metres, the rate applied, the piece it belongs to. Nothing in the total a fabricator can't defend to a customer.",
+          "alt": "Kervio pricing breakdown by room and piece with rates and quantities"
+        }
+      ]
     },
     {
       "id": "alpha",
@@ -809,7 +863,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
           "Routing rules that send each type to the right team with the right priority."
         ],
         "changed": [
-          "Enquiries arrive pre-sorted and attached to the right account.",
+          "3,025 organisations sit behind the company lookup, so an enquiry attaches to the account that will fulfil it instead of creating another orphan lead.",
+          "Enquiries arrive pre-sorted by audience and routed to the right team with the right priority.",
           "The specification path makes architect interest visible months before the order it eventually produces."
         ]
       }
@@ -2073,6 +2128,17 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
     if(btn){ btn.setAttribute('aria-expanded', String(!!open)); }
   }
 
+  /* Screens. Mirrored in build.py's render_case() for the static case pages —
+     change one, change the other. */
+  function shotsHtml(p){
+    if(!p.images || !p.images.length){ return ''; }
+    return '<div class="shots'+(p.images.length>1?' multi':'')+'">'+
+      p.images.map(function(im, i){
+        return '<figure><img src="/'+esc(im.src)+'" alt="'+esc(im.alt)+'" loading="lazy" decoding="async">'+
+          '<figcaption><span class="src">'+esc(p.name)+' · '+('0'+(i+1)).slice(-2)+'</span> '+esc(im.caption)+'</figcaption></figure>';
+      }).join('')+'</div>';
+  }
+
   function renderWork(){
     $('#work').innerHTML = DATA.projects.map(function(p, idx){
       var caps = DATA.capabilities.filter(function(c){return c.evidence.indexOf(p.id)>=0;});
@@ -2089,7 +2155,8 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         '<div class="proj-body"><div><h4>What it is</h4><p>'+esc(p.summary)+'</p>'+
           '<div class="stack">'+p.stack.map(function(s){return '<span class="pill">'+esc(s)+'</span>';}).join('')+'</div>'+
           (p['case'] ? '<button class="btn ghost small readcase" type="button" data-case="'+p.id+'">Read the case study →</button>' : '')+'</div>'+
-        '<div><h4>How it works</h4><ul class="klist">'+p.points.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div></article>';
+        '<div><h4>How it works</h4><ul class="klist">'+p.points.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>'+
+        shotsHtml(p)+'</article>';
     }).join('');
 
     $$('.proj-toggle').forEach(function(btn){
@@ -2275,6 +2342,7 @@ footer{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s8);color:var(
         '<div class="case-block"><h3>The problem</h3><p>'+esc(c.problem)+'</p></div>'+
         '<div class="case-block"><h3>What was built</h3><ul class="klist">'+c.built.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
         '<div class="case-block"><h3>What changed</h3><ul class="klist">'+c.changed.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
+        (p.images && p.images.length ? '<div class="case-block"><h3>The screens</h3>'+shotsHtml(p)+'</div>' : '')+
         '<div class="case-block"><h3>Built with</h3><div class="stack">'+p.stack.map(function(s){return '<span class="pill">'+esc(s)+'</span>';}).join('')+'</div></div>'+
       '</div>'+
       '<div class="casenav">'+others.map(function(o){

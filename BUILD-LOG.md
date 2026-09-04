@@ -1,5 +1,46 @@
 # Build log
 
+## 4 Sep 2026 — v1.2 — the screens
+
+Seven product screenshots in, with captions, on both the work accordion and the case pages.
+Sprint 1's biggest item closed: the work section is no longer text-only.
+
+**Road Runner — four shots**, produced by a separate Cowork session and accompanied by an
+unusually good build record. They were rebuilt as clean HTML from the real repos rather than
+captured from production, so no customer data was handled; design tokens, nav structure and
+form copy come from the source files, listed shot by shot. Fictional dataset documented and
+fixed so any future shot stays consistent (Meridian Stone Co., Halberd Kitchens, Dana
+Whitlock et al; ACMA fiction phone range).
+
+**Kervio — three shots**, reconstructed here from Sean's production screenshots after
+sampling the real palette (`#BDFE2C` lime, `#0B1118` ink). His originals could not be used:
+all three were in an empty state, the pricing screen was showing `rate not available for
+this fabrication` with two `RATE REQUIRED` rows, and the placeholder address said Buderim QLD
+against a Newcastle NSW cover identity. Numbers are internally consistent across all three
+frames — $17,218 subtotal, $1,721.80 GST, $18,939.80 total.
+
+**Verified metrics replaced the qualitative claims** in two case studies, taking only what
+the build record could evidence with a command:
+
+- 170 per-client landing pages live, up from 150 three weeks earlier (`ls public/partners/*.html | wc -l`)
+- 229 stonemasons mapped; only 20 had any recorded relationship before the reach view
+- 3,025 organisations behind the enquiry form's company lookup
+- 109 hours of build across May–June 2026
+
+**Deliberately not used:** enquiry volume, segmentation split by role, and time-to-launch for
+a landing page — no instrumented figure exists for any of them. The "40 minutes" visible in
+the landing-page shot is set dressing and is not repeated as a claim anywhere in the copy.
+The session that produced the shots flagged this itself, which is the right instinct.
+
+**Layout:** one screenshot per row, not two. These are dense product UIs and halving the
+width makes the detail — the thing that proves the claim — unreadable. Lazy-loaded, async
+decoding, explicit alt text. `shotsHtml()` in the template and `render_case()` in `build.py`
+produce the same markup and must be changed together.
+
+**Still missing:** `roadrunner-03-form.png`, the self-segmenting enquiry form mid-branch.
+It is in the build record but was not among the files supplied. That shot carries the
+front-door thesis better than any of the other four.
+
 ## 4 Sep 2026 — v1.1 — region-aware consent, privacy page
 
 Sean pushed back on an over-cautious read of ContentSquare, and was right: the CIPA §631

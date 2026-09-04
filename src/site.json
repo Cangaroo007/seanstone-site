@@ -117,11 +117,35 @@
           "Reporting built on the unified record rather than on each silo's own version of the truth."
         ],
         "changed": [
-          "Enquiries arrive segmented, attributed and attached to an account — the qualification work happens before a human sees it.",
+          "170 per-client landing pages live and tracked, up from 150 three weeks earlier — each one generated in minutes rather than queued behind a developer.",
+          "229 stonemasons mapped to the businesses they actually work with. Before the reach view existed, only 20 had any recorded relationship at all.",
+          "Enquiries arrive segmented, attributed and attached to an account, so the qualification happens before a human reads them.",
           "The CRM ends up restructured as a by-product: branching logic forces a real taxonomy of who the business sells to.",
-          "Campaigns can be launched and measured without a developer in the loop."
+          "Built in 109 hours across May and June 2026, site and platform together."
         ]
-      }
+      },
+      "images": [
+        {
+          "src": "img/roadrunner-01-dashboard.png",
+          "caption": "One screen for every enquiry, visit, sample, warranty and landing page — each one resolved against the CRM before anything is written to it.",
+          "alt": "Road Runner dashboard showing CRM pulse, KPI targets, forms inbox and outreach engagement"
+        },
+        {
+          "src": "img/roadrunner-05-landing.png",
+          "caption": "A per-client landing page, and the tracking that follows it: prospect id, UTMs carried through to the sample form, and the timeline from send to sample order to hot lead in the CRM.",
+          "alt": "A partner landing page beside its tracked campaign panel, engagement metrics and event timeline"
+        },
+        {
+          "src": "img/roadrunner-04-account.png",
+          "caption": "A stonemason isn't one account. It's the fourteen cabinet makers, builders and designers connected to it — ranked by reach, so you can see which relationships actually carry volume.",
+          "alt": "Stonemason reach view showing an account expanded to its related companies and trading history"
+        },
+        {
+          "src": "img/roadrunner-02-report.png",
+          "caption": "The weekly report, generated every Friday. It names what needs a decision — and states its own margin of error at the foot: 5.1% of interactions carry no company and are counted nowhere.",
+          "alt": "Weekly sales report with activity by account manager, open deals and rule-based recommendations"
+        }
+      ]
     },
     {
       "id": "kervio",
@@ -160,7 +184,24 @@
           "The quote becomes the manufacturing instruction — one document, not two.",
           "Proof that the method scales: complex vertical software, built and commercialised without an engineering team."
         ]
-      }
+      },
+      "images": [
+        {
+          "src": "img/kervio-02-config.png",
+          "caption": "The quote is the manufacturing instruction. Every edge carries its profile, finish and exposure; mitre joins and cutouts are specified here and flow straight through to pricing and the cut list.",
+          "alt": "Kervio piece configurator showing an L-shaped benchtop with edge profiles and dimensions"
+        },
+        {
+          "src": "img/kervio-01-quote.png",
+          "caption": "The job as the shop sees it — customer, site, distance and a running total that updates as the quote is built. Delivery is priced from the road distance, not guessed.",
+          "alt": "Kervio quote screen with customer, job site and a live cost summary"
+        },
+        {
+          "src": "img/kervio-03-pricing.png",
+          "caption": "Every dollar traceable to a line: linear metres, the rate applied, the piece it belongs to. Nothing in the total a fabricator can't defend to a customer.",
+          "alt": "Kervio pricing breakdown by room and piece with rates and quantities"
+        }
+      ]
     },
     {
       "id": "alpha",
@@ -195,7 +236,8 @@
           "Routing rules that send each type to the right team with the right priority."
         ],
         "changed": [
-          "Enquiries arrive pre-sorted and attached to the right account.",
+          "3,025 organisations sit behind the company lookup, so an enquiry attaches to the account that will fulfil it instead of creating another orphan lead.",
+          "Enquiries arrive pre-sorted by audience and routed to the right team with the right priority.",
           "The specification path makes architect interest visible months before the order it eventually produces."
         ]
       }

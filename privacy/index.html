@@ -447,6 +447,19 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ============================================================ SCREENS */
+.shots{padding:0 var(--s5) var(--s5);display:grid;gap:var(--s6);grid-template-columns:1fr}
+/* Always one per row: these are dense product UIs and halving the width makes
+   the detail — the thing that proves the claim — unreadable. */
+.shots figure{margin:0;display:flex;flex-direction:column;gap:10px}
+.shots img{
+  width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:6px;
+  background:var(--surface-2);box-shadow:var(--shadow);
+}
+.shots figcaption{font-size:13.5px;line-height:1.5;color:var(--ink-soft);max-width:62ch}
+.shots .src{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.case-block .shots{padding:0}
+
 /* ============================================================ CONSENT */
 .consent{
   position:fixed;left:var(--s4);right:var(--s4);bottom:var(--s4);z-index:80;

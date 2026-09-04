@@ -446,6 +446,19 @@ details.more[open] summary::after{content:"–"}
 details.more[open] summary{margin-bottom:var(--s4)}
 
 
+/* ============================================================ SCREENS */
+.shots{padding:0 var(--s5) var(--s5);display:grid;gap:var(--s6);grid-template-columns:1fr}
+/* Always one per row: these are dense product UIs and halving the width makes
+   the detail — the thing that proves the claim — unreadable. */
+.shots figure{margin:0;display:flex;flex-direction:column;gap:10px}
+.shots img{
+  width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:6px;
+  background:var(--surface-2);box-shadow:var(--shadow);
+}
+.shots figcaption{font-size:13.5px;line-height:1.5;color:var(--ink-soft);max-width:62ch}
+.shots .src{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.case-block .shots{padding:0}
+
 /* ============================================================ CONSENT */
 .consent{
   position:fixed;left:var(--s4);right:var(--s4);bottom:var(--s4);z-index:80;
@@ -1246,6 +1259,17 @@ __SITE_DATA__
     if(btn){ btn.setAttribute('aria-expanded', String(!!open)); }
   }
 
+  /* Screens. Mirrored in build.py's render_case() for the static case pages —
+     change one, change the other. */
+  function shotsHtml(p){
+    if(!p.images || !p.images.length){ return ''; }
+    return '<div class="shots'+(p.images.length>1?' multi':'')+'">'+
+      p.images.map(function(im, i){
+        return '<figure><img src="/'+esc(im.src)+'" alt="'+esc(im.alt)+'" loading="lazy" decoding="async">'+
+          '<figcaption><span class="src">'+esc(p.name)+' · '+('0'+(i+1)).slice(-2)+'</span> '+esc(im.caption)+'</figcaption></figure>';
+      }).join('')+'</div>';
+  }
+
   function renderWork(){
     $('#work').innerHTML = DATA.projects.map(function(p, idx){
       var caps = DATA.capabilities.filter(function(c){return c.evidence.indexOf(p.id)>=0;});
@@ -1262,7 +1286,8 @@ __SITE_DATA__
         '<div class="proj-body"><div><h4>What it is</h4><p>'+esc(p.summary)+'</p>'+
           '<div class="stack">'+p.stack.map(function(s){return '<span class="pill">'+esc(s)+'</span>';}).join('')+'</div>'+
           (p['case'] ? '<button class="btn ghost small readcase" type="button" data-case="'+p.id+'">Read the case study →</button>' : '')+'</div>'+
-        '<div><h4>How it works</h4><ul class="klist">'+p.points.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div></article>';
+        '<div><h4>How it works</h4><ul class="klist">'+p.points.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>'+
+        shotsHtml(p)+'</article>';
     }).join('');
 
     $$('.proj-toggle').forEach(function(btn){
@@ -1448,6 +1473,7 @@ __SITE_DATA__
         '<div class="case-block"><h3>The problem</h3><p>'+esc(c.problem)+'</p></div>'+
         '<div class="case-block"><h3>What was built</h3><ul class="klist">'+c.built.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
         '<div class="case-block"><h3>What changed</h3><ul class="klist">'+c.changed.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
+        (p.images && p.images.length ? '<div class="case-block"><h3>The screens</h3>'+shotsHtml(p)+'</div>' : '')+
         '<div class="case-block"><h3>Built with</h3><div class="stack">'+p.stack.map(function(s){return '<span class="pill">'+esc(s)+'</span>';}).join('')+'</div></div>'+
       '</div>'+
       '<div class="casenav">'+others.map(function(o){
