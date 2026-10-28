@@ -1,7 +1,7 @@
 {
   "profile": {
     "name": "Sean Stone",
-    "role": "Revenue systems, built not advised",
+    "role": "Founder & CEO, Cangaroo Inc.",
     "location": "San Francisco",
     "email": "sean@cangaroo.ai",
     "linkedin": "linkedin.com/in/seanstone",
@@ -46,7 +46,7 @@
       "evidence": [
         "alpha",
         "salehunters",
-        "roadrunner"
+        "sprintrep"
       ]
     },
     {
@@ -55,7 +55,7 @@
       "kicker": "Strategy, shipped as working software",
       "claim": "Integrations, routing logic, enrichment, attribution, landing-page infrastructure. Not a diagram of a process — the process, running.",
       "evidence": [
-        "roadrunner",
+        "sprintrep",
         "alpha"
       ]
     },
@@ -66,7 +66,7 @@
       "claim": "Directing AI engineering agents to produce production, multi-tenant software — with specification, acceptance criteria and verification gates that keep it real.",
       "evidence": [
         "kervio",
-        "roadrunner"
+        "sprintrep"
       ]
     },
     {
@@ -82,25 +82,25 @@
   ],
   "projects": [
     {
-      "id": "roadrunner",
-      "name": "Road Runner",
-      "kicker": "Platform · built and running",
-      "year": "2025–2026",
-      "thesis": "Most websites collect leads. This one queries the business behind it.",
-      "summary": "Road Runner is the connective layer between a company's front door and its systems of record. The website stops being a brochure and becomes an interface to the CRM, the inventory database, and the finance system — in both directions.",
+      "id": "sprintrep",
+      "name": "sprintrep",
+      "kicker": "Made-to-measure CRM · built by AI agents",
+      "year": "2026",
+      "thesis": "Why rent someone else's CRM? Get your own by next week.",
+      "summary": "sprintrep builds each customer their own CRM instead of selling them a generic one. A 15-minute conversation goes in; AI agents design and build a branded system around how that business actually sells — clickable prototype in 48 hours, live in about a week — and then keep running and improving it. It grew out of Road Runner, the platform first built for a stone supplier, whose results are below.",
       "points": [
-        "One inquiry form, many audiences: the form asks who you are and branches — a homeowner asks for samples, a builder wants trade terms, an architect wants specification data.",
-        "Relationship resolution: name the company you're working with and it is matched against the CRM, the record is linked, and the existing commercial relationship — including transaction volume from the finance system — comes with it.",
-        "Live data as an experience: stock, lead times, availability and pricing answered on the page instead of 'someone will get back to you'.",
-        "Landing pages and campaigns in minutes, with UTM tagging carried end to end so engagement lands back on the same record.",
-        "The CRM revamp is a by-product: branching logic forces a real taxonomy of who you sell to, so the CRM ends up shaped like the business rather than like the software's defaults."
+        "Tailored, not configured: the data model, screens and workflows are built around the business, with its logo and colours on top.",
+        "A dedicated agent team per client — Listener, Architect, Builder, Migrator, Signal and Caretaker — with a human lead who signs off releases.",
+        "Migration that keeps history: existing CRM records come across and every customer's activity timeline is rebuilt from email, calls and notes.",
+        "AI built in from day one: ask for a report or a form in plain English, capture visits by voice memo or business-card photo, score accounts with explainable rules.",
+        "Compounding by design: every build composes shared modules, so each new system is faster than the last — build number 20 is mostly assembly."
       ],
       "stack": [
-        "HubSpot",
-        "Pipedrive",
-        "Webhooks / API",
-        "UTM + attribution",
-        "Dynamic landing pages"
+        "AI agents (Claude, GPT)",
+        "Multi-tenant platform",
+        "HubSpot · Pipedrive · Salesforce import",
+        "Twilio",
+        "Stripe"
       ],
       "audiences": [
         "build",
@@ -108,7 +108,7 @@
         "look"
       ],
       "case": {
-        "problem": "A company's systems each know something the customer needs, and none of them can be reached from the only place the customer actually goes. The CRM knows the account, the inventory system knows the stock, the finance system knows the trading history — and the website, the front door, knows none of it. So every enquiry starts from zero, is answered by a human reading three screens, and arrives in the CRM as an orphan lead with no relationship attached.",
+        "problem": "Off-the-shelf CRMs make a business bend around the software: hundreds of fields nobody uses, workflows that don't match how the team sells, and a forecast nobody trusts. The first version of this work started at one company, a stone supplier whose CRM, inventory and finance systems each knew something the customer needed and none of them could be reached from the website. sprintrep is that build, turned into a repeatable service.",
         "built": [
           "A front door that identifies the visitor and branches — one entry point, a genuinely different engagement per audience.",
           "Company-name resolution against the CRM, so an enquiry attaches to the account that will fulfil it instead of creating another duplicate.",
@@ -121,14 +121,14 @@
           "229 stonemasons mapped to the businesses they actually work with. Before the reach view existed, only 20 had any recorded relationship at all.",
           "Enquiries arrive segmented, attributed and attached to an account, so the qualification happens before a human reads them.",
           "The CRM ends up restructured as a by-product: branching logic forces a real taxonomy of who the business sells to.",
-          "Built in 109 hours across May and June 2026, site and platform together."
+          "The first build took 109 hours across May and June 2026, site and platform together — the starting point for the sprintrep module catalogue."
         ]
       },
       "images": [
         {
           "src": "img/roadrunner-01-dashboard.png",
           "caption": "One screen for every enquiry, visit, sample, warranty and landing page — each one resolved against the CRM before anything is written to it.",
-          "alt": "Road Runner dashboard showing CRM pulse, KPI targets, forms inbox and outreach engagement"
+          "alt": "sprintrep (first build) dashboard showing CRM pulse, KPI targets, forms inbox and outreach engagement"
         },
         {
           "src": "img/roadrunner-05-landing.png",
@@ -156,7 +156,7 @@
       "summary": "Conceived, specified and built with Australian stone fabricators: the quote-to-manufacture workflow of a shop, as software. Product architecture, pricing model and roadmap defined personally; built by directing AI engineering agents under a disciplined human-in-the-loop method.",
       "points": [
         "Architecture, pricing model (per-seat / per-quote / per-shop) and roadmap authored, not outsourced.",
-        "A live multi-tenant system, deployed and in beta with real fabrication shops \u2014 not a prototype, and not yet a paying product either. The beta is free while the workflow is validated.",
+        "A live multi-tenant system, deployed and in beta with real fabrication shops — not a prototype, and not yet a paying product either. The beta is free while the workflow is validated.",
         "A repeatable method for directing AI to build complex vertical software: specification, acceptance criteria, ground-truth verification gates.",
         "Geometry and vision components carried through a provisional-patent workstream with counsel."
       ],
@@ -298,7 +298,7 @@
     {
       "id": "product",
       "tag": "Products",
-      "label": "I'm here about Kervio or Road Runner",
+      "label": "I'm here about sprintrep or Kervio",
       "desc": "Buyer, partner or investor. Show me what was actually built and how it works."
     },
     {
@@ -585,14 +585,19 @@
   },
   "timeline": [
     {
+      "yr": "2026",
+      "t": "sprintrep — creator",
+      "d": "Made-to-measure CRM: a 15-minute conversation in, a branded system built by AI agents out — prototype in 48 hours, live in about a week."
+    },
+    {
       "yr": "2025–2026",
       "t": "Kervio — creator, product and go-to-market",
       "d": "AI-first quoting-to-manufacturing platform for stone fabrication. Architecture, pricing and roadmap; built by directing AI engineering agents."
     },
     {
-      "yr": "2025",
-      "t": "Cangaroo — Chief Executive Officer",
-      "d": "RevOps and SalesOps practice for HubSpot-based companies. Where the AI-directed build method was hardened."
+      "yr": "2025–",
+      "t": "Cangaroo Inc. — Founder & CEO",
+      "d": "AI-first software company in San Francisco building made-to-measure business systems with AI agents. Products: sprintrep and Kervio. Began as a RevOps practice for HubSpot-based companies, where the AI-directed build method was hardened."
     },
     {
       "yr": "2018–2025",
@@ -1053,7 +1058,7 @@
           "technical",
           "stack"
         ],
-        "a": "Yes, directed through AI — which is the reason the economics work at all. Twenty-five years of knowing what the system should do, and a method for turning that judgement into working software in days. Kervio and Road Runner were both built this way, by me, and both are running in production. The work section on this page is the evidence."
+        "a": "Yes, directed through AI — which is the reason the economics work at all. Twenty-five years of knowing what the system should do, and a method for turning that judgement into working software in days. Kervio and sprintrep were both built this way, by me. The work section on this page is the evidence."
       },
       {
         "q": "What size company do you work with?",
@@ -1137,9 +1142,9 @@
       },
       {
         "n": "02",
-        "t": "Into Road Runner",
+        "t": "Into sprintrep",
         "w": "Where the stream becomes decisions",
-        "d": "The same events, pointed at the platform instead of at a panel. Road Runner is the connective layer between the front door and the systems that actually hold your business — CRM, ERP, stock, pricing, delivery. It answers the visitor's question from your live data, writes the record, routes the account to a named owner and tells them what to say. That is the difference between a page that watches and a system that acts.",
+        "d": "The same events, pointed at the platform instead of at a panel. sprintrep connects the front door to the systems that actually hold your business — CRM, ERP, stock, pricing, delivery. It answers the visitor's question from your live data, writes the record, routes the account to a named owner and tells them what to say. That is the difference between a page that watches and a system that acts.",
         "note": "Where most of the value is. 60–120 hours."
       },
       {
