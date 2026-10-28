@@ -8,8 +8,8 @@
     "site": "seanstone.com"
   },
   "flags": {
-    "engagementOffer": true,
-    "showRates": true,
+    "engagementOffer": false,
+    "showRates": false,
     "noindex": false
   },
   "rate": {
